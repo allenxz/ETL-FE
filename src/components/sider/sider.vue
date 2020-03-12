@@ -1,9 +1,9 @@
 <template>
-  <a-layout-sider :trigger="null" collapsible v-model="collapsed">
-    <div class="logo" />
+  <a-layout-sider :trigger="null" collapsible v-model="collapsed" class="sider">
+    <h2><span class="highlight">ETL</span> 数据平台</h2>
     <a-menu
       :defaultSelectedKeys="['1']"
-      :defaultOpenKeys="['sub1']"
+      :defaultOpenKeys="['sub1','sub2', 'sub3','sub4']"
       mode="inline"
       theme="dark"
       :inlineCollapsed="collapsed">
