@@ -54,7 +54,7 @@
                 type="submit"
                 value="登录"
                 class="forms_buttons-action"
-                @click="handleSubmit"
+                @click.prevent="handleSubmit"
               />
             </div>
           </form>
@@ -145,14 +145,14 @@ export default {
     )
   },
   methods: {
-    handleSubmit () {
+    async handleSubmit () {
       console.log(this.username, this.password)
-      userService.login({
+      let res = await userService.login({
         username: this.username,
         password: this.password
-      }).then(res => {
-        console.log(res)
       })
+      console.log(res)
+      return false
     }
   }
 }
