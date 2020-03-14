@@ -1,133 +1,359 @@
-@import url('https://rsms.me/inter/inter-ui.css');
-::selection {
-  background: #2d2f36;
-}
-::-webkit-selection {
-  background: #2d2f36;
-}
-::-moz-selection {
-  background: #2d2f36;
+/**
+ * General variables
+ */
+$bdrds: 3px;
+$white: #fff;
+$black: #000;
+$gray: #ccc;
+$salmon: #e8716d;
+$smoky-black: rgba(#222222, .85);
+
+$ff: 'Montserrat', sans-serif;
+$ff-body: 12px;
+$ff-light: 300;
+$ff-regular: 400;
+$ff-medium: 500;
+
+
+/**
+ * General configs
+ */
+* {
+  box-sizing: border-box;
 }
 body {
-  background: white;
-  font-family: 'Inter UI', sans-serif;
-  margin: 0;
-  padding: 20px;
-}
-.page {
-  background: #e2e2e5;
-  display: flex;
-  flex-direction: column;
-  height: calc(100% - 40px);
-  position: absolute;
-  place-content: center;
-  width: calc(100% - 40px);
-}
-@media (max-width: 767px) {
-  .page {
-    height: auto;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-  }
-}
-.container {
-  display: flex;
-  height: 320px;
-  margin: 0 auto;
-  width: 640px;
-}
-@media (max-width: 767px) {
-  .container {
-    flex-direction: column;
-    height: 630px;
-    width: 320px;
-  }
-}
-.left {
-  background: white;
-  height: calc(100% - 40px);
-  top: 20px;
-  position: relative;
-  width: 50%;
-}
-@media (max-width: 767px) {
-  .left {
-    height: 100%;
-    left: 20px;
-    width: calc(100% - 40px);
-    max-height: 270px;
-  }
-}
-.login {
-  font-size: 50px;
-  font-weight: 900;
-  margin: 50px 40px 40px;
-}
-.eula {
-  color: #999;
-  font-size: 14px;
-  line-height: 1.5;
-  margin: 40px;
-}
-.right {
-  background: #474a59;
-  box-shadow: 0px 0px 40px 16px rgba(0, 0, 0, 0.22);
-  color: #f1f1f2;
-  position: relative;
-  width: 50%;
-}
-@media (max-width: 767px) {
-  .right {
-    flex-shrink: 0;
-    height: 100%;
-    width: 100%;
-    max-height: 350px;
-  }
-}
-svg {
-  position: absolute;
-  width: 320px;
-}
-path {
-  fill: none;
-  stroke: url(#linearGradient);
-  stroke-width: 4;
-  stroke-dasharray: 240 1386;
-}
-.form {
-  margin: 40px;
-  position: absolute;
-}
-label {
-  color: #c2c2c5;
-  display: block;
-  font-size: 14px;
-  height: 16px;
-  margin-top: 20px;
-  margin-bottom: 5px;
-}
-input{
-  background: transparent;
+  font-family: $ff;
+  font-size: $ff-body;
+  line-height: 1em;
+} 
+button{
+  background-color: transparent;
+  padding: 0;
   border: 0;
-  color: #f2f2f2;
-  font-size: 20px;
-  height: 30px;
-  line-height: 30px;
-  outline: none !important;
+  outline: 0;
+  cursor: pointer;
+}  
+input {
+  background-color: transparent;
+  padding: 0;
+  border: 0;
+  outline: 0;
+ 
+  &[type="submit"]{
+    cursor: pointer;
+  }
+  &::placeholder{
+    font-size: .85rem;
+    font-family: $ff;
+    font-weight: $ff-light;
+    letter-spacing: .1rem;
+    color: $gray;
+  }
+}   
+/**
+ * Bounce to the left side
+ */
+@keyframes bounceLeft{
+  0%{
+      transform: translate3d(100%, -50%, 0)}
+
+  50%{
+      transform: translate3d(-30px, -50%, 0)}
+
+  100%{
+      transform: translate3d(0, -50%, 0)}
+}
+/**
+ * Bounce to the left side
+ */
+@keyframes bounceRight{
+  0%{
+    transform: translate3d(0, -50%, 0)
+  }
+    
+
+  50%{
+    transform: translate3d(calc(100% + 30px), -50%, 0)
+  }
+  100%{
+    transform: translate3d(100%, -50%, 0)
+  }
+}
+/**
+ * Show Sign Up form
+ */
+@keyframes showSignUp{
+  100%{
+    opacity: 1;
+    visibility: visible;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/**
+ * Page background
+ */
+.user{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   width: 100%;
+  height: 100vh;
+  background: url('https://goo.gl/YRxqs1') no-repeat center;
+  background-size: cover;
+
+  h2 {
+    color: $white;
+  }
+
+  &_options-container{
+    position: relative;
+    width: 80%;
+  }
+
+  &_options-text{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background-color: $smoky-black;
+    border-radius: $bdrds;
+  }
 }
-input::-moz-focus-inner {
-  border: 0;
+
+/**
+ * Registered and Unregistered user box and text
+ */
+.user_options-registered,
+.user_options-unregistered{
+  width: 50%;
+  padding: 75px 45px;
+
+  color: $white;
+  font-weight: $ff-light;
 }
-#submit {
-  color: #707075;
-  margin-top: 42px;
-  font-size: 20px;
-  transition: color 300ms;
+.user_registered-title,
+.user_unregistered-title{
+  margin-bottom: 15px;
+  font-size: 1.66rem;
+  line-height: 1em;
 }
-#submit:focus {
-  color: #f2f2f2;
+.user_unregistered-text,
+.user_registered-text{
+  font-size: .83rem;
+  line-height: 1.4em;
 }
-#submit:active {
-  color: #d0d0d2;
+  
+
+.user_registered-login,
+.user_unregistered-signup{
+  margin-top: 30px;
+  border: 1px solid $gray;
+  border-radius: $bdrds;
+  padding: 10px 30px;
+
+  color: $white;
+  text-transform: uppercase;
+  line-height: 1em;
+  letter-spacing: .2rem;
+
+  transition: background-color .2s ease-in-out, color .2s ease-in-out;
+
+  &:hover{
+    color: $smoky-black;
+    background-color: $gray;
+  }
+    
 }
+  
+
+
+/**
+ * Login and signup forms
+ */
+.user_options-forms{
+  position: absolute;
+  top: 50%;
+  left: 30px;
+
+  width: calc(50% - 30px);
+  min-height: 420px;
+  background-color: $white;
+  border-radius: $bdrds;
+  box-shadow: 2px 0 15px rgba($black, .25);
+  overflow: hidden;
+
+  transform: translate3d(100%, -50%, 0);
+  transition: transform .4s ease-in-out;
+
+  .user_forms-login{
+    transition: opacity .4s ease-in-out, visibility .4s ease-in-out;
+  }
+    
+
+  .forms{
+    &_title{
+      margin-bottom: 45px;
+      font-size: 1.5rem;
+      font-weight: $ff-medium;
+      line-height: 1em;
+      text-transform: uppercase;
+      color: $salmon;
+      letter-spacing: .1rem;
+    }
+      
+    &_field{
+      &:not(:last-of-type){
+        margin-bottom: 20px
+      }
+    }
+      
+    &_field-input{
+      width: 100%;
+      border-bottom: 1px solid $gray;
+      padding: 6px 20px 6px 6px;
+
+      font-family: $ff;
+      font-size: 1rem;
+      font-weight: $ff-light;
+      color: darken($gray, 30%);
+      letter-spacing: .1rem;
+
+      transition: border-color .2s ease-in-out;
+
+      &:focus{
+        border-color: darken($gray, 30%);
+      } 
+    }
+      
+
+    &_buttons{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 35px;
+
+      &-forgot{
+        font-family: $ff;
+        letter-spacing: .1rem;
+        color: $gray;
+        text-decoration: underline;
+
+        transition: color .2s ease-in-out;
+
+        &:hover{
+          color: darken($gray, 10%);
+        }
+      }
+        
+
+      &-action{
+        background-color: $salmon;
+        border-radius: $bdrds;
+        padding: 10px 35px;
+
+        font-size: 1rem;
+        font-family: $ff;
+        font-weight: $ff-light;
+        color: $white;
+        text-transform: uppercase;
+        letter-spacing: .1rem;
+
+        transition: background-color .2s ease-in-out;
+
+        &:hover{
+          background-color: darken($salmon, 10%);
+        }
+      }
+    } 
+  }
+    
+
+  .user_forms-signup,
+  .user_forms-login{
+    position: absolute;
+    top: 70px;
+    left: 40px;
+
+    width: calc(100% - 80px);
+
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .4s ease-in-out, visibility .4s ease-in-out, transform .5s ease-in-out;
+  }
+    
+
+  .user_forms-signup{
+    transform: translate3d(120px, 0, 0);
+
+    .forms_buttons{
+      justify-content: flex-end;
+    }
+  }
+    
+
+  .user_forms-login{
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+    visibility: visible;
+  }
+}
+  
+/**
+ * Triggers
+ */
+.user_options-forms{
+  &.bounceLeft{
+    animation: bounceLeft 1s forwards;
+
+    .user_forms-signup{
+      animation: showSignUp 1s forwards;
+    }
+      
+    .user_forms-login{
+      opacity: 0;
+      visibility: hidden;
+      transform: translate3d(-120px, 0, 0);
+    }
+      
+  }
+    
+
+  &.bounceRight{
+    animation: bounceRight 1s forwards;
+  }
+}
+  
+    
+
+/**
+ * Responsive 990px
+ */
+@media screen and (max-width: 990px){
+  .user_options-forms{
+    min-height: 450px;
+    
+    .forms_buttons{
+      flex-direction: column
+    }
+      
+  
+    .user_forms-login .forms_buttons-action{
+      margin-top: 30px
+    }
+        
+        
+    .user_forms-signup,
+    .user_forms-login{
+      top: 40px
+    }
+      
+  }
+    
+      
+  .user_options-registered,
+  .user_options-unregistered{
+    padding: 50px 45px;
+  }
+}
+  

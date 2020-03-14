@@ -1,99 +1,159 @@
 <template>
-  <div class="page">
-    <div class="container">
-      <div class="left">
-        <div class="login">Login</div>
-        <div class="eula">
-          ETL，Extraction-Trasformation-Loading，即数据读取，转换，装载的过程，是构建数据仓库的重要环节。
+  <section class="user">
+    <div class="user_options-container">
+      <div class="user_options-text">
+        <div class="user_options-unregistered">
+          <h2 class="user_unregistered-title">ETL数据平台</h2>
+          <p class="user_unregistered-text">
+            ETL，Extraction-Trasformation-Loading，即数据读取，转换，装载的过程，是构建数据仓库的重要环节。信息是现代企业的重要资源，是企业运用科学管理、决策分析的基础。
+          </p>
+          <button class="user_unregistered-signup" id="signup-button">
+            注册账户
+          </button>
+        </div>
+
+        <div class="user_options-registered">
+          <h2 class="user_registered-title">ETL数据平台</h2>
+          <p class="user_registered-text">
+            ETL，Extraction-Trasformation-Loading，即数据读取，转换，装载的过程，是构建数据仓库的重要环节。信息是现代企业的重要资源，是企业运用科学管理、决策分析的基础。
+          </p>
+          <button class="user_registered-login" id="login-button">登录系统</button>
         </div>
       </div>
-      <div class="right">
-        <svg viewBox="0 0 320 300">
-          <defs>
-            <linearGradient
-              inkscape:collect="always"
-              id="linearGradient"
-              x1="13"
-              y1="193.49992"
-              x2="307"
-              y2="193.49992"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop style="stop-color:#ff00ff" offset="0" id="stop876" />
-              <stop style="stop-color:#ff0000" offset="1" id="stop878" />
-            </linearGradient>
-          </defs>
-          <path
-            d="m 40,120.00016 239.99984,-3.2e-4 c 0,0 24.99263,0.79932 25.00016,35.00016 0.008,34.20084 -25.00016,35 -25.00016,35 h -239.99984 c 0,-0.0205 -25,4.01348 -25,38.5 0,34.48652 25,38.5 25,38.5 h 215 c 0,0 20,-0.99604 20,-25 0,-24.00396 -20,-25 -20,-25 h -190 c 0,0 -20,1.71033 -20,25 0,24.00396 20,25 20,25 h 168.57143"
-          />
-        </svg>
-        <div class="form">
-          <input type="password" hidden autocomplete="new-password">
-          <label for="username">用户名</label>
-          <input id="username" type="text"/>
-          <label for="password">密码</label>
-          <input type="password" id="password" />
-          <input type="submit" id="submit" value="Submit" />
+
+      <div class="user_options-forms" id="user_options-forms">
+        <div class="user_forms-login">
+          <h2 class="forms_title">Login</h2>
+          <form class="forms_form">
+            <fieldset class="forms_fieldset">
+              <div class="forms_field">
+                <input
+                  type="text"
+                  placeholder="用户名"
+                  class="forms_field-input"
+                  required
+                  autofocus
+                  v-model="username"
+                />
+              </div>
+              <div class="forms_field">
+                <input
+                  type="password"
+                  placeholder="Password"
+                  class="forms_field-input"
+                  required
+                  v-model="password"
+                />
+              </div>
+            </fieldset>
+            <div class="forms_buttons">
+              <button type="button" class="forms_buttons-forgot">
+                忘记密码?
+              </button>
+              <input
+                type="submit"
+                value="登录"
+                class="forms_buttons-action"
+                @click="handleSubmit"
+              />
+            </div>
+          </form>
+        </div>
+        <div class="user_forms-signup">
+          <h2 class="forms_title">Sign Up</h2>
+          <form class="forms_form">
+            <fieldset class="forms_fieldset">
+              <div class="forms_field">
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  class="forms_field-input"
+                  required
+                />
+              </div>
+              <div class="forms_field">
+                <input
+                  type="email"
+                  placeholder="Email"
+                  class="forms_field-input"
+                  required
+                />
+              </div>
+              <div class="forms_field">
+                <input
+                  type="password"
+                  placeholder="Password"
+                  class="forms_field-input"
+                  required
+                />
+              </div>
+            </fieldset>
+            <div class="forms_buttons">
+              <input
+                type="submit"
+                value="注册 "
+                class="forms_buttons-action"
+              />
+            </div>
+          </form>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
 import './style.scss'
-import anime from 'animejs/lib/anime.es.js'
+import * as userService from '@/services/user'
 export default {
+  data () {
+    return {
+      username: '',
+      password: ''
+    }
+  },
   mounted () {
-    var current = null
-    document.querySelector('#username').addEventListener('focus', function (e) {
-      if (current) current.pause()
-      current = anime({
-        targets: 'path',
-        strokeDashoffset: {
-          value: 0,
-          duration: 700,
-          easing: 'easeOutQuart'
-        },
-        strokeDasharray: {
-          value: '240 1386',
-          duration: 700,
-          easing: 'easeOutQuart'
-        }
+    /**
+     * Variables
+     */
+    const signupButton = document.getElementById('signup-button')
+    const loginButton = document.getElementById('login-button')
+    const userForms = document.getElementById('user_options-forms')
+
+    /**
+     * Add event listener to the "Sign Up" button
+     */
+    signupButton.addEventListener(
+      'click',
+      () => {
+        userForms.classList.remove('bounceRight')
+        userForms.classList.add('bounceLeft')
+      },
+      false
+    )
+
+    /**
+     * Add event listener to the "Login" button
+     */
+    loginButton.addEventListener(
+      'click',
+      () => {
+        userForms.classList.remove('bounceLeft')
+        userForms.classList.add('bounceRight')
+      },
+      false
+    )
+  },
+  methods: {
+    handleSubmit () {
+      console.log(this.username, this.password)
+      userService.login({
+        username: this.username,
+        password: this.password
+      }).then(res => {
+        console.log(res)
       })
-    })
-    document.querySelector('#password').addEventListener('focus', function (e) {
-      if (current) current.pause()
-      current = anime({
-        targets: 'path',
-        strokeDashoffset: {
-          value: -336,
-          duration: 700,
-          easing: 'easeOutQuart'
-        },
-        strokeDasharray: {
-          value: '240 1386',
-          duration: 700,
-          easing: 'easeOutQuart'
-        }
-      })
-    })
-    document.querySelector('#submit').addEventListener('focus', function (e) {
-      if (current) current.pause()
-      current = anime({
-        targets: 'path',
-        strokeDashoffset: {
-          value: -730,
-          duration: 700,
-          easing: 'easeOutQuart'
-        },
-        strokeDasharray: {
-          value: '530 1386',
-          duration: 700,
-          easing: 'easeOutQuart'
-        }
-      })
-    })
+    }
   }
 }
 </script>
