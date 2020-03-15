@@ -104,7 +104,7 @@
 
 <script>
 import './style.scss'
-import * as userService from '@/services/user'
+import fetch from '@/services/fetch'
 export default {
   data () {
     return {
@@ -146,11 +146,10 @@ export default {
   },
   methods: {
     async handleSubmit () {
-      console.log(this.username, this.password)
-      let res = await userService.login({
-        username: this.username,
-        password: this.password
-      })
+      let params = new URLSearchParams()
+      params.append('username', JSON.stringify(this.username))
+      params.append('password', JSON.stringify(this.password))
+      let res = await fetch.post('/login', params)
       console.log(res)
       return false
     }
