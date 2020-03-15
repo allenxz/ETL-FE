@@ -66,25 +66,28 @@
               <div class="forms_field">
                 <input
                   type="text"
-                  placeholder="Full Name"
+                  placeholder="用户名"
                   class="forms_field-input"
                   required
-                />
-              </div>
-              <div class="forms_field">
-                <input
-                  type="email"
-                  placeholder="Email"
-                  class="forms_field-input"
-                  required
+                  v-model="username"
                 />
               </div>
               <div class="forms_field">
                 <input
                   type="password"
-                  placeholder="Password"
+                  placeholder="密码"
                   class="forms_field-input"
                   required
+                  v-model="password"
+                />
+              </div>
+              <div class="forms_field">
+                <input
+                  type="password"
+                  placeholder="重复密码"
+                  class="forms_field-input"
+                  required
+                  v-model="rPassword"
                 />
               </div>
             </fieldset>
@@ -93,6 +96,7 @@
                 type="submit"
                 value="注册 "
                 class="forms_buttons-action"
+                @click.prevent="handleRegister"
               />
             </div>
           </form>
@@ -109,7 +113,8 @@ export default {
   data () {
     return {
       username: '',
-      password: ''
+      password: '',
+      rPassword: ''
     }
   },
   mounted () {
@@ -126,6 +131,7 @@ export default {
     signupButton.addEventListener(
       'click',
       () => {
+        this.reset()
         userForms.classList.remove('bounceRight')
         userForms.classList.add('bounceLeft')
       },
@@ -138,6 +144,7 @@ export default {
     loginButton.addEventListener(
       'click',
       () => {
+        this.reset()
         userForms.classList.remove('bounceLeft')
         userForms.classList.add('bounceRight')
       },
@@ -145,17 +152,43 @@ export default {
     )
   },
   methods: {
+    reset () {
+      this.username = ''
+      this.password = ''
+      this.rPassword = ''
+    },
     async handleSubmit () {
-      let params = new URLSearchParams()
-      params.append('username', this.username)
-      params.append('password', this.password)
-      let res = await fetch.post('/login', params)
-      if (res.exception === null) {
-        localStorage.setItem('token', res.data.token)
+      let res = await fetch.post('/login', {
+        username: this.username,
+        password: this.password
+      })
+      if (!res.exception) {
+        localStorage.setItem('userInfo', JSON.stringify(res.data))
         this.$message.success('登录成功')
         this.$router.push({ path: '/' })
+      } else {
+        this.$message.error(res.exception)
+        this.reset()
       }
       return false
+    },
+    async handleRegister () {
+      if (this.password !== this.rPassword) {
+        this.$message.error('两次输入的密码不一致')
+        this.reset()
+        return
+      }
+
+      let res = await fetch.post('/register', {
+        username: this.username,
+        password: this.password
+      })
+      if (!res.exception) {
+        this.$message.success('注册成功，请前往登录')
+      } else {
+        this.$message.error(res.exception)
+        this.reset()
+      }
     }
   }
 }

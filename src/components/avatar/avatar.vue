@@ -24,10 +24,13 @@ import fetch from '@/services/fetch'
 export default {
   data () {
     return {
-      text: 'allen tan',
+      text: '',
       avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
       isLogin: false
     }
+  },
+  mounted () {
+    this.text = JSON.parse(localStorage.getItem('userInfo')).nickname
   },
   methods: {
     onClick ({ key }) {
@@ -44,6 +47,11 @@ export default {
     async logout () {
       let res = await fetch.post('/logout')
       console.log(res)
+      if (!res.exception) {
+        localStorage.removeItem('userInfo')
+        this.$message.success('注销成功')
+        this.$router.push({ path: '/login' })
+      }
     }
   }
 }

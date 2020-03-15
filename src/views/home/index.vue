@@ -17,7 +17,7 @@ export default {
   },
   created () {
     // 未登录跳转登录
-    if (!localStorage.getItem('token')) {
+    if (!localStorage.getItem('userInfo')) {
       this.$router.push({ name: 'login' })
     }
   }
