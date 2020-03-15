@@ -185,6 +185,10 @@ export default {
       })
       if (!res.exception) {
         this.$message.success('注册成功，请前往登录')
+        this.reset()
+        const userForms = document.getElementById('user_options-forms')
+        userForms.classList.remove('bounceLeft')
+        userForms.classList.add('bounceRight')
       } else {
         this.$message.error(res.exception)
         this.reset()
