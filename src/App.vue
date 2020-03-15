@@ -20,4 +20,10 @@ export default {
 </script>
 
 <style>
+/* 重置浏览器默认样式 */
+@import url(assets/css/reset.css);
+
+body{
+  font-size: 14px;
+}
 </style>

@@ -1,0 +1,17 @@
+.header-menu{
+  float: right;
+
+  li {
+    float: left;
+    cursor: pointer;
+    padding: 0 12px;
+
+    &:hover{
+      background-color: #f9f9f9;
+    }
+  }
+
+  .icon{
+    font-size: 16px;
+  }
+}

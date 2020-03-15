@@ -8,7 +8,7 @@
           :type="collapsed ? 'menu-unfold' : 'menu-fold'"
           @click="()=> collapsed = !collapsed"
         />
-        <avatar></avatar>
+        <HeaderMenu></HeaderMenu>
       </a-layout-header>
       <a-layout-content :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }">
         <router-view></router-view>
@@ -20,7 +20,7 @@
 <script>
 import './style.scss'
 import Sider from '@/components/sider'
-import Avatar from '@/components/avatar'
+import HeaderMenu from '@/components/header-menu'
 export default {
   name: 'home',
   data () {
@@ -30,7 +30,7 @@ export default {
   },
   components: {
     Sider,
-    Avatar
+    HeaderMenu
   }
 }
 </script>

@@ -147,10 +147,14 @@ export default {
   methods: {
     async handleSubmit () {
       let params = new URLSearchParams()
-      params.append('username', JSON.stringify(this.username))
-      params.append('password', JSON.stringify(this.password))
+      params.append('username', this.username)
+      params.append('password', this.password)
       let res = await fetch.post('/login', params)
-      console.log(res)
+      if (res.exception === null) {
+        localStorage.setItem('token', res.data.token)
+        this.$message.success('登录成功')
+        this.$router.push({ path: '/' })
+      }
       return false
     }
   }
