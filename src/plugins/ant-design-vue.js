@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import {
+  message,
   Pagination,
   Button,
   LocaleProvider,
@@ -10,8 +11,11 @@ import {
   Avatar,
   Dropdown,
   Divider,
-  message
+  Tooltip
 } from 'ant-design-vue'
+
+Vue.prototype.$message = message
+
 Vue.use(LocaleProvider)
 Vue.use(Pagination)
 Vue.use(Button)
@@ -22,5 +26,4 @@ Vue.use(Icon)
 Vue.use(Avatar)
 Vue.use(Dropdown)
 Vue.use(Divider)
-
-Vue.prototype.$message = message
+Vue.use(Tooltip)

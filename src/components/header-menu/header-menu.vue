@@ -1,7 +1,13 @@
 <template>
   <ul class="header-menu">
     <li class="icon">
-      <a-icon type="question-circle" />
+      <a-tooltip>
+        <template slot="title">
+          使用文档
+        </template>
+        <a-icon type="question-circle" />
+      </a-tooltip>
+
     </li>
     <li class="icon">
       <a-icon type="bell" />

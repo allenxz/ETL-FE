@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/home/index'
-import Login from '../views/login'
+import Home from '@/views/home/index'
+import Login from '@/views/login'
+import ProcessManage from '@/views/process/manage'
 
 Vue.use(VueRouter)
 
@@ -9,7 +10,20 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: Home
+    component: Home,
+    meta: {
+      title: '首页'
+    },
+    children: [
+      {
+        path: '/process-manage',
+        name: 'processManage',
+        component: ProcessManage,
+        meta: {
+          title: '流程管理'
+        }
+      }
+    ]
   },
   {
     path: '/login',

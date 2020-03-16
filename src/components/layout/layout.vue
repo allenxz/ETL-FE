@@ -11,6 +11,7 @@
         <HeaderMenu></HeaderMenu>
       </a-layout-header>
       <a-layout-content :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }">
+        <Breadcrumb></Breadcrumb>
         <router-view></router-view>
       </a-layout-content>
     </a-layout>
@@ -21,6 +22,7 @@
 import './style.scss'
 import Sider from '@/components/sider'
 import HeaderMenu from '@/components/header-menu'
+import Breadcrumb from '@/components/breadcrumb'
 export default {
   name: 'home',
   data () {
@@ -30,7 +32,8 @@ export default {
   },
   components: {
     Sider,
-    HeaderMenu
+    HeaderMenu,
+    Breadcrumb
   }
 }
 </script>
