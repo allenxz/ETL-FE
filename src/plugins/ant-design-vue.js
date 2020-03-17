@@ -11,7 +11,9 @@ import {
   Avatar,
   Dropdown,
   Divider,
-  Tooltip
+  Tooltip,
+  Table,
+  Tag
 } from 'ant-design-vue'
 
 Vue.prototype.$message = message
@@ -27,3 +29,5 @@ Vue.use(Avatar)
 Vue.use(Dropdown)
 Vue.use(Divider)
 Vue.use(Tooltip)
+Vue.use(Table)
+Vue.use(Tag)
