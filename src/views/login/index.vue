@@ -119,14 +119,14 @@ export default {
   },
   mounted () {
     /**
-     * Variables
+     * 获取相关的DOM结点
      */
     const signupButton = document.getElementById('signup-button')
     const loginButton = document.getElementById('login-button')
     const userForms = document.getElementById('user_options-forms')
 
     /**
-     * Add event listener to the "Sign Up" button
+     * 为"注册帐号"按钮绑定事件
      */
     signupButton.addEventListener(
       'click',
@@ -139,7 +139,7 @@ export default {
     )
 
     /**
-     * Add event listener to the "Login" button
+     * 为"登录系统"按钮绑定事件
      */
     loginButton.addEventListener(
       'click',
@@ -152,11 +152,13 @@ export default {
     )
   },
   methods: {
+    // 重置输入框
     reset () {
       this.username = ''
       this.password = ''
       this.rPassword = ''
     },
+    // 登录
     async handleSubmit () {
       let res = await fetch.post('/login', {
         username: this.username,
@@ -172,6 +174,7 @@ export default {
       }
       return false
     },
+    // 注册
     async handleRegister () {
       if (this.password !== this.rPassword) {
         this.$message.error('两次输入的密码不一致')

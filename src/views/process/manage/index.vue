@@ -85,12 +85,15 @@ export default {
     this.getAllProcess(this.pagination.pageSize, this.pagination.current)
   },
   methods: {
+    // 获取状态标签的颜色
     getStateColor (state) {
       return config.PROCESS_STATE_MAP[state]
     },
+    // 格式化时间
     formatDateTime (timeStamp) {
       return dateUtils.formatDateTime(timeStamp)
     },
+    // 获取指定页数，页码的流程
     async getAllProcess (pageSize, pageNumber) {
       let res = await fetch.post('/getAllProcess', {
         pageSize,
@@ -99,14 +102,17 @@ export default {
       this.data = res.data.processDesc
       this.pagination.total = res.data.totalPages * res.data.pageSize
     },
+    // 切换页码
     handleTableChange (pagination) {
       this.pagination.current = pagination.current
       this.pagination.pageSize = pagination.pageSize
       this.getAllProcess(this.pagination.pageSize, this.pagination.current)
     },
+    // 批量选取流程
     onSelectChange (selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
     },
+    // 二次确认删除
     async confirmDelete (processId) {
       let res = await fetch.post('/deleteProcess', {
         processId
@@ -114,6 +120,7 @@ export default {
       this.$message.success(res.data.message)
       this.getAllProcess(this.pagination.pageSize, this.pagination.current)
     },
+    // 展示复制流程命名对话框
     showNameModal (processId) {
       this.visible = true
       this.copyedProcessId = processId
@@ -122,6 +129,7 @@ export default {
         target.focus()
       }, 400)
     },
+    // 复制流程
     async copyProcess () {
       let res = await fetch.post('/copyProcess', {
         newProcessName: this.newProcessName,
