@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import {
-  message,
   Pagination,
   Button,
   LocaleProvider,
@@ -13,10 +12,16 @@ import {
   Divider,
   Tooltip,
   Table,
-  Tag
+  Tag,
+  Popconfirm,
+  Modal,
+  Input,
+  message,
+  notification
 } from 'ant-design-vue'
 
 Vue.prototype.$message = message
+Vue.prototype.$notification = notification
 
 Vue.use(LocaleProvider)
 Vue.use(Pagination)
@@ -31,3 +36,6 @@ Vue.use(Divider)
 Vue.use(Tooltip)
 Vue.use(Table)
 Vue.use(Tag)
+Vue.use(Popconfirm)
+Vue.use(Modal)
+Vue.use(Input)

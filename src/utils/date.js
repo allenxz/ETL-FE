@@ -1,3 +1,4 @@
+// 时间戳格式化
 function formatDateTime (inputTime) {
   var date = new Date(inputTime)
   var y = date.getFullYear()
@@ -14,6 +15,12 @@ function formatDateTime (inputTime) {
   return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second
 }
 
+// 时间戳转毫秒
+function getTime (inputTime) {
+  return new Date(inputTime).getTime()
+}
+
 export default {
-  formatDateTime
+  formatDateTime,
+  getTime
 }

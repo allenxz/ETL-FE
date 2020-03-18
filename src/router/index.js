@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '@/views/home/index'
 import Login from '@/views/login'
 import ProcessManage from '@/views/process/manage'
+import ProcessAdd from '@/views/process/add'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,15 @@ const routes = [
         component: ProcessManage,
         meta: {
           title: '流程管理'
+        }
+      },
+      {
+        path: '/process-add',
+        name: 'processAdd',
+        component: ProcessAdd,
+        meta: {
+          title: '创建流程',
+          isSubPage: true
         }
       }
     ]
