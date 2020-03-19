@@ -16,6 +16,8 @@ import {
   Popconfirm,
   Modal,
   Input,
+  Row,
+  Col,
   message,
   notification
 } from 'ant-design-vue'
@@ -39,3 +41,5 @@ Vue.use(Tag)
 Vue.use(Popconfirm)
 Vue.use(Modal)
 Vue.use(Input)
+Vue.use(Row)
+Vue.use(Col)
