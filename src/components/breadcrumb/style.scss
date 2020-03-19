@@ -1,12 +1,15 @@
-.page-header{
-  padding-bottom: 16px;
-
-  i{
-    font-size: 16px;
-    margin-right: 16px;
-  }
-
-  span{
-    font-size: 20px;
+.breadcrumb{
+  transform: translateY(-12px);
+  .page-header{
+    padding-bottom: 16px;
+  
+    i{
+      font-size: 16px;
+      margin-right: 16px;
+    }
+  
+    span{
+      font-size: 20px;
+    }
   }
 }

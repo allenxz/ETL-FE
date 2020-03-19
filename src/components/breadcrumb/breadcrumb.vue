@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="breadcrumb">
     <!-- 不是二级页显示面包屑 -->
     <a-breadcrumb v-if="!isSubPage">
       <a-breadcrumb-item v-if="categoryName !== ''">
