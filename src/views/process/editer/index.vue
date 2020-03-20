@@ -84,7 +84,14 @@
     </a-row>
     <!-- 流程编辑器主体 -->
     <a-row class="editer">
-      <a-col :span="18" class="canvas">col-12</a-col>
+      <!-- 左侧画布 -->
+      <a-col :span="18" class="canvas">
+        <div class="node-container">
+          <div class="node-wrapper" v-for="i of 20" :key="i">
+            <div class="node"></div>
+          </div>
+        </div>
+      </a-col>
       <a-col :span="6" class="config">col-12</a-col>
     </a-row>
   </div>

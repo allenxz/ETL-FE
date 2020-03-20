@@ -29,11 +29,46 @@
   
   .editer{
     flex: 1;
+
     .canvas{
       height: 100%;
       border-right: 1px solid #e6e9ed;
-      background: #000 url(../../../assets/images/pattern.png);
       overflow-y: visible;
+
+      .node-container{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 24px;
+        padding-left: 0;
+
+        .node-wrapper{
+          position: relative;
+          .node{
+            width: 80px;
+            height: 80px;
+            margin-left: 50px;
+            margin-bottom: 50px;
+            background-color: #fff;
+            border-radius: 50%;
+            border: 1px solid rgba(132, 132, 164, 0.767);
+  
+            &:after {
+              position: absolute;
+              top: 40px;
+              left: 130px;
+              height: 3px;
+              content: '';
+              width: 50px;
+              background: url(http://demo.themenio.com/ico/assets/images/line.png) repeat 0 0;
+              z-index: 0;
+              animation: slide 1s linear infinite;
+            }
+          }
+        }
+        
+
+      }
     }
 
     .config{
@@ -43,4 +78,13 @@
       overflow-y: visible;
     }
   }
+}
+
+@keyframes slide {
+  from {
+    background-position: 0 0; 
+  }
+  to {
+    background-position: 40px 0; 
+  } 
 }
