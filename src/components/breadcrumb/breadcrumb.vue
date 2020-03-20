@@ -48,7 +48,13 @@ export default {
       let matched = this.$route.matched
       if (matched[matched.length - 1].meta.isSubPage === true) {
         this.isSubPage = true
-        this.title = matched[matched.length - 1].meta.title
+        // 看路由有没有传参
+        let id = this.$route.params.id
+        if (!id) {
+          this.title = matched[matched.length - 1].meta.addTitle
+        } else {
+          this.title = matched[matched.length - 1].meta.editTitle
+        }
         return
       }
       this.isSubPage = false

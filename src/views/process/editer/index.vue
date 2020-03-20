@@ -1,5 +1,6 @@
 <template>
-  <div class="process-add">
+  <div class="process-editer">
+    <!-- 工具栏 -->
     <a-row class="toolbar-container">
       <a-col :span="24">
         <span class="tool">
@@ -81,6 +82,7 @@
 
       </a-col>
     </a-row>
+    <!-- 流程编辑器主体 -->
     <a-row class="editer">
       <a-col :span="18" class="canvas">col-12</a-col>
       <a-col :span="6" class="config">col-12</a-col>

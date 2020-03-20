@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '@/views/home/index'
 import Login from '@/views/login'
 import ProcessManage from '@/views/process/manage'
-import ProcessAdd from '@/views/process/add'
+import ProcessEditer from '@/views/process/editer'
 
 Vue.use(VueRouter)
 
@@ -25,11 +25,12 @@ const routes = [
         }
       },
       {
-        path: '/process-add',
-        name: 'processAdd',
-        component: ProcessAdd,
+        path: '/process-editer',
+        name: 'processEditer',
+        component: ProcessEditer,
         meta: {
-          title: '创建流程',
+          addTitle: '创建流程',
+          editTitle: '编辑流程',
           isSubPage: true
         }
       }

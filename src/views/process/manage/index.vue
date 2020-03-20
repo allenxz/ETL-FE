@@ -2,7 +2,7 @@
   <div class="process-manage">
     <div class="btn-group">
       <a-button type="primary">
-        <router-link to="/process-add">创建流程</router-link>
+        <router-link :to="{name: 'processEditer'}">创建流程</router-link>
       </a-button>
       <a-button type="danger">流程删除</a-button>
       <a-button>流程导入</a-button>
