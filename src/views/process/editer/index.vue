@@ -83,17 +83,14 @@
       </a-col>
     </a-row>
     <!-- 流程编辑器主体 -->
-    <a-row class="editer">
-      <!-- 左侧画布 -->
-      <a-col :span="18" class="canvas">
-        <div class="node-container">
-          <div class="node-wrapper" v-for="i of 20" :key="i">
-            <div class="node"></div>
-          </div>
+    <div class="editer">
+      <div class="node-container">
+        <div class="node-wrapper" v-for="i of 5" :key="i">
+          <div class="node round"></div>
         </div>
-      </a-col>
-      <a-col :span="6" class="config">col-12</a-col>
-    </a-row>
+      </div>
+      <div class="config-area"></div>
+    </div>
   </div>
 </template>
 
