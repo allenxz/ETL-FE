@@ -1,137 +1,155 @@
 .process-editer{
   height: 100%;
   display: flex;
-  flex-direction: column;
-  background-color: #fff;
-  border: 1px solid #e6e9ed;
+  flex-direction: row;
   
-  .toolbar-container{
-    height: 45px;
-    padding: 8px;
+  
+  .left{
+    width: 200px;
+    margin-right: 15px;
+    background-color: #fff;
+    border: 1px solid #e6e9ed;
+  }
+
+  .right{
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
     border: 1px solid #e6e9ed;
 
-   
-    .tool{
-      display: inline-block;
-      width: 27px;
-      height: 27px;
-      margin: 0 6px;
-      padding-top: 2px;
-      text-align: center;
-      border: 1px solid #fff;
-      cursor: pointer;
-
-      &:hover{
-        border: 1px solid #e6e9ed;
+    .toolbar-container{
+      height: 45px;
+      padding: 8px;
+      border: 1px solid #e6e9ed;
+  
+     
+      .tool{
+        display: inline-block;
+        width: 27px;
+        height: 27px;
+        margin: 0 6px;
+        padding-top: 2px;
+        text-align: center;
+        border: 1px solid #fff;
+        cursor: pointer;
+  
+        &:hover{
+          border: 1px solid #e6e9ed;
+        }
+      }
+    }
+    
+    .editer{
+      flex: 1;
+      display: flex;
+      flex-direction: column;;
+  
+      .node-container{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        min-height: 129px;
+        padding: 36px 50px 0 0;
+        border-bottom: 1px solid #e6e9ed;
+  
+        .node-wrapper{
+          position: relative;
+  
+          .node{
+            margin-left: 50px;
+            margin-bottom: 36px;
+            border: 2px solid #e5e5e5;
+            background-color: #f5f6f7;
+            cursor: pointer;
+  
+            img{
+              width: auto;  
+              height: auto;  
+              max-width: 100%;  
+              max-height: 100%;    
+            }
+  
+            &:after{
+              position: absolute;
+              top: 50%;
+              left: 100%;
+              height: 5px;
+              content: '';
+              width: 50px;
+              background: url(http://demo.themenio.com/ico/assets/images/line.png) repeat 0 0;
+              animation: slide 1s linear infinite;
+            }
+          }
+  
+          // 形状
+          .round{
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            padding: 15px;
+            &:after{
+              top: 35px;
+              left: 100%;
+            }
+          }
+  
+          .capsule{
+            width: 88px;
+            height: 56px;
+            border-radius: 3px;
+            padding: 8px;
+            text-align: center;
+            &:after{
+              top: 28px;
+              left: 100%;
+            }
+          }
+  
+          .rhombus{
+            width: 50px;
+            height: 50px;
+            padding: 10px;
+            margin-right: 10px;
+            transform: rotate(45deg) translateY(2px);
+  
+            img{
+              transform: rotate(-45deg);
+            }
+  
+            &:after{
+              transform: rotate(-45deg);
+              top: -23px;
+              left: 90%;
+            }
+          }
+  
+          // 颜色
+          .orange{
+            border-color: #ffc16c;
+          }
+  
+          .blue {
+            border-color: #84c4fe;
+          }
+          
+          .purple {
+            border-color: #b37feb;
+          }
+  
+        }
+      }
+  
+      .config-area{
+        flex: 1;
+        border-top: 1px solid #e6e9ed;
+        background-color: #fafafa;
       }
     }
   }
   
-  .editer{
-    flex: 1;
-    display: flex;
-    flex-direction: column;;
-
-    .node-container{
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-items: center;
-      padding: 36px 50px 0 0;
-      border-bottom: 1px solid #e6e9ed;
-
-      .node-wrapper{
-        position: relative;
-
-        .node{
-          margin-left: 50px;
-          margin-bottom: 36px;
-          border: 2px solid #e5e5e5;
-          background-color: #f5f6f7;
-
-          img{
-            width: auto;  
-            height: auto;  
-            max-width: 100%;  
-            max-height: 100%;    
-          }
-
-          &:after{
-            position: absolute;
-            top: 50%;
-            left: 100%;
-            height: 5px;
-            content: '';
-            width: 50px;
-            background: url(http://demo.themenio.com/ico/assets/images/line.png) repeat 0 0;
-            animation: slide 1s linear infinite;
-          }
-        }
-
-        // 形状
-        .round{
-          width: 80px;
-          height: 80px;
-          border-radius: 50%;
-          padding: 15px;
-          &:after{
-            top: 40px;
-            left: 100%;
-          }
-        }
-
-        .capsule{
-          width: 88px;
-          height: 56px;
-          border-radius: 999em;
-          padding: 8px;
-          text-align: center;
-          &:after{
-            top: 28px;
-            left: 100%;
-          }
-        }
-
-        .rhombus{
-          width: 60px;
-          height: 60px;
-          padding: 10px;
-          margin-right: 10px;
-          transform: rotate(45deg);
-
-          img{
-            transform: rotate(-45deg);
-          }
-
-          &:after{
-            transform: rotate(-45deg);
-            top: -23px;
-            left: 90%;
-          }
-        }
-
-        // 颜色
-        .orange{
-          border-color: #ffc16c;
-        }
-
-        .blue {
-          border-color: #84c4fe;
-        }
-        
-        .purple {
-          border-color: #b37feb;
-        }
-
-      }
-    }
-
-    .config-area{
-      flex: 1;
-      border-top: 1px solid #e6e9ed;
-      background-color: #fafafa;
-    }
-  }
 }
 
 @keyframes slide {
