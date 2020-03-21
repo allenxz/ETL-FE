@@ -4,12 +4,28 @@
     <a-row class="toolbar-container">
       <a-col :span="24">
         <span class="tool">
-          <a-tooltip placement="bottom">
-            <template slot="title">
-              添加结点
-            </template>
-            <a-icon type="plus" />
-          </a-tooltip>
+          <a-dropdown :trigger="['click']">
+            <a-tooltip placement="top">
+              <template slot="title">
+                添加结点
+              </template>
+              <a-icon type="plus" />
+            </a-tooltip>
+            <a-menu slot="overlay">
+              <a-sub-menu title="reader" key="test">
+                <!-- <a-menu-item>3rd menu item</a-menu-item>
+                <a-menu-item>4th menu item</a-menu-item> -->
+              </a-sub-menu>
+              <a-sub-menu title="writer" key="test">
+                <!-- <a-menu-item>3rd menu item</a-menu-item>
+                <a-menu-item>4th menu item</a-menu-item> -->
+              </a-sub-menu>
+              <a-sub-menu title="etl插件" key="test">
+                <!-- <a-menu-item>3rd menu item</a-menu-item>
+                <a-menu-item>4th menu item</a-menu-item> -->
+              </a-sub-menu>
+            </a-menu>
+          </a-dropdown>
         </span>
         <span class="tool">
           <a-tooltip placement="bottom">
@@ -86,7 +102,9 @@
     <div class="editer">
       <div class="node-container">
         <div class="node-wrapper" v-for="i of 5" :key="i">
-          <div class="node round"></div>
+          <div class="node rhombus purple">
+            <img src="../../../assets/images/filterNullValuePlugin.png" alt="">
+          </div>
         </div>
       </div>
       <div class="config-area"></div>
@@ -96,7 +114,24 @@
 
 <script>
 import './style.scss'
+import fetch from '@/services/fetch'
 export default {
-
+  data () {
+    return {
+      plugins: {},
+      nodeList: []
+    }
+  },
+  mounted () {
+    this.getAllPlugins()
+  },
+  methods: {
+    // 获取所有插件
+    async getAllPlugins () {
+      let res = await fetch.post('/getAllPlugins')
+      this.plugins = res.data
+      console.log(this.plugins)
+    }
+  }
 }
 </script>
