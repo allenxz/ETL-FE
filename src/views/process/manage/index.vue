@@ -24,10 +24,10 @@
           {{formatDateTime(updateTime)}}
         </span>
         <span slot="action" slot-scope="row">
-          <a href="javascript:;">
+          <router-link :to="{name: 'processEditer', params:{id: row.processId}}">
             <a-icon type="edit" />
             编辑
-          </a>
+          </router-link>
           <a-divider type="vertical" />
           <a-popconfirm
             title="确定删除该流程?"

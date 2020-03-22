@@ -18,6 +18,8 @@ import {
   Input,
   Row,
   Col,
+  Empty,
+  Form,
   message,
   notification
 } from 'ant-design-vue'
@@ -43,3 +45,5 @@ Vue.use(Modal)
 Vue.use(Input)
 Vue.use(Row)
 Vue.use(Col)
+Vue.use(Empty)
+Vue.use(Form)

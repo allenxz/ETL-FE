@@ -71,7 +71,7 @@
               </a-tooltip>
             </a-popconfirm>
           </span>
-          <span class="tool">
+          <span class="tool" @click="saveProcess">
             <a-tooltip placement="bottom">
               <template slot="title">
                 保存流程
@@ -98,7 +98,46 @@
             </div>
           </div>
         </div>
-        <div class="config-area"></div>
+        <div class="config-area">
+          <div class="title">配置参数</div>
+          <div class="main">
+            <!-- 未选中 -->
+            <a-empty
+              v-if="selectedNodes.length === 0"
+              class="empty"
+              image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
+              :imageStyle="{
+                height: '60px'
+              }">
+              <span slot="description">先选中结点再进行配置</span>
+            </a-empty>
+            <!-- 该结点不需要配置 -->
+            <a-empty class="empty" v-if="selectedNodes.length !== 0 && nodes[selectedNodes[0]].type !== 'etl'">
+              <span slot="description">该结点不是etl插件,无须配置</span>
+            </a-empty>
+            <!-- 配置结点 -->
+            <div v-if="selectedNodes.length !== 0 && nodes[selectedNodes[0]].type === 'etl'">
+              <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }" @submit="saveConfig">
+                <a-form-item
+                  v-for="(item, index) of parameters"
+                  :key="index"
+                  :label="item.filedName"
+                  :required="item.necessary"
+                  :extra="item.desc">
+                  <a-input
+                    v-decorator="[item.filedName, { rules: [{ required: item.necessary, message: '该项为必填字段不能为空' }] }]"
+                    :placeholder="nodes[selectedNodes[0]].parameters && nodes[selectedNodes[0]].parameters[item.filedName]"
+                  />
+                </a-form-item>
+                <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+                  <a-button type="primary" html-type="submit">
+                    保存
+                  </a-button>
+                </a-form-item>
+              </a-form>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <!-- 命名对话框 -->
@@ -128,11 +167,17 @@ export default {
       nodes: [], // 所有的结点
       selectedNodes: [], // 被选中的结点，装的是元素的index
       isMutiSelect: false, // 是否多选
-      isSave: false // 是否开始修改了但是没保存
+      isSave: false, // 是否开始修改了但是没保存
+      parameters: [], // 需要配置的参数数组
+      form: this.$form.createForm(this, { name: 'coordinated' })
     }
   },
   mounted () {
     this.getAllPlugins()
+    let id = this.$route.params.id
+    if (id) {
+      this.loadProcess(id)
+    }
   },
   computed: {
     // 计算删除按钮的状态,true--禁止点击,false--允许点击
@@ -234,6 +279,7 @@ export default {
       // 装载新结点
       let newNode = {
         name: key,
+        type: keyPath[1],
         appearance: {
           class: 'node ' + map[keyPath[1]].shape + ' ' + map[keyPath[1]].color,
           img: require('../../../assets/images/' + key + '.png')
@@ -278,7 +324,11 @@ export default {
         this.selectedNodes.push(index)
         target.classList.add('selected')
       }
+      // 排序
       this.autoSort()
+      if (this.selectedNodes.length !== 0) {
+        this.genconfigForm()
+      }
     },
     // 移动结点
     shiftNode (direction) {
@@ -295,24 +345,87 @@ export default {
       let shiftedNodes = this.nodes.splice(edgeIndex, num)
       // 再把它们添加到移动后的位置
       this.nodes.splice(newEdgeIndex, 0, ...shiftedNodes)
-      // 消除原本的选中效果
-      this.selectedNodes.forEach(i => {
-        let t = document.querySelectorAll('.node')[i]
-        t.classList.remove('selected')
-      })
-      this.selectedNodes = []
-      // 为新结点添加效果
-      for (let i = newEdgeIndex; i < newEdgeIndex + num; i++) {
-        let t = document.querySelectorAll('.node')[i]
-        t.classList.add('selected')
-        this.selectedNodes.push(i)
-      }
-      this.autoSort()
+      // 延迟操作，等dom进行重新渲染
+      setTimeout(() => {
+        // 消除原本的选中效果
+        this.selectedNodes.forEach(i => {
+          let t = document.querySelectorAll('.node')[i]
+          t.classList.remove('selected')
+        })
+        this.selectedNodes = []
+        // 为新结点添加效果
+        for (let i = newEdgeIndex; i < newEdgeIndex + num; i++) {
+          let t = document.querySelectorAll('.node')[i]
+          t.classList.add('selected')
+          this.selectedNodes.push(i)
+        }
+        this.autoSort()
+      }, 50)
     },
     // 被选结点数组自排序
     autoSort () {
       this.selectedNodes.sort((a, b) => {
         return a - b
+      })
+    },
+    // 生成配置表单
+    genconfigForm () {
+      if (this.nodes[this.selectedNodes[0]].type !== 'etl') {
+        return
+      }
+      this.parameters = []
+      let name = this.nodes[this.selectedNodes[0]].name
+      for (let i = 0, len = this.plugins.etlPlugins.length; i < len; i++) {
+        if (name === this.plugins.etlPlugins[i].pluginName) {
+          this.parameters = this.plugins.etlPlugins[i].parameters
+          break
+        }
+      }
+    },
+    // 保存配置
+    saveConfig (e) {
+      e.preventDefault()
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          this.nodes[this.selectedNodes[0]].parameters = values
+          this.$message.success('该插件参数配置完毕')
+          this.selectedNodes.forEach(i => {
+            let t = document.querySelectorAll('.node')[i]
+            t.classList.remove('selected')
+          })
+          this.selectedNodes = []
+        }
+      })
+    },
+    // 保存流程
+    async saveProcess () {
+      if (this.nodes.length === 0) {
+        this.$message.error('当前流程并无结点，无须保存')
+      }
+      // 检查流程中的etl插件是否全部完成配置
+      let noConfiguredIndexs = []
+      this.nodes.forEach((item, index) => {
+        if (item.type === 'etl' && item.parameters === undefined) {
+          noConfiguredIndexs.push(index)
+        }
+      })
+      if (noConfiguredIndexs.length !== 0) {
+        this.$message.error('请完成流程中etl插件参数的配置')
+      } else if (this.processName === '未命名') {
+        this.$message.error('该流程图未命名,请先命名后提交')
+      } else {
+        let res = await fetch.post('/addProcess', {
+          processName: this.processName,
+          processContent: this.nodes
+        })
+        this.$message.success(res.data.message)
+        this.$router.push({ path: '/process-manage' })
+      }
+    },
+    // 加载流程
+    async loadProcess (id) {
+      let res = await fetch.post('/getOneProcess', {
+        processId: id
       })
     }
   }
