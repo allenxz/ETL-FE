@@ -424,9 +424,9 @@ export default {
     },
     // 加载流程
     async loadProcess (id) {
-      let res = await fetch.post('/getOneProcess', {
-        processId: id
-      })
+      // let res = await fetch.post('/getOneProcess', {
+      //   processId: id
+      // })
     }
   }
 }
