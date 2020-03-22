@@ -24,21 +24,42 @@
       padding: 8px;
       border: 1px solid #e6e9ed;
   
-     
-      .tool{
+    .name-wrapper{
+      text-align: right;
+      .name{
         display: inline-block;
-        width: 27px;
-        height: 27px;
-        margin: 0 6px;
-        padding-top: 2px;
-        text-align: center;
-        border: 1px solid #fff;
+        vertical-align: middle;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
         cursor: pointer;
-
-        &:hover{
-          border: 1px solid #e6e9ed;
-        }
       }
+  
+      .edit-icon{
+        vertical-align: middle;
+        margin-left:5px;
+      }
+
+      &:hover{
+        color: #1890ff;
+      }
+    }
+    
+
+    .tool{
+      display: inline-block;
+      width: 27px;
+      height: 27px;
+      margin: 0 6px;
+      padding-top: 2px;
+      text-align: center;
+      border: 1px solid #fff;
+      cursor: pointer;
+
+      &:hover{
+        border: 1px solid #e6e9ed;
+      }
+    }
 
       .disable{
         cursor:not-allowed;
