@@ -40,6 +40,8 @@ let config = {
     {
       title: '操作',
       key: 'action',
+      fixed: 'right',
+      width: 250,
       scopedSlots: { customRender: 'action' }
     }
   ],
