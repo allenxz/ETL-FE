@@ -1,7 +1,7 @@
 <template>
   <div class="process-editer">
     <div class="left">
-      <a-menu mode="inline" :openKeys="openKeys" @openChange="onOpenChange" @click="addNode" :selectable="false">
+      <a-menu mode="inline" :openKeys.sync="openKeys" @click="addNode" :selectable="false">
         <a-sub-menu key="reader">
           <span slot="title"><a-icon type="cloud-server" /><span>输入源</span></span>
           <a-menu-item v-for="item of plugins.readerPlugins" :key="item.name" style="border-bottom:1px solid #e8e8e8">{{item.name}}</a-menu-item>
@@ -71,16 +71,9 @@
               </a-tooltip>
             </a-popconfirm>
           </span>
-          <span class="tool" @click="saveProcess">
-            <a-tooltip placement="bottom">
-              <template slot="title">
-                保存流程
-              </template>
-              <a-icon type="save" />
-            </a-tooltip>
-          </span>
         </a-col>
         <a-col :span="14">
+          <a-button type="primary" size="small" @click="saveProcess">保存</a-button>
           <div class="name-wrapper">
             <div class="name" @click="showNameModal">
               {{processName}}
@@ -204,15 +197,6 @@ export default {
     getBtnClass (btnName) {
       let statePrpo = btnName + 'BtnState'
       return this[statePrpo] ? 'tool disable' : 'tool'
-    },
-    // 切换左边展开的菜单
-    onOpenChange (openKeys) {
-      const latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key) === -1)
-      if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
-        this.openKeys = openKeys
-      } else {
-        this.openKeys = latestOpenKey ? [latestOpenKey] : []
-      }
     },
     // 获取所有插件
     async getAllPlugins () {
@@ -401,6 +385,7 @@ export default {
     async saveProcess () {
       if (this.nodes.length === 0) {
         this.$message.error('当前流程并无结点，无须保存')
+        return
       }
       // 检查流程中的etl插件是否全部完成配置
       let noConfiguredIndexs = []

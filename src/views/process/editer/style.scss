@@ -1,5 +1,5 @@
 .process-editer{
-  height: 100%;
+  height: 550px;
   display: flex;
   flex-direction: row;
   
@@ -9,6 +9,12 @@
     margin-right: 15px;
     background-color: #fff;
     border: 1px solid #e6e9ed;
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
   }
 
   .right{
@@ -24,42 +30,51 @@
       padding: 8px;
       border: 1px solid #e6e9ed;
   
-    .name-wrapper{
-      text-align: right;
-      .name{
-        display: inline-block;
-        vertical-align: middle;
+      .name-wrapper{
+        float: right;
+        min-width: 100px;
+        max-width: 70%;
         overflow: hidden;
-        text-overflow:ellipsis;
-        white-space: nowrap;
-        cursor: pointer;
-      }
-  
-      .edit-icon{
-        vertical-align: middle;
-        margin-left:5px;
-      }
-
-      &:hover{
-        color: #1890ff;
-      }
-    }
+        text-align: right;
+        .name{
+          display: inline-block;
+          width: 80%;
+          vertical-align: middle;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          white-space: nowrap;
+          cursor: pointer;
+        }
     
+        .edit-icon{
+          vertical-align: middle;
+          margin-left:5px;
+        }
 
-    .tool{
-      display: inline-block;
-      width: 27px;
-      height: 27px;
-      margin: 0 6px;
-      padding-top: 2px;
-      text-align: center;
-      border: 1px solid #fff;
-      cursor: pointer;
-
-      &:hover{
-        border: 1px solid #e6e9ed;
+        &:hover{
+          color: #1890ff;
+        }
       }
-    }
+      
+      button{
+        float: right;
+        margin-left: 15px;
+      }
+
+      .tool{
+        display: inline-block;
+        width: 27px;
+        height: 27px;
+        margin: 0 6px;
+        padding-top: 2px;
+        text-align: center;
+        border: 1px solid #fff;
+        cursor: pointer;
+
+        &:hover{
+          border: 1px solid #e6e9ed;
+        }
+      }
 
       .disable{
         cursor:not-allowed;
@@ -78,8 +93,15 @@
         flex-wrap: wrap;
         align-items: center;
         min-height: 129px;
+        max-height: 258px;
         padding: 36px 50px 0 0;
         border-bottom: 1px solid #e6e9ed;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    
+        &::-webkit-scrollbar {
+            display: none;
+        }
   
         .node-wrapper{
           position: relative;
@@ -176,6 +198,12 @@
         flex: 1;
         border-top: 1px solid #e6e9ed;
         background-color: #fafafa;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    
+        &::-webkit-scrollbar {
+            display: none;
+        }
 
         .title{
           padding: 10px;
