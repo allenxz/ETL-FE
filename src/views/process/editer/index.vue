@@ -4,15 +4,15 @@
       <a-menu mode="inline" :openKeys.sync="openKeys" @click="addNode" :selectable="false">
         <a-sub-menu key="reader">
           <span slot="title"><a-icon type="cloud-server" /><span>输入源</span></span>
-          <a-menu-item v-for="item of plugins.readerPlugins" :key="item.name" style="border-bottom:1px solid #e8e8e8">{{item.name}}</a-menu-item>
+          <a-menu-item v-for="item of plugins.readerPlugins" :key="item.name" :disabled="hasReaderNode" style="border-bottom:1px solid #e8e8e8">{{item.name}}</a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="writer">
           <span slot="title"><a-icon type="cluster" /><span>输出源</span></span>
-          <a-menu-item v-for="item of plugins.writerPlugins" :key="item.name" style="border-bottom:1px solid #e8e8e8">{{item.name}}</a-menu-item>
+          <a-menu-item v-for="item of plugins.writerPlugins" :key="item.name" :disabled="hasWriterNode" style="border-bottom:1px solid #e8e8e8">{{item.name}}</a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="etl">
           <span slot="title"><a-icon type="deployment-unit" /><span>etl插件</span></span>
-          <a-menu-item v-for="item of plugins.etlPlugins" :key="item.pluginName" style="border-bottom:1px solid #e8e8e8">{{item.pluginName}}</a-menu-item>
+          <a-menu-item v-for="item of plugins.etlPlugins" :id="item.pluginName" :data-class-path="item.classPath" :key="item.pluginName" style="border-bottom:1px solid #e8e8e8">{{item.pluginName}}</a-menu-item>
         </a-sub-menu>
       </a-menu>
     </div>
@@ -160,9 +160,11 @@ export default {
       nodes: [], // 所有的结点
       selectedNodes: [], // 被选中的结点，装的是元素的index
       isMutiSelect: false, // 是否多选
-      isSave: false, // 是否开始修改了但是没保存
+      isSaved: true, // 是否开始修改了但是没保存
       parameters: [], // 需要配置的参数数组
-      form: this.$form.createForm(this, { name: 'coordinated' })
+      form: this.$form.createForm(this, { name: 'coordinated' }),
+      hasWriterNode: false, // 是否已经存在输出源
+      hasReaderNode: false // 是否已经存在输入源
     }
   },
   mounted () {
@@ -171,6 +173,10 @@ export default {
     if (id) {
       this.loadProcess(id)
     }
+    window.addEventListener('beforeunload', e => this.beforeunloadFn(e))
+  },
+  beforeDestroy () {
+    window.removeEventListener('beforeunload', e => this.beforeunloadFn(e))
   },
   computed: {
     // 计算删除按钮的状态,true--禁止点击,false--允许点击
@@ -193,6 +199,18 @@ export default {
     }
   },
   methods: {
+    // 提示刷新前保存
+    beforeunloadFn (e) {
+      e = e || window.event
+
+      // 兼容IE8和Firefox 4之前的版本
+      if (e) {
+        e.returnValue = '请确认你已经保存好所有的信息，退出后数据无法恢复！'
+      }
+
+      // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
+      return '请确认你已经保存好所有的信息，退出后数据无法恢复！'
+    },
     // 获取结点样式
     getBtnClass (btnName) {
       let statePrpo = btnName + 'BtnState'
@@ -237,6 +255,8 @@ export default {
       this.nodes = []
       this.selectedNodes = []
       this.showClearPop = false
+      this.hasWriterNode = false
+      this.hasReaderNode = false
     },
     // 取消清空
     cancelClear () {
@@ -244,7 +264,7 @@ export default {
     },
     // 添加结点
     addNode ({ item, key, keyPath }) {
-      this.isSave = false
+      this.isSaved = false
       // 根据不同的插件之类映射其结点的形状和颜色
       const map = {
         reader: {
@@ -269,14 +289,30 @@ export default {
           img: require('../../../assets/images/' + key + '.png')
         }
       }
+      if (newNode.type === 'etl') {
+        let target = document.getElementById(key)
+        newNode.classPath = target.dataset.classPath
+      }
       this.nodes.push(newNode)
+      // 记录writer和reader的数量
+      if (newNode.type === 'writer') {
+        this.hasWriterNode = true
+      } else if (newNode.type === 'reader') {
+        this.hasReaderNode = true
+      }
     },
     // 删除结点
     deleteNode (e) {
-      this.isSave = false
+      this.isSaved = false
       // 阻止没有结点时的点击事件
       if (this.deleteBtnState) {
         return
+      }
+      // 重新判断结点中输入源和输出源
+      if (this.nodes[this.selectedNodes[0]].type === 'writer') {
+        this.hasWriterNode = false
+      } else if (this.nodes[this.selectedNodes[0]].type === 'reader') {
+        this.hasReaderNode = false
       }
       // 删除选中的结点
       this.selectedNodes.forEach(index => {
@@ -316,7 +352,7 @@ export default {
     },
     // 移动结点
     shiftNode (direction) {
-      this.isSave = false
+      this.isSaved = false
       // 阻止没有结点时的点击事件
       if ((direction === 'left' && this.leftBtnState) || (direction === 'right' && this.rightBtnState)) {
         return
@@ -371,6 +407,9 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
+          // values.forEach((item, index) => {
+          //   item.
+          // })
           this.nodes[this.selectedNodes[0]].parameters = values
           this.$message.success('该插件参数配置完毕')
           this.selectedNodes.forEach(i => {
@@ -385,6 +424,15 @@ export default {
     async saveProcess () {
       if (this.nodes.length === 0) {
         this.$message.error('当前流程并无结点，无须保存')
+        return
+      }
+      if (!this.hasReaderNode || !this.hasWriterNode) {
+        this.$message.error('流程图至少包含一个输入源和一个输出源')
+        return
+      }
+      if (this.nodes[0].type !== 'reader' ||
+        this.nodes[this.nodes.length - 1].type !== 'writer') {
+        this.$message.error('流程图必须以输入源开始，以输出源结束')
         return
       }
       // 检查流程中的etl插件是否全部完成配置
