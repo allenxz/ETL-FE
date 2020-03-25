@@ -446,6 +446,7 @@ export default {
         this.$message.error('请完成流程中etl插件参数的配置')
       } else if (this.processName === '未命名') {
         this.$message.error('该流程图未命名,请先命名后提交')
+        this.showNameModal()
       } else {
         let res = await fetch.post('/addProcess', {
           processName: this.processName,
@@ -457,9 +458,10 @@ export default {
     },
     // 加载流程
     async loadProcess (id) {
-      // let res = await fetch.post('/getOneProcess', {
-      //   processId: id
-      // })
+      let res = await fetch.post('/getOneProcess', {
+        processId: id
+      })
+      console.log(res.data)
     }
   }
 }
