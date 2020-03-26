@@ -7,7 +7,7 @@ let config = {
     {
       title: '流程ID',
       dataIndex: 'processId',
-      key: 'age'
+      key: 'processId'
     },
     {
       title: '流程名称',
@@ -48,7 +48,43 @@ let config = {
   PROCESS_STATE_MAP: {
     '正常': 'green',
     '停止': 'red'
-  }
+  },
+  CONFIG_COLUMNS: [
+    {
+      title: '配置文件ID',
+      dataIndex: 'configureId',
+      key: 'configureId'
+    },
+    {
+      title: '配置文件类型',
+      dataIndex: 'configureType',
+      key: 'configureType'
+    },
+    {
+      title: '配置文件名',
+      dataIndex: 'configureName',
+      key: 'configureName'
+    },
+    {
+      title: '创建者',
+      dataIndex: 'username',
+      key: 'username'
+    },
+    {
+      title: '状态',
+      dataIndex: 'state',
+      key: 'state'
+    },
+    {
+      title: '最近更新时间',
+      key: 'updateTime',
+      dataIndex: 'updateTime',
+      scopedSlots: { customRender: 'updateTime' },
+      sorter: (a, b) => {
+        return dateUtil.getTime(a.updateTime) - dateUtil.getTime(b.updateTime)
+      }
+    }
+  ]
 }
 
 export default config

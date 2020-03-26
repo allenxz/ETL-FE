@@ -25,7 +25,9 @@
       </a-sub-menu>
       <a-sub-menu key="sub4">
         <span slot="title"><a-icon type="cluster" /><span>参数配置</span></span>
-        <a-menu-item key="6">待定</a-menu-item>
+        <a-menu-item key="6">
+          <router-link to="/config-manage">配置管理</router-link>
+        </a-menu-item>
       </a-sub-menu>
     </a-menu>
   </a-layout-sider>

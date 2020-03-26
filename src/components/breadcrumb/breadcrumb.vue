@@ -62,6 +62,7 @@ export default {
       if (!this.isHome(matched[0])) {
         matched = [{ path: '/home', meta: { title: '首页' } }].concat(matched)
       }
+      console.log(matched)
       matched.shift()
       this.breadList = matched
       this.setCategoryName()
@@ -71,6 +72,8 @@ export default {
       let name = this.$route.path.split('-').reverse()[1]
       if (name === '/process') {
         this.categoryName = '数据处理'
+      } else if (name === '/config') {
+        this.categoryName = '参数配置'
       } else {
         this.categoryName = ''
       }

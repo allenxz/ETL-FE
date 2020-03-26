@@ -4,6 +4,7 @@ import Home from '@/views/home/index'
 import Login from '@/views/login'
 import ProcessManage from '@/views/process/manage'
 import ProcessEditer from '@/views/process/editer'
+import ConfigManage from '@/views/config/manage'
 
 Vue.use(VueRouter)
 
@@ -32,6 +33,14 @@ const routes = [
           addTitle: '创建流程',
           editTitle: '编辑流程',
           isSubPage: true
+        }
+      },
+      {
+        path: '/config-manage',
+        name: 'configManage',
+        component: ConfigManage,
+        meta: {
+          title: '配置管理'
         }
       }
     ]
