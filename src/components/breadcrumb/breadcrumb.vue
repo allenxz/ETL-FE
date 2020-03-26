@@ -62,7 +62,6 @@ export default {
       if (!this.isHome(matched[0])) {
         matched = [{ path: '/home', meta: { title: '首页' } }].concat(matched)
       }
-      console.log(matched)
       matched.shift()
       this.breadList = matched
       this.setCategoryName()

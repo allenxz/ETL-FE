@@ -83,6 +83,13 @@ let config = {
       sorter: (a, b) => {
         return dateUtil.getTime(a.updateTime) - dateUtil.getTime(b.updateTime)
       }
+    },
+    {
+      title: '操作',
+      key: 'action',
+      fixed: 'right',
+      width: 200,
+      scopedSlots: { customRender: 'action' }
     }
   ]
 }
