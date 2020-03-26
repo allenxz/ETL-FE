@@ -67,13 +67,17 @@ let config = {
     },
     {
       title: '创建者',
-      dataIndex: 'username',
-      key: 'username'
+      dataIndex: 'userName',
+      key: 'userName'
     },
     {
       title: '状态',
       dataIndex: 'state',
-      key: 'state'
+      key: 'state',
+      scopedSlots: { customRender: 'state' },
+      sorter: (a, b) => {
+        return a.state > b.state
+      }
     },
     {
       title: '最近更新时间',

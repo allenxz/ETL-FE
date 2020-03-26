@@ -85,7 +85,8 @@ export default {
         pageSize,
         pageNumber
       })
-      this.data = res.data.processDesc
+      console.log(res.data)
+      this.data = res.data.confDesc
       this.pagination.total = res.data.totalPages * res.data.pageSize
     },
     // 切换页码
