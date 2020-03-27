@@ -220,6 +220,7 @@ export default {
     async getAllPlugins () {
       let res = await fetch.post('/getAllPlugins')
       this.plugins = res.data
+      console.log(this.plugins)
     },
     // 显示命名对话框
     showNameModal () {
@@ -407,9 +408,6 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          // values.forEach((item, index) => {
-          //   item.
-          // })
           this.nodes[this.selectedNodes[0]].parameters = values
           this.$message.success('该插件参数配置完毕')
           this.selectedNodes.forEach(i => {
@@ -450,7 +448,7 @@ export default {
       } else {
         let res = await fetch.post('/addProcess', {
           processName: this.processName,
-          processContent: this.nodes
+          processContent: JSON.stringify(this.nodes)
         })
         this.$message.success(res.data.message)
         this.$router.push({ path: '/process-manage' })
