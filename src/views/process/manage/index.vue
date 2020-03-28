@@ -6,7 +6,7 @@
       </a-button>
       <a-button type="danger">流程删除</a-button>
       <a-button>流程导入</a-button>
-      <a-button>流程导出</a-button>
+      <a-button @click="exportProcess">流程导出</a-button>
       <a-button>流程输出统计</a-button>
     </div>
     <div class="process-table">
@@ -143,6 +143,15 @@ export default {
         this.$message.error(res.exception)
       }
       this.newProcessName = ''
+    },
+    // 导出流程
+    async exportProcess () {
+      if (this.selectedRowKeys.length !== 0) {
+        let res = await fetch.post('/exportProcess', {
+          processIds: JSON.stringify(this.selectedRowKeys)
+        })
+        console.log(res)
+      }
     }
   }
 }

@@ -3,11 +3,25 @@
     <div class="btn-group">
       <a-dropdown placement="bottomLeft" :trigger="['click']">
         <a-button>新建配置</a-button>
-        <a-menu slot="overlay" @click="createConfig">
-          <a-menu-item v-for="item of configType" :key="item.name">
-            <font-awesome-icon :icon="['fas', item.icon]" style="margin-right:5px;" />
-            {{item.name}}
-          </a-menu-item>
+        <a-menu slot="overlay" mode="vertical" @click="createConfig">
+          <a-sub-menu key="reader">
+            <span slot="title">
+              <font-awesome-icon :icon="['fas', 'file-import']" style="margin-right:5px;" />
+              <span>reader</span>
+            </span>
+            <a-menu-item v-for="item of configType.reader" :key="item.name">
+              {{item.name}}
+            </a-menu-item>
+          </a-sub-menu>
+          <a-sub-menu key="writer">
+            <span slot="title">
+              <font-awesome-icon :icon="['fas', 'file-export']" style="margin-right:5px;" />
+              <span>writer</span>
+            </span>
+            <a-menu-item v-for="item of configType.writer" :key="item.name">
+              {{item.name}}
+            </a-menu-item>
+          </a-sub-menu>
         </a-menu>
       </a-dropdown>
       <a-button type="danger">删除配置</a-button>
@@ -109,7 +123,7 @@ export default {
     },
     // 新建配置
     createConfig ({ item, key, keyPath }) {
-      let path = '/config-form/' + key
+      let path = '/' + key
       this.$router.push({ path })
     }
   }

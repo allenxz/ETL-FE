@@ -5,7 +5,7 @@ import Login from '@/views/login'
 import ProcessManage from '@/views/process/manage'
 import ProcessEditer from '@/views/process/editer'
 import ConfigManage from '@/views/config/manage'
-import ConfigForm from '@/views/config/form'
+import MysqlReader from '@/views/config/mysql-reader'
 
 Vue.use(VueRouter)
 
@@ -45,12 +45,12 @@ const routes = [
         }
       },
       {
-        path: '/config-form/:type',
-        name: 'configForm',
-        component: ConfigForm,
+        path: '/mysqlreader',
+        name: 'mysqlReader',
+        component: MysqlReader,
         meta: {
-          addTitle: '新建配置',
-          editTitle: '编辑配置',
+          addTitle: '新建MySQL输入配置',
+          editTitle: '编辑MySQL输入配置',
           isSubPage: true
         }
       }

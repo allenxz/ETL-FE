@@ -27,7 +27,7 @@ axios.interceptors.response.use(undefined, err => {
 })
 
 axios.interceptors.response.use((res) => {
-  if (res && (res.data === '用户未登录，请登录后操作！' || res.data === 'token错误，请查看！')) {
+  if (res && (res.data === '用户未登录，请登录后操作！' || res.data === 'token过期请重新登录')) {
     alert(res.data)
     window.location.href = config.HOST + '/login'
   }
