@@ -215,6 +215,7 @@ export default {
           processes: JSON.stringify(data)
         })
         this.$message.success(res)
+        this.getAllProcess(this.pagination.pageSize, this.pagination.current)
       }
       return false
     }
