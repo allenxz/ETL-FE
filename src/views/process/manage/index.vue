@@ -210,7 +210,6 @@ export default {
       reader.readAsText(file)
       reader.onload = () => {
         let data = JSON.parse(reader.result)
-        console.log(data)
         let res = fetch.post('/importProcess', {
           processes: JSON.stringify(data)
         })
