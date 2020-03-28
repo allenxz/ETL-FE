@@ -5,6 +5,7 @@ import Login from '@/views/login'
 import ProcessManage from '@/views/process/manage'
 import ProcessEditer from '@/views/process/editer'
 import ConfigManage from '@/views/config/manage'
+import ConfigForm from '@/views/config/form'
 
 Vue.use(VueRouter)
 
@@ -41,6 +42,16 @@ const routes = [
         component: ConfigManage,
         meta: {
           title: '配置管理'
+        }
+      },
+      {
+        path: '/config-form/:type',
+        name: 'configForm',
+        component: ConfigForm,
+        meta: {
+          addTitle: '新建配置',
+          editTitle: '编辑配置',
+          isSubPage: true
         }
       }
     ]

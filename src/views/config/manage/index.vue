@@ -1,9 +1,15 @@
 <template>
   <div class="config-manage">
     <div class="btn-group">
-      <a-button type="primary">
-        新建配置
-      </a-button>
+      <a-dropdown placement="bottomLeft" :trigger="['click']">
+        <a-button>新建配置</a-button>
+        <a-menu slot="overlay" @click="createConfig">
+          <a-menu-item v-for="item of configType" :key="item.name">
+            <font-awesome-icon :icon="['fas', item.icon]" style="margin-right:5px;" />
+            {{item.name}}
+          </a-menu-item>
+        </a-menu>
+      </a-dropdown>
       <a-button type="danger">删除配置</a-button>
       <a-button>配置导入</a-button>
       <a-button>配置导出</a-button>
@@ -45,6 +51,7 @@
 </template>
 <script>
 import './style.scss'
+import configType from '../cofigType'
 import fetch from '@/services/fetch'
 import config from '@/config/index'
 import dateUtils from '@/utils/date'
@@ -64,7 +71,8 @@ export default {
         showSizeChanger: true,
         showQuickJumper: true,
         pageSizeOptions: ['5', '10', '20', '50']
-      }
+      },
+      configType
     }
   },
   mounted () {
@@ -85,7 +93,7 @@ export default {
         pageSize,
         pageNumber
       })
-      console.log(res.data)
+      console.log(res)
       this.data = res.data.confDesc
       this.pagination.total = res.data.totalPages * res.data.pageSize
     },
@@ -98,6 +106,11 @@ export default {
     // 批量选取配置
     onSelectChange (selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
+    },
+    // 新建配置
+    createConfig ({ item, key, keyPath }) {
+      let path = '/config-form/' + key
+      this.$router.push({ path })
     }
   }
 }
