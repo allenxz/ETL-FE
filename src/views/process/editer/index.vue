@@ -4,15 +4,15 @@
       <a-menu mode="inline" :openKeys.sync="openKeys" @click="addNode" :selectable="false">
         <a-sub-menu key="reader">
           <span slot="title"><a-icon type="cloud-server" /><span>输入源</span></span>
-          <a-menu-item v-for="item of plugins.readerPlugins" :key="item.name" :disabled="hasReaderNode" style="border-bottom:1px solid #e8e8e8">{{item.name}}</a-menu-item>
+          <a-menu-item v-for="item of plugins.readerPlugins" :id="item.name" :key="item.name" :disabled="hasReaderNode" style="border-bottom:1px solid #e8e8e8">{{item.showName}}</a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="writer">
           <span slot="title"><a-icon type="cluster" /><span>输出源</span></span>
-          <a-menu-item v-for="item of plugins.writerPlugins" :key="item.name" :disabled="hasWriterNode" style="border-bottom:1px solid #e8e8e8">{{item.name}}</a-menu-item>
+          <a-menu-item v-for="item of plugins.writerPlugins" :id="item.name" :key="item.name" :disabled="hasWriterNode" style="border-bottom:1px solid #e8e8e8">{{item.showName}}</a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="etl">
           <span slot="title"><a-icon type="deployment-unit" /><span>etl插件</span></span>
-          <a-menu-item v-for="item of plugins.etlPlugins" :id="item.pluginName" :data-class-path="item.classPath" :key="item.pluginName" style="border-bottom:1px solid #e8e8e8">{{item.pluginName}}</a-menu-item>
+          <a-menu-item v-for="item of plugins.etlPlugins" :id="item.pluginName" :data-class-path="item.classPath" :key="item.pluginName" style="border-bottom:1px solid #e8e8e8">{{item.showName}}</a-menu-item>
         </a-sub-menu>
       </a-menu>
     </div>
@@ -150,6 +150,7 @@ import fetch from '@/services/fetch'
 export default {
   data () {
     return {
+      processId: '',
       processName: '未命名',
       pendingName: '', // 待定的流程名，未确认
       visible: false, // 对话框是否可见
@@ -172,6 +173,7 @@ export default {
     let id = this.$route.params.id
     if (id) {
       this.loadProcess(id)
+      this.processId = id
     }
     window.addEventListener('beforeunload', e => this.beforeunloadFn(e))
   },
@@ -266,6 +268,15 @@ export default {
     // 添加结点
     addNode ({ item, key, keyPath }) {
       this.isSaved = false
+      // 禁止往输入源后添加结点
+      if (this.nodes.length === 0 && keyPath[1] !== 'reader') {
+        this.$message.error('流程的开端必须为输入源')
+        return
+      }
+      if (this.nodes.length !== 0 && this.nodes[this.nodes.length - 1].type === 'writer') {
+        this.$message.error('输入源为流程的结束，后面无法添加结点')
+        return
+      }
       // 根据不同的插件之类映射其结点的形状和颜色
       const map = {
         reader: {
@@ -290,10 +301,8 @@ export default {
           img: require('../../../assets/images/' + key + '.png')
         }
       }
-      if (newNode.type === 'etl') {
-        let target = document.getElementById(key)
-        newNode.classPath = target.dataset.classPath
-      }
+      let target = document.getElementById(key)
+      newNode.classPath = target.dataset.classPath
       this.nodes.push(newNode)
       // 记录writer和reader的数量
       if (newNode.type === 'writer') {
@@ -446,10 +455,22 @@ export default {
         this.$message.error('该流程图未命名,请先命名后提交')
         this.showNameModal()
       } else {
-        let res = await fetch.post('/addProcess', {
-          processName: this.processName,
-          processContent: JSON.stringify(this.nodes)
-        })
+        let res
+        // 创建流程
+        if (this.processId === '') {
+          res = await fetch.post('/addProcess', {
+            processName: this.processName,
+            processContent: JSON.stringify(this.nodes)
+          })
+        } else {
+          // 更新流程
+          res = await fetch.post('/updateProcess', {
+            processId: this.processId,
+            processName: this.processName,
+            processContent: JSON.stringify(this.nodes)
+          })
+        }
+
         this.$message.success(res.data.message)
         this.$router.push({ path: '/process-manage' })
       }
@@ -460,6 +481,10 @@ export default {
         processId: id
       })
       console.log(res.data)
+      this.processName = res.data.processName
+      this.nodes = JSON.parse(res.data.processContent)
+      this.hasWriterNode = true
+      this.hasReaderNode = true
     }
   }
 }
