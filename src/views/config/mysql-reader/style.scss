@@ -1,10 +1,18 @@
 .form-container{
   height: 100%;
-  padding: 24px;
+  padding: 36px 24px;
   background-color: #fff;
 
-  .title{
-    font-size: 16px;
-  }
+  .dynamic-delete-button {
+    cursor: pointer;
+    position: relative;
+    top: 2px;
+    font-size: 24px;
+    color: #999;
+    transition: all 0.3s;
 
+    &:hover {
+      color: #777;
+    }
+  }
 }

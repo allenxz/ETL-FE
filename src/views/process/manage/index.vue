@@ -75,8 +75,8 @@ export default {
     return {
       columns: config.PROCESS_COLUMNS,
       data: [],
-      selectedRowKeys: [],
       rowSelection: {
+        selectedRowKeys: [],
         onChange: this.onSelectChange
       },
       pagination: {
@@ -121,7 +121,7 @@ export default {
     },
     // 批量选取流程
     onSelectChange (selectedRowKeys) {
-      this.selectedRowKeys = selectedRowKeys
+      this.rowSelection.selectedRowKeys = selectedRowKeys
     },
     // 二次确认删除
     async confirmDelete (processId) {
@@ -157,7 +157,7 @@ export default {
     },
     // 判断是否选择表格项
     isSelectItem () {
-      if (this.selectedRowKeys.length === 0) {
+      if (this.rowSelection.selectedRowKeys.length === 0) {
         this.$message.error('请先选择表格项，在进行此操作')
         return false
       } else {
@@ -168,10 +168,10 @@ export default {
     async deleteProcesses () {
       if (this.isSelectItem()) {
         let res = await fetch.post('/batchDeleteProcess', {
-          processIds: JSON.stringify(this.selectedRowKeys)
+          processIds: JSON.stringify(this.rowSelection.selectedRowKeys)
         })
         this.$message.success(res.data.message)
-        this.selectedRowKeys = []
+        this.rowSelection.selectedRowKeys = []
         this.getAllProcess(this.pagination.pageSize, this.pagination.current)
       }
     },
@@ -179,9 +179,10 @@ export default {
     async exportProcess () {
       if (this.isSelectItem()) {
         let res = await fetch.post('/exportProcess', {
-          processIds: JSON.stringify(this.selectedRowKeys)
+          processIds: JSON.stringify(this.rowSelection.selectedRowKeys)
         })
         this.saveJSON(res.data.contents)
+        this.rowSelection.selectedRowKeys = []
       }
     },
     // 保存数据到JSON
@@ -210,11 +211,12 @@ export default {
       reader.readAsText(file)
       reader.onload = () => {
         let data = JSON.parse(reader.result)
-        let res = fetch.post('/importProcess', {
+        fetch.post('/importProcess', {
           processes: JSON.stringify(data)
+        }).then(res => {
+          this.$message.success(res)
+          this.getAllProcess(this.pagination.pageSize, this.pagination.current)
         })
-        this.$message.success(res)
-        this.getAllProcess(this.pagination.pageSize, this.pagination.current)
       }
       return false
     }

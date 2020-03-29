@@ -23,7 +23,8 @@ import {
   message,
   notification,
   Popover,
-  Upload
+  Upload,
+  Checkbox
 } from 'ant-design-vue'
 
 Vue.prototype.$message = message
@@ -51,3 +52,4 @@ Vue.use(Empty)
 Vue.use(Form)
 Vue.use(Popover)
 Vue.use(Upload)
+Vue.use(Checkbox)
