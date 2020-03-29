@@ -1,5 +1,6 @@
 <template>
   <div class="form-container">
+    <div class="title" v-if="isEdit">配置文件名:{{configureName}}</div>
     <a-form :form="form">
       <a-form-item
         :label-col="formItemLayout.labelCol"
@@ -135,9 +136,6 @@
         <a-button style="margin-left: 10px" @click="resetForm">
           重置
         </a-button>
-        <a-button style="margin-left: 10px" @click="test">
-          test
-        </a-button>
       </a-form-item>
     </a-form>
     <a-modal
@@ -184,12 +182,21 @@ export default {
       value: {},
       visible: false,
       configureName: '',
+      configureId: '',
       pendingName: ''
     }
   },
   beforeCreate () {
     this.form = this.$form.createForm(this, { name: 'dynamic_rule' })
     this.form.getFieldDecorator('keys', { initialValue: [], preserve: true })
+  },
+  mounted () {
+    let configureId = this.$route.params.id
+    if (configureId) {
+      this.isEdit = true
+      this.configureId = configureId
+      this.initForm()
+    }
   },
   methods: {
     // 提交表单
@@ -198,9 +205,7 @@ export default {
       form.validateFields((err, value) => {
         if (!err) {
           this.value = value
-          if (!this.isEdit) {
-            this.showNameModal()
-          }
+          this.showNameModal()
         }
       })
     },
@@ -226,15 +231,18 @@ export default {
         keys: nextKeys
       })
     },
-    test () {
-      this.form.getFieldDecorator('keys', { initialValue: this.value.keys, preserve: true })
-      this.$nextTick(() => {
-        this.form.setFieldsValue(this.value)
-        this.form.getFieldDecorator('column[0]', { initialValue: this.value.column[0], preserve: true })
+    // 装载配置内容
+    loadContent () {
+      let keys = this.value.keys
+      debugger
+      this.value.column = this.value.column || []
+      this.value.column = this.value.column.filter((item, index) => keys.indexOf(index) >= 0)
+      this.value.column.unshift(this.value.columnFirst)
+      let newKeys = []
+      keys.forEach((item, index) => {
+        newKeys.push(index)
       })
-    },
-    // 新建配置
-    async addConfigure () {
+      this.value.keys = newKeys
       let configureContent = {
         name: 'mysqlreader',
         parameter: {
@@ -243,7 +251,7 @@ export default {
           ip: this.value.ip,
           port: this.value.ip,
           database: this.value.database,
-          column: this.value.column.unshift(this.value.columnFirst),
+          column: this.value.column,
           splitPk: this.value.splitPk,
           connection: {
             table: this.value.table,
@@ -251,19 +259,46 @@ export default {
           }
         }
       }
+      return configureContent
+    },
+    // 新建配置
+    async addConfigure () {
+      let configureContent = this.loadContent()
+      let configureStruct = this.value
       let res = await fetch.post('/addConfigure', {
         configureName: this.configureName,
         configureType: 'mysqlreader',
-        configureContent: JSON.stringify(configureContent)
+        configureContent: JSON.stringify(configureContent),
+        configureStruct: JSON.stringify(configureStruct)
       })
       this.$message.success(res.data.message)
+      this.$router.push({ path: '/config-manage' })
+    },
+    // 更新配置
+    async updateConfigure () {
+      let configureStruct = this.value
+      let configureContent = this.loadContent()
+      let res = await fetch.post('/updateConfigure', {
+        configureId: this.configureId,
+        configureName: this.configureName,
+        configureContent: JSON.stringify(configureContent),
+        configureStruct: JSON.stringify(configureStruct)
+      })
+      this.$message.success(res.data.message)
+      this.$router.push({ path: '/config-manage' })
     },
     // 确定命名
     confirmName () {
+      if (this.pendingName === '') {
+        this.$message.error('配置文件名不能为空')
+        return
+      }
       this.configureName = this.pendingName
       this.visible = false
       if (!this.isEdit) {
         this.addConfigure()
+      } else {
+        this.updateConfigure()
       }
     },
     // 取消命名
@@ -278,6 +313,24 @@ export default {
         let target = document.getElementById('nameInput')
         target.focus()
       }, 400)
+    },
+    // 初始化表单
+    async initForm () {
+      let res = await fetch.post('/getOneConfigure', {
+        configureId: this.configureId
+      })
+      console.log(res)
+      this.configureName = res.data.configureName
+      this.value = JSON.parse(res.data.configureStruct)
+      this.value.column.shift()
+      id = this.value.keys.length
+      this.form.getFieldDecorator('keys', { initialValue: this.value.keys, preserve: true })
+      this.$nextTick(() => {
+        for (let i = 0, len = this.value.column.length; i < len; i++) {
+          this.form.getFieldDecorator('column[' + i + ']', { initialValue: this.value.column[i], preserve: true })
+        }
+        this.form.setFieldsValue(this.value)
+      })
     }
   }
 }

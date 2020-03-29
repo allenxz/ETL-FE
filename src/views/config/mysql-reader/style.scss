@@ -3,6 +3,12 @@
   padding: 36px 24px;
   background-color: #fff;
 
+  .title {
+    font-size: 20px;
+    margin-top: -16px;
+    margin-bottom: 16px;
+  }
+
   .dynamic-delete-button {
     cursor: pointer;
     position: relative;

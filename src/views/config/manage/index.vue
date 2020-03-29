@@ -43,10 +43,9 @@
           {{formatDateTime(updateTime)}}
         </span>
         <span slot="action" slot-scope="row">
-          <router-link :to="{name: 'processEditer', params:{id: row.configureId}}">
-            <a-icon type="edit" />
+          <a href="javascript:;" @click="editConfig(row.configureId,row.configureType)">
             编辑
-          </router-link>
+          </a>
           <a-divider type="vertical" />
           <a-popconfirm
             title="确定删除该配置?"
@@ -74,8 +73,8 @@ export default {
     return {
       columns: config.CONFIG_COLUMNS,
       data: [],
-      selectedRowKeys: [],
       rowSelection: {
+        selectedRowKeys: [],
         onChange: this.onSelectChange
       },
       pagination: {
@@ -118,12 +117,18 @@ export default {
     },
     // 批量选取配置
     onSelectChange (selectedRowKeys) {
-      this.selectedRowKeys = selectedRowKeys
+      this.rowSelection.selectedRowKeys = selectedRowKeys
     },
     // 新建配置
     createConfig ({ item, key, keyPath }) {
       let path = '/' + key
       this.$router.push({ path })
+    },
+    // 编辑配置
+    editConfig (configureId, configureType) {
+      if (configureType === 'mysqlreader') {
+        this.$router.push({ name: 'mysqlReader', params: { id: configureId } })
+      }
     }
   }
 }
