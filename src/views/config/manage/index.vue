@@ -24,9 +24,20 @@
           </a-sub-menu>
         </a-menu>
       </a-dropdown>
-      <a-button type="danger">删除配置</a-button>
-      <a-button>配置导入</a-button>
-      <a-button>配置导出</a-button>
+      <a-popconfirm
+        title="确定删除这些配置?"
+        @confirm="deleteConfigure"
+        okText="是"
+        cancelText="否">
+        <a-button type="danger">删除配置</a-button>
+      </a-popconfirm>
+      <a-button @click="exportConfigure">配置导出</a-button>
+      <a-upload
+        :showUploadList="false"
+        :beforeUpload="beforeUpload"
+        >
+        <a-button>配置导入</a-button>
+      </a-upload>
     </div>
     <div class="config-table">
       <a-table
@@ -129,6 +140,79 @@ export default {
       if (configureType === 'mysqlreader') {
         this.$router.push({ name: 'mysqlReader', params: { id: configureId } })
       }
+    },
+    // 二次确认删除
+    async confirmDelete (configureId) {
+      let res = await fetch.post('/deleteConfigure', {
+        configureId
+      })
+      this.$message.success(res.data.message)
+      this.getAllConfigures(this.pagination.pageSize, this.pagination.current)
+    },
+    // 判断是否选择表格项
+    isSelectItem () {
+      if (this.rowSelection.selectedRowKeys.length === 0) {
+        this.$message.error('请先选择表格项，在进行此操作')
+        return false
+      } else {
+        return true
+      }
+    },
+    // 批量删除
+    async deleteConfigure () {
+      if (this.isSelectItem()) {
+        let res = await fetch.post('/batchDeleteConfigure', {
+          configureIds: JSON.stringify(this.rowSelection.selectedRowKeys)
+        })
+        this.$message.success(res.data.message)
+        this.rowSelection.selectedRowKeys = []
+        this.getAllConfigures(this.pagination.pageSize, this.pagination.current)
+      }
+    },
+    // 导出配置
+    async exportConfigure () {
+      if (this.isSelectItem()) {
+        let res = await fetch.post('/exportConfigure', {
+          configureIds: JSON.stringify(this.rowSelection.selectedRowKeys)
+        })
+        this.saveJSON(res.data.contents)
+        this.rowSelection.selectedRowKeys = []
+      }
+    },
+    // 保存数据到JSON
+    saveJSON (data) {
+      if (!data) {
+        this.$message.error('导出数据为空')
+        return
+      }
+      let filename = 'configure-' + this.formatDateTime(Date.now()) + '.json'
+      let blob = new Blob([data], { type: 'text/json' })
+      let e = document.createEvent('MouseEvents')
+      let a = document.createElement('a')
+      a.download = filename
+      a.href = window.URL.createObjectURL(blob)
+      a.dataset.downloadurl = ['text/json', a.download, a.href].join(':')
+      e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
+      a.dispatchEvent(e)
+    },
+    // 上传文件
+    beforeUpload (file) {
+      if (file.type !== 'application/json') {
+        this.$message.error('请选择JSON文件进行导入')
+        return
+      }
+      const reader = new FileReader()
+      reader.readAsText(file)
+      reader.onload = () => {
+        let data = JSON.parse(reader.result)
+        fetch.post('/importConfigure', {
+          configures: JSON.stringify(data)
+        }).then(res => {
+          this.$message.success(res)
+          this.getAllConfigures(this.pagination.pageSize, this.pagination.current)
+        })
+      }
+      return false
     }
   }
 }
