@@ -234,7 +234,6 @@ export default {
     // 装载配置内容
     loadContent () {
       let keys = this.value.keys
-      debugger
       this.value.column = this.value.column || []
       this.value.column = this.value.column.filter((item, index) => keys.indexOf(index) >= 0)
       this.value.column.unshift(this.value.columnFirst)
