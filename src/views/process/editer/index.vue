@@ -222,7 +222,6 @@ export default {
     async getAllPlugins () {
       let res = await fetch.post('/getAllPlugins')
       this.plugins = res.data
-      console.log(this.plugins)
     },
     // 显示命名对话框
     showNameModal () {
@@ -480,7 +479,6 @@ export default {
       let res = await fetch.post('/getOneProcess', {
         processId: id
       })
-      console.log(res.data)
       this.processName = res.data.processName
       this.nodes = JSON.parse(res.data.processContent)
       this.hasWriterNode = true

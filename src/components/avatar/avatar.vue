@@ -46,7 +46,6 @@ export default {
     },
     async logout () {
       let res = await fetch.post('/logout')
-      console.log(res)
       if (!res.exception) {
         localStorage.removeItem('userInfo')
         this.$message.success('注销成功')

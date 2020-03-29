@@ -107,7 +107,6 @@ export default {
         pageSize,
         pageNumber
       })
-      console.log(res)
       this.data = res.data.confDesc
       this.pagination.total = res.data.totalPages * res.data.pageSize
     },
