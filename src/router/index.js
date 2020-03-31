@@ -5,7 +5,7 @@ import Login from '@/views/login'
 import ProcessManage from '@/views/process/manage'
 import ProcessEditer from '@/views/process/editer'
 import ConfigManage from '@/views/config/manage'
-import MysqlReader from '@/views/config/mysql-reader'
+import MysqlReader from '@/views/config/form/mysql-reader'
 
 Vue.use(VueRouter)
 
