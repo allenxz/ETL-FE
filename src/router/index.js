@@ -6,6 +6,8 @@ import ProcessManage from '@/views/process/manage'
 import ProcessEditer from '@/views/process/editer'
 import ConfigManage from '@/views/config/manage'
 import MysqlReader from '@/views/config/form/mysql-reader'
+import MongodbReader from '@/views/config/form/mongodb-reader'
+import HDFSReader from '@/views/config/form/hdfs-reader'
 
 Vue.use(VueRouter)
 
@@ -51,6 +53,26 @@ const routes = [
         meta: {
           addTitle: '新建MySQL输入配置',
           editTitle: '编辑MySQL输入配置',
+          isSubPage: true
+        }
+      },
+      {
+        path: '/mongodbreader',
+        name: 'mongodbReader',
+        component: MongodbReader,
+        meta: {
+          addTitle: '新建MongoDB输入配置',
+          editTitle: '编辑MongoDB输入配置',
+          isSubPage: true
+        }
+      },
+      {
+        path: '/hdfsreader',
+        name: 'HDFSReader',
+        component: HDFSReader,
+        meta: {
+          addTitle: '新建HDFS输入配置',
+          editTitle: '编辑HDFS输入配置',
           isSubPage: true
         }
       }

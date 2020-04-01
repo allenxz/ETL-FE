@@ -5,13 +5,25 @@
       <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
+        label="mongodb地址">
+        <a-input
+          v-decorator="[
+            'address',
+            { rules: [{ required: true, message: '此项不能为空' }] },
+          ]"
+          placeholder="格式是 IP:端口"
+        />
+      </a-form-item>
+      <a-form-item
+        :label-col="formItemLayout.labelCol"
+        :wrapper-col="formItemLayout.wrapperCol"
         label="用户名">
         <a-input
           v-decorator="[
             'username',
-            { rules: [{ required: true, message: '此项不能为空' }] },
+            { rules: [{ required: false, message: '此项不能为空' }] },
           ]"
-          placeholder="连接数据库的用户名"
+          placeholder="连接mongodb用户名"
         />
       </a-form-item>
       <a-form-item
@@ -21,33 +33,9 @@
         <a-input
           v-decorator="[
             'password',
-            { rules: [{ required: true, message: '此项不能为空' }] },
+            { rules: [{ required: false, message: '此项不能为空' }] },
           ]"
-          placeholder="连接数据库密码"
-        />
-      </a-form-item>
-      <a-form-item
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
-        label="ip">
-        <a-input
-          v-decorator="[
-            'ip',
-            { rules: [{ required: true, message: '此项不能为空' }] },
-          ]"
-          placeholder="数据库服务器IP"
-        />
-      </a-form-item>
-      <a-form-item
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
-        label="端口">
-        <a-input
-          v-decorator="[
-            'port',
-            { rules: [{ required: true, message: '此项不能为空' }] },
-          ]"
-          placeholder="数据库服务端口"
+          placeholder="连接mongodb密码"
         />
       </a-form-item>
       <a-form-item
@@ -56,7 +44,7 @@
         label="数据库名">
         <a-input
           v-decorator="[
-            'database',
+            'dbName',
             { rules: [{ required: true, message: '此项不能为空' }] },
           ]"
           placeholder="数据库名"
@@ -65,25 +53,74 @@
       <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
-        label="表名">
+        label="mongodb集合名">
         <a-input
           v-decorator="[
-            'table',
+            'collectionName',
             { rules: [{ required: true, message: '此项不能为空' }] },
           ]"
-          placeholder="表名"
+          placeholder="mongodb集合名"
         />
       </a-form-item>
       <a-form-item
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
+        :label-col="formItemDynamicLayout.labelCol"
+        :wrapper-col="formItemDynamicLayout.wrapperCol"
         label="表字段1">
-        <a-input
-          v-decorator="[
-            'columnFirst',
-            { rules: [{ required: true, message: '此项不能为空' }] },
-          ]"
-        />
+        <a-row :gutter="8">
+          <a-col :span="8">
+            <a-input
+              v-decorator="[
+                'columnFirst.name',
+                { rules: [{ required: true, message: '此项不能为空' }] },
+              ]"
+              placeholder="填写列名"
+            />
+          </a-col>
+          <a-col :span="5">
+            <a-select
+              v-decorator="[
+                'columnFirst.type',
+                { rules: [{ required: true, message: '此项不能为空' }] },
+              ]"
+              placeholder="选择列类型"
+              @change="(value) => {handleSelectChange(value, 'first')}">
+              <a-select-option value="int">
+                int
+              </a-select-option>
+              <a-select-option value="long">
+                long
+              </a-select-option>
+              <a-select-option value="double">
+                double
+              </a-select-option>
+              <a-select-option value="string">
+                string
+              </a-select-option>
+              <a-select-option value="array">
+                array
+              </a-select-option>
+              <a-select-option value="date">
+                date
+              </a-select-option>
+              <a-select-option value="boolean">
+                boolean
+              </a-select-option>
+              <a-select-option value="bytes">
+                bytes
+              </a-select-option>
+            </a-select>
+          </a-col>
+          <a-col :span="10"
+            v-if="itemControl.first">
+            <a-input
+              v-decorator="[
+                'columnFirst.spliter',
+                { rules: [{ required: true, message: '此项不能为空' }] },
+              ]"
+              placeholder="指定分隔符将array类型转换成字符串"
+            />
+          </a-col>
+        </a-row>
       </a-form-item>
       <a-form-item
         v-for="(k, index) in form.getFieldValue('keys')"
@@ -92,42 +129,73 @@
         :wrapper-col="formItemDynamicLayout.wrapperCol"
         :label="'表字段'+(index-0+2)"
         :required="true">
-        <a-input
-          v-decorator="[
-            `column[${k}]`,
-            {
-              validateTrigger: ['change', 'blur'],
-              rules: [
-                {
-                  required: true,
-                  whitespace: true,
-                  message: '此项不能为空',
-                },
-              ],
-            },
-          ]"
-          style="width:82%;margin-right:15px;"/>
-        <a-icon
-          class="dynamic-delete-button"
-          type="minus-circle-o"
-          @click="() => remove(k)"
-        />
+        <a-row :gutter="8">
+          <a-col :span="8">
+            <a-input
+              v-decorator="[
+                `column[${k}].name`,
+                { rules: [{ required: true, message: '此项不能为空' }] },
+              ]"
+              placeholder="填写列名"
+            />
+          </a-col>
+          <a-col :span="5">
+            <a-select
+              v-decorator="[
+                `column[${k}].type`,
+                { rules: [{ required: true, message: '此项不能为空' }] },
+              ]"
+              placeholder="选择列类型"
+              @change="(value) => {handleSelectChange(value, k)}">
+              <a-select-option value="int">
+                int
+              </a-select-option>
+              <a-select-option value="long">
+                long
+              </a-select-option>
+              <a-select-option value="double">
+                double
+              </a-select-option>
+              <a-select-option value="string">
+                string
+              </a-select-option>
+              <a-select-option value="array">
+                array
+              </a-select-option>
+              <a-select-option value="date">
+                date
+              </a-select-option>
+              <a-select-option value="boolean">
+                boolean
+              </a-select-option>
+              <a-select-option value="bytes">
+                bytes
+              </a-select-option>
+            </a-select>
+          </a-col>
+          <a-col :span="10"
+            v-if="itemControl[k]">
+            <a-input
+              v-decorator="[
+                `column[${k}].spliter`,
+                { rules: [{ required: true, message: '此项不能为空' }] },
+              ]"
+              placeholder="指定分隔符将array类型转换成字符串"
+            />
+          </a-col>
+          <a-col :span="1">
+            <a-icon
+              class="dynamic-delete-button mongo"
+              type="minus-circle-o"
+              @click="() => remove(k)"
+            />
+          </a-col>
+        </a-row>
       </a-form-item>
       <a-form-item v-bind="formItemLayoutWithOutLabel">
         <a-button type="dashed" style="width: 60%" @click="add">
           <a-icon type="plus" /> 添加表字段
         </a-button>
-      </a-form-item>
-      <a-form-item
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
-        label="进行切分的主键字段名">
-        <a-input
-          v-decorator="[
-            'splitPk',
-            { rules: [{ required: false }] },
-          ]"
-        />
       </a-form-item>
       <a-form-item :label-col="formTailLayout.labelCol" :wrapper-col="formTailLayout.wrapperCol">
         <a-button type="primary" @click="submit">
@@ -160,7 +228,7 @@ const formItemLayout = {
 // 动态表单项的样式
 const formItemDynamicLayout = {
   labelCol: { span: 4 },
-  wrapperCol: { span: 11 }
+  wrapperCol: { span: 18 }
 }
 // 提交重置表单项的样式
 const formTailLayout = {
@@ -183,7 +251,8 @@ export default {
       visible: false,
       configureName: '',
       configureId: '',
-      pendingName: ''
+      pendingName: '',
+      itemControl: {} // 控制联动项的显示
     }
   },
   beforeCreate () {
@@ -221,6 +290,7 @@ export default {
       form.setFieldsValue({
         keys: keys.filter(key => key !== k)
       })
+      delete this.itemControl[k]
     },
     // 添加表单项
     add () {
@@ -242,20 +312,16 @@ export default {
         newKeys.push(index)
       })
       this.value.keys = newKeys
+      this.value.itemControl = this.itemControl
       let configureContent = {
-        name: 'mysqlreader',
+        name: 'mongodbreader',
         parameter: {
+          address: this.value.address,
           username: this.value.username,
           password: this.value.password,
-          ip: this.value.ip,
-          port: this.value.ip,
-          database: this.value.database,
-          column: this.value.column,
-          splitPk: this.value.splitPk,
-          connection: {
-            table: this.value.table,
-            jdbcUrl: 'jdbc:mysql://' + this.value.ip + ':' + this.value.port + '/' + this.value.database + '?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT'
-          }
+          dbName: this.value.dbName,
+          collectionName: this.value.collectionName,
+          column: this.value.column
         }
       }
       return configureContent
@@ -266,7 +332,7 @@ export default {
       let configureStruct = this.value
       let res = await fetch.post('/addConfigure', {
         configureName: this.configureName,
-        configureType: 'mysqlreader',
+        configureType: 'mongodbreader',
         configureContent: JSON.stringify(configureContent),
         configureStruct: JSON.stringify(configureStruct)
       })
@@ -321,14 +387,37 @@ export default {
       this.configureName = res.data.configureName
       this.value = JSON.parse(res.data.configureStruct)
       this.value.column.shift()
+      // 初始化联动项
+      this.initItemControl()
       id = this.value.keys.length
       this.form.getFieldDecorator('keys', { initialValue: this.value.keys, preserve: true })
       this.$nextTick(() => {
-        for (let i = 0, len = this.value.column.length; i < len; i++) {
-          this.form.getFieldDecorator('column[' + i + ']', { initialValue: this.value.column[i], preserve: true })
-        }
         this.form.setFieldsValue(this.value)
+        for (let i = 0, len = this.value.column.length; i < len; i++) {
+          this.form.getFieldDecorator('column[' + i + '].name', { initialValue: this.value.column[i].name, preserve: true })
+          this.form.getFieldDecorator('column[' + i + '].type', { initialValue: this.value.column[i].type, preserve: true })
+          if (this.itemControl[i]) {
+            this.form.getFieldDecorator('column[' + i + '].spliter', { initialValue: this.value.column[i].spliter, preserve: true })
+          }
+        }
       })
+    },
+    // 初始化联动项
+    initItemControl () {
+      this.itemControl.first = this.value.itemControl.first
+      this.value.column.forEach((item, index) => {
+        if (item.type === 'array') {
+          this.itemControl[index] = true
+        }
+      })
+    },
+    // 处理字段类型选择后的表单联动
+    handleSelectChange (value, key) {
+      if (value === 'array') {
+        this.itemControl[key] = true
+      } else {
+        this.itemControl[key] = false
+      }
     }
   }
 }
