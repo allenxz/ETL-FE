@@ -8,6 +8,9 @@ import ConfigManage from '@/views/config/manage'
 import MysqlReader from '@/views/config/form/mysql-reader'
 import MongodbReader from '@/views/config/form/mongodb-reader'
 import HDFSReader from '@/views/config/form/hdfs-reader'
+import MysqlWriter from '@/views/config/form/mysql-writer'
+import MongodbWriter from '@/views/config/form/mongodb-writer'
+import HDFSWriter from '@/views/config/form/hdfs-writer'
 
 Vue.use(VueRouter)
 
@@ -73,6 +76,36 @@ const routes = [
         meta: {
           addTitle: '新建HDFS输入配置',
           editTitle: '编辑HDFS输入配置',
+          isSubPage: true
+        }
+      },
+      {
+        path: '/mysqlwriter',
+        name: 'mysqlWriter',
+        component: MysqlWriter,
+        meta: {
+          addTitle: '新建MySQL输出配置',
+          editTitle: '编辑MySQL输出配置',
+          isSubPage: true
+        }
+      },
+      {
+        path: '/mongodbwriter',
+        name: 'mongodbWriter',
+        component: MongodbWriter,
+        meta: {
+          addTitle: '新建MongoDB输出配置',
+          editTitle: '编辑MongoDB输出配置',
+          isSubPage: true
+        }
+      },
+      {
+        path: '/hdfswriter',
+        name: 'hdfsWriter',
+        component: HDFSWriter,
+        meta: {
+          addTitle: '新建HDFS输出配置',
+          editTitle: '编辑HDFS输出配置',
           isSubPage: true
         }
       }

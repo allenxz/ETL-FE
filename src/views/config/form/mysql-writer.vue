@@ -5,172 +5,118 @@
       <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
-        label="读取HDFS文件路径">
+        label="用户名">
         <a-input
           v-decorator="[
-            'path',
+            'username',
             { rules: [{ required: true, message: '此项不能为空' }] },
           ]"
-          placeholder="绝对路径"
+          placeholder="连接数据库的用户名"
         />
       </a-form-item>
       <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
-        label="HDFS服务地址">
+        label="密码">
         <a-input
           v-decorator="[
-            'defaultFS',
+            'password',
             { rules: [{ required: true, message: '此项不能为空' }] },
           ]"
-          placeholder="hdfs://IP:端口"
+          placeholder="连接数据库密码"
+        />
+      </a-form-item>
+      <a-form-item
+        :label-col="formItemLayout.labelCol"
+        :wrapper-col="formItemLayout.wrapperCol"
+        label="ip">
+        <a-input
+          v-decorator="[
+            'ip',
+            { rules: [{ required: true, message: '此项不能为空' }] },
+          ]"
+          placeholder="数据库服务器IP"
+        />
+      </a-form-item>
+      <a-form-item
+        :label-col="formItemLayout.labelCol"
+        :wrapper-col="formItemLayout.wrapperCol"
+        label="端口">
+        <a-input
+          v-decorator="[
+            'port',
+            { rules: [{ required: true, message: '此项不能为空' }] },
+          ]"
+          placeholder="数据库服务端口"
+        />
+      </a-form-item>
+      <a-form-item
+        :label-col="formItemLayout.labelCol"
+        :wrapper-col="formItemLayout.wrapperCol"
+        label="数据库名">
+        <a-input
+          v-decorator="[
+            'database',
+            { rules: [{ required: true, message: '此项不能为空' }] },
+          ]"
+          placeholder="数据库名"
+        />
+      </a-form-item>
+      <a-form-item
+        :label-col="formItemLayout.labelCol"
+        :wrapper-col="formItemLayout.wrapperCol"
+        label="表名">
+        <a-input
+          v-decorator="[
+            'table',
+            { rules: [{ required: true, message: '此项不能为空' }] },
+          ]"
+          placeholder="表名"
         />
       </a-form-item>
       <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
         label="表字段1">
-        <a-row :gutter="8">
-          <a-col :span="16">
-            <a-input
-              v-decorator="[
-                'columnFirst.index',
-                { rules: [{ required: true, message: '此项不能为空' }] },
-              ]"
-              placeholder="填写列名"
-            />
-          </a-col>
-          <a-col :span="8">
-            <a-select
-              v-decorator="[
-                'columnFirst.type',
-                { rules: [{ required: true, message: '此项不能为空' }] },
-              ]"
-              placeholder="选择列类型">
-              <a-select-option value="long">
-                long
-              </a-select-option>
-              <a-select-option value="double">
-                double
-              </a-select-option>
-              <a-select-option value="string">
-                string
-              </a-select-option>
-              <a-select-option value="date">
-                date
-              </a-select-option>
-              <a-select-option value="boolean">
-                boolean
-              </a-select-option>
-            </a-select>
-          </a-col>
-        </a-row>
+        <a-input
+          v-decorator="[
+            'columnFirst',
+            { rules: [{ required: true, message: '此项不能为空' }] },
+          ]"
+        />
       </a-form-item>
       <a-form-item
         v-for="(k, index) in form.getFieldValue('keys')"
         :key="k"
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
+        :label-col="formItemDynamicLayout.labelCol"
+        :wrapper-col="formItemDynamicLayout.wrapperCol"
         :label="'表字段'+(index-0+2)"
         :required="true">
-        <a-row :gutter="8">
-          <a-col :span="16">
-            <a-input
-              v-decorator="[
-                `column[${k}].index`,
-                { rules: [{ required: true, message: '此项不能为空' }] },
-              ]"
-              placeholder="填写列名"
-            />
-          </a-col>
-          <a-col :span="7">
-            <a-select
-              v-decorator="[
-                `column[${k}].type`,
-                { rules: [{ required: true, message: '此项不能为空' }] },
-              ]"
-              placeholder="选择列类型">
-              <a-select-option value="long">
-                long
-              </a-select-option>
-              <a-select-option value="double">
-                double
-              </a-select-option>
-              <a-select-option value="string">
-                string
-              </a-select-option>
-              <a-select-option value="date">
-                date
-              </a-select-option>
-              <a-select-option value="boolean">
-                boolean
-              </a-select-option>
-            </a-select>
-          </a-col>
-          <a-col :span="1">
-            <a-icon
-              class="dynamic-delete-button mongo"
-              type="minus-circle-o"
-              @click="() => remove(k)"
-            />
-          </a-col>
-        </a-row>
+        <a-input
+          v-decorator="[
+            `column[${k}]`,
+            {
+              validateTrigger: ['change', 'blur'],
+              rules: [
+                {
+                  required: true,
+                  whitespace: true,
+                  message: '此项不能为空',
+                },
+              ],
+            },
+          ]"
+          style="width:82%;margin-right:15px;"/>
+        <a-icon
+          class="dynamic-delete-button"
+          type="minus-circle-o"
+          @click="() => remove(k)"
+        />
       </a-form-item>
       <a-form-item v-bind="formItemLayoutWithOutLabel">
         <a-button type="dashed" style="width: 60%" @click="add">
           <a-icon type="plus" /> 添加表字段
         </a-button>
-      </a-form-item>
-      <a-form-item
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
-        label="文件类型">
-        <a-select
-          v-decorator="[
-            'fileType',
-            { rules: [{ required: true, message: '此项不能为空' }] },
-          ]"
-          placeholder="选择文件类型">
-          <a-select-option value="int">
-            ORC
-          </a-select-option>
-          <a-select-option value="long">
-            SEQUENCE
-          </a-select-option>
-          <a-select-option value="double">
-            RCFile
-          </a-select-option>
-          <a-select-option value="string">
-            TEXT
-          </a-select-option>
-          <a-select-option value="array">
-            CSV
-          </a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
-        label="文件编码">
-        <a-input
-          v-decorator="[
-            'encoding',
-            { rules: [{ required: false }] },
-          ]"
-          placeholder="默认编码方式为UTF-8"
-        />
-      </a-form-item>
-      <a-form-item
-        :label-col="formItemLayout.labelCol"
-        :wrapper-col="formItemLayout.wrapperCol"
-        label="文件切割符">
-        <a-input
-          v-decorator="[
-            'fieldDelimiter',
-            { rules: [{ required: false }] },
-          ]"
-          placeholder="默认切割符号为英文逗号"
-        />
       </a-form-item>
       <a-form-item :label-col="formTailLayout.labelCol" :wrapper-col="formTailLayout.wrapperCol">
         <a-button type="primary" @click="submit">
@@ -200,6 +146,11 @@ const formItemLayout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 9 }
 }
+// 动态表单项的样式
+const formItemDynamicLayout = {
+  labelCol: { span: 4 },
+  wrapperCol: { span: 11 }
+}
 // 提交重置表单项的样式
 const formTailLayout = {
   labelCol: { span: 4 },
@@ -215,6 +166,7 @@ export default {
       isEdit: false,
       formItemLayout,
       formTailLayout,
+      formItemDynamicLayout,
       formItemLayoutWithOutLabel,
       value: {},
       visible: false,
@@ -280,14 +232,18 @@ export default {
       })
       this.value.keys = newKeys
       let configureContent = {
-        name: 'hdfsreader',
+        name: 'mysqlwriter',
         parameter: {
-          path: this.value.path,
-          defaultFS: this.value.defaultFS,
+          username: this.value.username,
+          password: this.value.password,
+          ip: this.value.ip,
+          port: this.value.ip,
+          database: this.value.database,
           column: this.value.column,
-          fileType: this.value.fileType,
-          encoding: this.value.encoding,
-          fieldDelimiter: this.value.fieldDelimiter
+          connection: {
+            table: this.value.table,
+            jdbcUrl: 'jdbc:mysql://' + this.value.ip + ':' + this.value.port + '/' + this.value.database + '?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT'
+          }
         }
       }
       return configureContent
@@ -298,7 +254,7 @@ export default {
       let configureStruct = this.value
       let res = await fetch.post('/addConfigure', {
         configureName: this.configureName,
-        configureType: 'hdfsreader',
+        configureType: 'mysqlwriter',
         configureContent: JSON.stringify(configureContent),
         configureStruct: JSON.stringify(configureStruct)
       })
@@ -356,11 +312,10 @@ export default {
       id = this.value.keys.length
       this.form.getFieldDecorator('keys', { initialValue: this.value.keys, preserve: true })
       this.$nextTick(() => {
-        this.form.setFieldsValue(this.value)
         for (let i = 0, len = this.value.column.length; i < len; i++) {
-          this.form.getFieldDecorator('column[' + i + '].index', { initialValue: this.value.column[i].name, preserve: true })
-          this.form.getFieldDecorator('column[' + i + '].type', { initialValue: this.value.column[i].type, preserve: true })
+          this.form.getFieldDecorator('column[' + i + ']', { initialValue: this.value.column[i], preserve: true })
         }
+        this.form.setFieldsValue(this.value)
       })
     }
   }

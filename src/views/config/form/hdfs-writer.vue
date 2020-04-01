@@ -130,35 +130,30 @@
             'fileType',
             { rules: [{ required: true, message: '此项不能为空' }] },
           ]"
-          placeholder="选择文件类型">
-          <a-select-option value="int">
+          placeholder="选择文件类型"
+          @change="setCompressType">
+          <a-select-option value="ORC">
             ORC
           </a-select-option>
-          <a-select-option value="long">
-            SEQUENCE
-          </a-select-option>
-          <a-select-option value="double">
-            RCFile
-          </a-select-option>
-          <a-select-option value="string">
+          <a-select-option value="TEXT">
             TEXT
-          </a-select-option>
-          <a-select-option value="array">
-            CSV
           </a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
-        label="文件编码">
-        <a-input
+        label="文件压缩方式">
+        <a-select
           v-decorator="[
-            'encoding',
+            'compress',
             { rules: [{ required: false }] },
           ]"
-          placeholder="默认编码方式为UTF-8"
-        />
+          placeholder="默认不填代表不压缩">
+          <a-select-option v-for="(item, index) of compressType" :key="index" :value="item">
+            {{item}}
+          </a-select-option>
+        </a-select>
       </a-form-item>
       <a-form-item
         :label-col="formItemLayout.labelCol"
@@ -209,6 +204,11 @@ const formTailLayout = {
 const formItemLayoutWithOutLabel = {
   wrapperCol: { span: 15, offset: 4 }
 }
+// 文件类型对应的压缩方式
+const map = {
+  'ORC': ['none', 'snappy'],
+  'TEXT': ['gzip', 'bzip2']
+}
 export default {
   data () {
     return {
@@ -220,7 +220,8 @@ export default {
       visible: false,
       configureName: '',
       configureId: '',
-      pendingName: ''
+      pendingName: '',
+      compressType: undefined
     }
   },
   beforeCreate () {
@@ -280,13 +281,13 @@ export default {
       })
       this.value.keys = newKeys
       let configureContent = {
-        name: 'hdfsreader',
+        name: 'hdfswriter',
         parameter: {
           path: this.value.path,
           defaultFS: this.value.defaultFS,
           column: this.value.column,
           fileType: this.value.fileType,
-          encoding: this.value.encoding,
+          compress: this.value.compress,
           fieldDelimiter: this.value.fieldDelimiter
         }
       }
@@ -298,7 +299,7 @@ export default {
       let configureStruct = this.value
       let res = await fetch.post('/addConfigure', {
         configureName: this.configureName,
-        configureType: 'hdfsreader',
+        configureType: 'hdfswriter',
         configureContent: JSON.stringify(configureContent),
         configureStruct: JSON.stringify(configureStruct)
       })
@@ -362,6 +363,11 @@ export default {
           this.form.getFieldDecorator('column[' + i + '].type', { initialValue: this.value.column[i].type, preserve: true })
         }
       })
+    },
+    // 设置压缩类型
+    setCompressType (value) {
+      console.log(value)
+      this.compressType = map[value]
     }
   }
 }

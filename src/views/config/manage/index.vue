@@ -137,7 +137,6 @@ export default {
     },
     // 编辑配置
     editConfig (configureId, configureType) {
-      console.log(configureType)
       let id = configureId
       if (configureType === 'mysqlreader') {
         this.$router.push({ name: 'mysqlReader', params: { id } })
@@ -145,6 +144,12 @@ export default {
         this.$router.push({ name: 'mongodbReader', params: { id } })
       } else if (configureType === 'hdfsreader') {
         this.$router.push({ name: 'HDFSReader', params: { id } })
+      } else if (configureType === 'mysqlwriter') {
+        this.$router.push({ name: 'mysqlWriter', params: { id } })
+      } else if (configureType === 'mongodbwriter') {
+        this.$router.push({ name: 'mongodbWriter', params: { id } })
+      } else if (configureType === 'hdfswriter') {
+        this.$router.push({ name: 'hdfsWriter', params: { id } })
       }
     },
     // 二次确认删除
