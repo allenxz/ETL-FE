@@ -1,8 +1,6 @@
 .deployment-editer{
-  position: relative;
   height: 100%;
   padding: 36px 24px;
-  padding-bottom: 60px;
   background-color: #fff;
 
   .steps-content {
@@ -15,8 +13,7 @@
   }
 
   .steps-action {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
+    text-align: right;
+    margin-top: 24px;
   }
 }
