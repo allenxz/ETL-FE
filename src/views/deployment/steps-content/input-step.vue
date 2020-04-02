@@ -5,7 +5,7 @@
       <font-awesome-icon :icon="['fas', 'file-import']" />
     </div>
     <!-- 选择器 -->
-    <a-select style="width: 50%" :defaultValue="readerID" @change="getConfigDesc" placeholder="选择输入配置文件">
+    <a-select style="width: 50%" :defaultValue="this.readerID" @change="getConfigDesc">
       <a-select-option v-for="item of options" :key="item.configureId">
         {{item.configureName}}
       </a-select-option>
@@ -32,7 +32,6 @@ export default {
   props: ['readerID'],
   mounted () {
     this.getAllConfigures()
-    this.getConfigDesc(this.readerID)
   },
   methods: {
     // 获取所有配置文件并筛选出输入文件
@@ -50,6 +49,7 @@ export default {
       })
       // 过滤出输入配置文件
       this.options = secondSearch.data.confDesc.filter(item => item.configureType.slice(-6) === 'reader')
+      this.getConfigDesc(this.readerID)
     },
     // 获取配置文件详情并格式化
     async getConfigDesc (value) {

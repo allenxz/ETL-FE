@@ -4,11 +4,11 @@
       <a-menu mode="inline" :openKeys.sync="openKeys" @click="addNode" :selectable="false">
         <a-sub-menu key="reader">
           <span slot="title"><a-icon type="cloud-server" /><span>输入源</span></span>
-          <a-menu-item v-for="item of plugins.readerPlugins" :id="item.name" :key="item.name" :disabled="hasReaderNode" style="border-bottom:1px solid #e8e8e8">{{item.showName}}</a-menu-item>
+          <a-menu-item v-for="item of plugins.readerPlugins" :id="item.pluginName" :key="item.pluginName" :disabled="hasReaderNode" style="border-bottom:1px solid #e8e8e8">{{item.showName}}</a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="writer">
           <span slot="title"><a-icon type="cluster" /><span>输出源</span></span>
-          <a-menu-item v-for="item of plugins.writerPlugins" :id="item.name" :key="item.name" :disabled="hasWriterNode" style="border-bottom:1px solid #e8e8e8">{{item.showName}}</a-menu-item>
+          <a-menu-item v-for="item of plugins.writerPlugins" :id="item.pluginName" :key="item.pluginName" :disabled="hasWriterNode" style="border-bottom:1px solid #e8e8e8">{{item.showName}}</a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="etl">
           <span slot="title"><a-icon type="deployment-unit" /><span>etl插件</span></span>
@@ -86,8 +86,8 @@
       <div class="editer">
         <div class="node-container">
           <div class="node-wrapper" v-for="(item, index) of nodes" :key="index" @click="selectNode(index)">
-            <div :class="item.appearance.class" :title="item.name">
-              <img :src="item.appearance.img" :alt="item.name">
+            <div :class="item.appearance.class" :title="item.pluginName">
+              <img :src="item.appearance.img" :alt="item.pluginName">
             </div>
           </div>
         </div>
@@ -293,7 +293,7 @@ export default {
       }
       // 装载新结点
       let newNode = {
-        name: key,
+        pluginName: key,
         type: keyPath[1],
         appearance: {
           class: 'node ' + map[keyPath[1]].shape + ' ' + map[keyPath[1]].color,
@@ -403,9 +403,9 @@ export default {
         return
       }
       this.parameters = []
-      let name = this.nodes[this.selectedNodes[0]].name
+      let pluginName = this.nodes[this.selectedNodes[0]].pluginName
       for (let i = 0, len = this.plugins.etlPlugins.length; i < len; i++) {
-        if (name === this.plugins.etlPlugins[i].pluginName) {
+        if (pluginName === this.plugins.etlPlugins[i].pluginName) {
           this.parameters = this.plugins.etlPlugins[i].parameters
           break
         }

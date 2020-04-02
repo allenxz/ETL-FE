@@ -5,7 +5,7 @@
       <font-awesome-icon :icon="['fas', 'file-export']" />
     </div>
     <!-- 选择器 -->
-    <a-select style="width: 50%" :defaultValue="writerID" @change="getConfigDesc" placeholder="选择输入配置文件">
+    <a-select style="width: 50%" :defaultValue="writerID" @change="getConfigDesc">
       <a-select-option v-for="item of options" :key="item.configureId">
         {{item.configureName}}
       </a-select-option>
@@ -30,7 +30,7 @@ export default {
     }
   },
   props: ['writerID'],
-  mounted () {
+  created () {
     this.getAllConfigures()
     this.getConfigDesc(this.writerID)
   },

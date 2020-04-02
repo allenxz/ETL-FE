@@ -127,9 +127,9 @@ let config = {
     },
     {
       title: '部署的流程ID',
-      dataIndex: 'processIds',
-      key: 'processIds',
-      scopedSlots: { customRender: 'processIds' }
+      dataIndex: 'processId',
+      key: 'processId',
+      scopedSlots: { customRender: 'processId' }
     },
     {
       title: '状态',

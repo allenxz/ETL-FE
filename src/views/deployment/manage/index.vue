@@ -32,14 +32,14 @@
           <span slot="targetConfigureId" slot-scope="targetConfigureId">
             {{formatID(targetConfigureId)}}
           </span>
-          <span slot="processIds" slot-scope="processIds">
-            {{formatID(processIds)}}
+          <span slot="processId" slot-scope="processId">
+            {{formatID(processId)}}
           </span>
           <span slot="updateTime" slot-scope="updateTime">
             {{formatDateTime(updateTime)}}
           </span>
           <span slot="action" slot-scope="row">
-            <router-link :to="{name: 'processEditer', params:{id: row.deploymentId}}">
+            <router-link :to="{name: 'deploymentEditer', params:{id: row.deploymentId}}">
               <a-icon type="edit" />
               编辑
             </router-link>
@@ -110,6 +110,7 @@ export default {
         pageNumber
       })
       this.data = res.data.deployDesc
+      console.log(this.data)
       this.pagination.total = res.data.totalPages * res.data.pageSize
     },
     // 切换页码
