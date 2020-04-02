@@ -1,6 +1,6 @@
 <template>
   <div class="deployment-editer">
-    <a-steps :current="current">
+    <a-steps v-model="current" @change="onChange">
       <a-step v-for="item in steps" :key="item.title" :title="item.title" />
     </a-steps>
     <div class="steps-content">
@@ -96,6 +96,12 @@ export default {
       this.isEdit = true
       this.deploymentId = deploymentId
       this.initSteps()
+    }
+  },
+  watch: {
+    // 步骤切换的时候回到顶部
+    current () {
+      window.scrollTo(0, 0)
     }
   },
   methods: {
@@ -207,6 +213,10 @@ export default {
       })
       this.$message.success(res.data.message)
       this.$router.push({ path: '/deployment-manage' })
+    },
+    // 点击切换
+    onChange (current) {
+      this.current = current
     }
   }
 }
