@@ -11,6 +11,8 @@ import HDFSReader from '@/views/config/form/hdfs-reader'
 import MysqlWriter from '@/views/config/form/mysql-writer'
 import MongodbWriter from '@/views/config/form/mongodb-writer'
 import HDFSWriter from '@/views/config/form/hdfs-writer'
+import DeploymentManage from '@/views/deployment/manage'
+import DeploymentEditer from '@/views/deployment/editer'
 
 Vue.use(VueRouter)
 
@@ -106,6 +108,24 @@ const routes = [
         meta: {
           addTitle: '新建HDFS输出配置',
           editTitle: '编辑HDFS输出配置',
+          isSubPage: true
+        }
+      },
+      {
+        path: '/deployment-manage',
+        name: 'deploymentManage',
+        component: DeploymentManage,
+        meta: {
+          title: '部署管理'
+        }
+      },
+      {
+        path: '/deployment-editer',
+        name: 'deploymentEditer',
+        component: DeploymentEditer,
+        meta: {
+          addTitle: '创建部署',
+          editTitle: '编辑部署',
           isSubPage: true
         }
       }

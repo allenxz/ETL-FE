@@ -95,6 +95,67 @@ let config = {
       width: 200,
       scopedSlots: { customRender: 'action' }
     }
+  ],
+  DEPLOYMENT_COLUMNS: [
+    {
+      title: '部署ID',
+      dataIndex: 'deploymentId',
+      key: 'deploymentId',
+      scopedSlots: { customRender: 'deploymentId' }
+    },
+    {
+      title: '部署名',
+      dataIndex: 'deploymentName',
+      key: 'deploymentName'
+    },
+    {
+      title: '创建者',
+      dataIndex: 'userName',
+      key: 'userName'
+    },
+    {
+      title: '输入配置文件ID',
+      dataIndex: 'sourceConfigureId',
+      key: 'sourceConfigureId',
+      scopedSlots: { customRender: 'sourceConfigureId' }
+    },
+    {
+      title: '输出配置文件ID',
+      dataIndex: 'targetConfigureId',
+      key: 'targetConfigureId',
+      scopedSlots: { customRender: 'targetConfigureId' }
+    },
+    {
+      title: '部署的流程ID',
+      dataIndex: 'processIds',
+      key: 'processIds',
+      scopedSlots: { customRender: 'processIds' }
+    },
+    {
+      title: '状态',
+      dataIndex: 'state',
+      key: 'state',
+      scopedSlots: { customRender: 'state' },
+      sorter: (a, b) => {
+        return a.state > b.state
+      }
+    },
+    {
+      title: '最近更新时间',
+      key: 'updateTime',
+      dataIndex: 'updateTime',
+      scopedSlots: { customRender: 'updateTime' },
+      sorter: (a, b) => {
+        return dateUtil.getTime(a.updateTime) - dateUtil.getTime(b.updateTime)
+      }
+    },
+    {
+      title: '操作',
+      key: 'action',
+      fixed: 'right',
+      width: 200,
+      scopedSlots: { customRender: 'action' }
+    }
   ]
 }
 

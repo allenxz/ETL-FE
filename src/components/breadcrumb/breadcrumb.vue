@@ -73,6 +73,8 @@ export default {
         this.categoryName = '数据处理'
       } else if (name === '/config') {
         this.categoryName = '参数配置'
+      } else if (name === '/deployment') {
+        this.categoryName = '部署配置'
       } else {
         this.categoryName = ''
       }

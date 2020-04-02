@@ -16,7 +16,9 @@
         <a-menu-item key="2">
           <router-link to="/process-manage">流程管理</router-link>
         </a-menu-item>
-        <a-menu-item key="3">部署管理</a-menu-item>
+        <a-menu-item key="3">
+          <router-link to="/deployment-manage">部署管理</router-link>
+        </a-menu-item>
       </a-sub-menu>
       <a-sub-menu key="sub3">
         <span slot="title"><a-icon type="database" /><span>数据储存</span></span>
