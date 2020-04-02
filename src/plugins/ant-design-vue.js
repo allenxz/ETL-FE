@@ -25,7 +25,9 @@ import {
   Popover,
   Upload,
   Checkbox,
-  Select
+  Select,
+  Tabs,
+  Steps
 } from 'ant-design-vue'
 
 Vue.prototype.$message = message
@@ -55,3 +57,5 @@ Vue.use(Popover)
 Vue.use(Upload)
 Vue.use(Checkbox)
 Vue.use(Select)
+Vue.use(Tabs)
+Vue.use(Steps)

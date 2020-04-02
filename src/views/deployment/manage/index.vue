@@ -110,7 +110,6 @@ export default {
         pageNumber
       })
       this.data = res.data.deployDesc
-      console.log(this.data)
       this.pagination.total = res.data.totalPages * res.data.pageSize
     },
     // 切换页码

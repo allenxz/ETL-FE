@@ -1,5 +1,22 @@
 .deployment-editer{
-    height: 100%;
-    padding: 36px 24px;
-    background-color: #fff;
+  position: relative;
+  height: 100%;
+  padding: 36px 24px;
+  padding-bottom: 60px;
+  background-color: #fff;
+
+  .steps-content {
+    margin-top: 16px;
+    border: 1px dashed #e9e9e9;
+    border-radius: 6px;
+    background-color: #fafafa;
+    text-align: center;
+    padding:12px;
+  }
+
+  .steps-action {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+  }
 }
