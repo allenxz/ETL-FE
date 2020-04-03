@@ -237,7 +237,7 @@ export default {
           username: this.value.username,
           password: this.value.password,
           ip: this.value.ip,
-          port: this.value.ip,
+          port: this.value.port,
           database: this.value.database,
           column: this.value.column,
           connection: {
