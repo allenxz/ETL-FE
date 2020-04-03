@@ -44,6 +44,22 @@
               编辑
             </router-link>
             <a-divider type="vertical" />
+            <a @click="startDeployment">
+              <a-icon type="play-circle" />
+              启动
+            </a>
+            <a-divider type="vertical" />
+            <a-popconfirm
+              title="确定暂停该部署?"
+              @confirm="stopDeployment(row.deploymentId)"
+              okText="是"
+              cancelText="否">
+              <a href="javascript:;" style="color:red;">
+                <a-icon type="pause-circle" />
+                暂停
+              </a>
+            </a-popconfirm>
+            <a-divider type="vertical" />
             <a-popconfirm
               title="确定删除该流程?"
               @confirm="confirmDelete(row.deploymentId)"
@@ -149,6 +165,28 @@ export default {
         this.$message.success(res.data.message)
         this.rowSelection.selectedRowKeys = []
         this.getAllDeployments(this.pagination.pageSize, this.pagination.current)
+      }
+    },
+    // 启动部署
+    async startDeployment (deploymentId) {
+      let res = await fetch.post('/startDeployment', {
+        deploymentId
+      })
+      if (res.exception) {
+        this.$message.error(res.exception)
+      } else {
+        this.$message.success(res.data.message)
+      }
+    },
+    // 暂停部署
+    async stopDeployment (deploymentId) {
+      let res = await fetch.post('/stopDeployment', {
+        deploymentId
+      })
+      if (res.exception) {
+        this.$message.error(res.exception)
+      } else {
+        this.$message.success(res.data.message)
       }
     }
   }

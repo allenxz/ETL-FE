@@ -153,7 +153,7 @@ let config = {
       title: '操作',
       key: 'action',
       fixed: 'right',
-      width: 200,
+      width: 300,
       scopedSlots: { customRender: 'action' }
     }
   ]
