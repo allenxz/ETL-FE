@@ -44,7 +44,7 @@
               编辑
             </router-link>
             <a-divider type="vertical" />
-            <a @click="startDeployment">
+            <a @click="startDeployment(row.deploymentId)">
               <a-icon type="play-circle" />
               启动
             </a>
