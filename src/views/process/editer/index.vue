@@ -118,8 +118,8 @@
                   :required="item.necessary"
                   :extra="item.desc">
                   <a-input
-                    v-decorator="[item.filedName, { rules: [{ required: item.necessary, message: '该项为必填字段不能为空' }] }]"
-                    :placeholder="nodes[selectedNodes[0]].parameters && nodes[selectedNodes[0]].parameters[item.filedName]"
+                    v-decorator="[item.pluginTrueField, { rules: [{ required: item.necessary, message: '该项为必填字段不能为空' }] }]"
+                    :placeholder="nodes[selectedNodes[0]].parameters && nodes[selectedNodes[0]].parameters[item.pluginTrueField]"
                   />
                 </a-form-item>
                 <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
@@ -481,6 +481,7 @@ export default {
       })
       this.processName = res.data.processName
       this.nodes = JSON.parse(res.data.processContent)
+      console.log(this.nodes)
       this.hasWriterNode = true
       this.hasReaderNode = true
     }
