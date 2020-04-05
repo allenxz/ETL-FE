@@ -168,6 +168,7 @@ export default {
         localStorage.setItem('userInfo', JSON.stringify(res.data))
         this.$message.success('登录成功')
         this.$router.push({ path: '/' })
+        localStorage.setItem('defaultSelectedKeys', JSON.stringify(['1']))
       } else {
         this.$message.error(res.exception)
         this.reset()
