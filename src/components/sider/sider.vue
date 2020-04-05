@@ -1,6 +1,9 @@
 <template>
   <a-layout-sider :trigger="null" collapsible v-model="collapsed" class="sider">
-    <h2><span class="highlight">ETL</span> 数据平台</h2>
+    <div class="logo-wrapper">
+      <img src="../../../public/logo.png" alt="logo">
+    </div>
+    <h2 v-if="!collapsed"><span class="highlight">ETL</span> 数据平台</h2>
     <a-menu
       :defaultSelectedKeys="['1']"
       :defaultOpenKeys="['sub1','sub2', 'sub3','sub4']"

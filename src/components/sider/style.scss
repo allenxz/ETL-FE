@@ -1,4 +1,17 @@
 .sider {
+  .logo-wrapper{
+    width: 50px;
+    height: 50px;
+    margin-left: 50%;
+    margin-top: 10px;
+    transform: translateX(-50%);
+    img{
+      height: auto;
+      width: auto;
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
   h2 {
     text-align: center;
     color: #fff;
