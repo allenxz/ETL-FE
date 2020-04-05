@@ -75,7 +75,7 @@ export default {
           title: '选择输出配置文件'
         },
         {
-          title: '选择中间处理流程'
+          title: '选择数据处理流程'
         },
         {
           title: '提交'

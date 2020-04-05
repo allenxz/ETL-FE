@@ -61,7 +61,7 @@
             </a-popconfirm>
             <a-divider type="vertical" />
             <a-popconfirm
-              title="确定删除该流程?"
+              title="确定删除该部署?"
               @confirm="confirmDelete(row.deploymentId)"
               okText="是"
               cancelText="否">
@@ -176,6 +176,7 @@ export default {
         this.$message.error(res.exception)
       } else {
         this.$message.success(res.data.message)
+        this.getAllDeployments(this.pagination.pageSize, this.pagination.current)
       }
     },
     // 暂停部署
@@ -187,6 +188,7 @@ export default {
         this.$message.error(res.exception)
       } else {
         this.$message.success(res.data.message)
+        this.getAllDeployments(this.pagination.pageSize, this.pagination.current)
       }
     }
   }
