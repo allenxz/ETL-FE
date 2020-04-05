@@ -12,7 +12,7 @@
         <a-menu-item key="1">Kafka监测</a-menu-item>
       </a-sub-menu>
       <a-sub-menu key="sub2">
-        <span slot="title"><a-icon type="interation" /><span>数据处理</span></span>
+        <span slot="title"><a-icon type="interaction" /><span>数据处理</span></span>
         <a-menu-item key="2">
           <router-link to="/process-manage">流程管理</router-link>
         </a-menu-item>

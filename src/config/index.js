@@ -5,11 +5,6 @@ let config = {
   API_HOST: 'http://120.78.93.168:8088',
   PROCESS_COLUMNS: [
     {
-      title: '流程ID',
-      dataIndex: 'processId',
-      key: 'processId'
-    },
-    {
       title: '流程名称',
       dataIndex: 'processName',
       key: 'processName'
@@ -18,6 +13,16 @@ let config = {
       title: '创建者',
       dataIndex: 'userName',
       key: 'userName'
+    },
+    {
+      title: '输入类型',
+      key: 'input',
+      dataIndex: 'input'
+    },
+    {
+      title: '输出类型',
+      dataIndex: 'output',
+      key: 'output'
     },
     {
       title: '状态',
@@ -46,7 +51,8 @@ let config = {
     }
   ],
   PROCESS_STATE_MAP: {
-    '正常': 'green',
+    '运行中': 'green',
+    '使用中': 'green',
     '停止': 'red'
   },
   CONFIG_COLUMNS: [

@@ -27,7 +27,8 @@ import {
   Checkbox,
   Select,
   Tabs,
-  Steps
+  Steps,
+  ConfigProvider
 } from 'ant-design-vue'
 
 Vue.prototype.$message = message
@@ -59,3 +60,4 @@ Vue.use(Checkbox)
 Vue.use(Select)
 Vue.use(Tabs)
 Vue.use(Steps)
+Vue.use(ConfigProvider)
