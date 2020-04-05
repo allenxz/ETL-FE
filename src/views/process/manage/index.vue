@@ -11,7 +11,6 @@
         cancelText="否">
         <a-button type="danger">流程删除</a-button>
       </a-popconfirm>
-      <a-button>流程输出统计</a-button>
       <a-button @click="exportProcess">流程导出</a-button>
       <a-upload
         :showUploadList="false"

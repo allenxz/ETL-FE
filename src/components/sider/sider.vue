@@ -13,7 +13,7 @@
       :inlineCollapsed="collapsed">
       <a-sub-menu key="sub1">
         <span slot="title"><a-icon type="fund" /><span>监控告警</span></span>
-        <a-menu-item key="1">Kafka监测</a-menu-item>
+        <a-menu-item key="1">监控面板</a-menu-item>
       </a-sub-menu>
       <a-sub-menu key="sub2">
         <span slot="title"><a-icon type="interaction" /><span>数据处理</span></span>
@@ -23,16 +23,18 @@
         <a-menu-item key="3">
           <router-link to="/deployment-manage">部署管理</router-link>
         </a-menu-item>
+        <a-menu-item key="4">任务报告</a-menu-item>
       </a-sub-menu>
       <a-sub-menu key="sub3">
-        <span slot="title"><a-icon type="database" /><span>数据储存</span></span>
-        <a-menu-item key="4">数据结构</a-menu-item>
-        <a-menu-item key="5">Kafka管理</a-menu-item>
+        <span slot="title"><a-icon type="cluster" /><span>参数配置</span></span>
+        <a-menu-item key="5">
+          <router-link to="/config-manage">配置管理</router-link>
+        </a-menu-item>
       </a-sub-menu>
       <a-sub-menu key="sub4">
-        <span slot="title"><a-icon type="cluster" /><span>参数配置</span></span>
+        <span slot="title"><a-icon type="alert" /><span>个人事务</span></span>
         <a-menu-item key="6">
-          <router-link to="/config-manage">配置管理</router-link>
+          权限审批
         </a-menu-item>
       </a-sub-menu>
     </a-menu>
