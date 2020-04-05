@@ -5,8 +5,9 @@
     </div>
     <h2 v-if="!collapsed"><span class="highlight">ETL</span> 数据平台</h2>
     <a-menu
-      :defaultSelectedKeys="['1']"
+      :defaultSelectedKeys="defaultSelectedKeys"
       :defaultOpenKeys="['sub1','sub2', 'sub3','sub4']"
+      @select="saveSelectedKey"
       mode="inline"
       theme="dark"
       :inlineCollapsed="collapsed">
@@ -40,6 +41,21 @@
 
 <script>
 export default {
-  props: ['collapsed']
+  props: ['collapsed'],
+  data () {
+    return {
+      defaultSelectedKeys: ['1']
+    }
+  },
+  created () {
+    let key = JSON.parse(localStorage.getItem('defaultSelectedKeys')) || ['1']
+    this.defaultSelectedKeys = key
+  },
+  methods: {
+    // 存储所选的key
+    saveSelectedKey ({ item, key, selectedKeys }) {
+      localStorage.setItem('defaultSelectedKeys', JSON.stringify([key]))
+    }
+  }
 }
 </script>
