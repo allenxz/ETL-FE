@@ -18,7 +18,7 @@
         :label-col="formItemLayout.labelCol"
         :wrapper-col="formItemLayout.wrapperCol"
         label="密码">
-        <a-input
+        <a-input-password
           v-decorator="[
             'password',
             { rules: [{ required: true, message: '此项不能为空' }] },
