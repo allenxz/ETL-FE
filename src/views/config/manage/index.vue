@@ -47,10 +47,15 @@
         :pagination="pagination"
         :rowSelection="rowSelection"
         @change="handleTableChange">
+        <span slot="configureName" slot-scope="row">
+          <router-link :to="{name: 'preview', params:{id: row.configureId, type: 'configure'}}">
+            {{row.configureName}}
+          </router-link>
+        </span>
         <span slot="state" slot-scope="state">
           <a-tag :color="getStateColor(state)">{{state}}</a-tag>
         </span>
-        <span slot="updateTime" slot-scope="updateTime">
+        <span slot="updateTime" slot-scope="updateTime" :title="formatDateTime(updateTime)">
           {{formatDateTime(updateTime)}}
         </span>
         <span slot="action" slot-scope="row">
@@ -185,9 +190,13 @@ export default {
         let res = await fetch.post('/batchDeleteConfigure', {
           configureIds: JSON.stringify(this.rowSelection.selectedRowKeys)
         })
-        this.$message.success(res.data.message)
-        this.rowSelection.selectedRowKeys = []
-        this.getAllConfigures(this.pagination.pageSize, this.pagination.current)
+        if (res.data) {
+          this.$message.success(res.data.message)
+          this.rowSelection.selectedRowKeys = []
+          this.getAllConfigures(this.pagination.pageSize, this.pagination.current)
+        } else {
+          this.$message.error(res.exception)
+        }
       }
     },
     // 导出配置

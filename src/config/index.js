@@ -65,21 +65,15 @@ let config = {
   },
   CONFIG_COLUMNS: [
     {
-      title: '配置文件ID',
-      dataIndex: 'configureId',
-      key: 'configureId',
+      title: '配置文件名',
+      key: 'configureName',
+      scopedSlots: { customRender: 'configureName' },
       ellipsis: true
     },
     {
       title: '配置文件类型',
       dataIndex: 'configureType',
       key: 'configureType',
-      ellipsis: true
-    },
-    {
-      title: '配置文件名',
-      dataIndex: 'configureName',
-      key: 'configureName',
       ellipsis: true
     },
     {
@@ -92,7 +86,6 @@ let config = {
       title: '状态',
       dataIndex: 'state',
       key: 'state',
-      width: 80,
       scopedSlots: { customRender: 'state' },
       sorter: (a, b) => {
         return a.state > b.state
