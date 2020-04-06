@@ -34,10 +34,10 @@
           {{formatDateTime(updateTime)}}
         </span>
         <span slot="action" slot-scope="row">
-          <router-link :to="{name: 'processEditer', params:{id: row.processId}}">
+          <a href="javascript:;" @click="edit(row.processId)">
             <a-icon type="edit" />
             编辑
-          </router-link>
+          </a>
           <a-divider type="vertical" />
           <a-popconfirm
             title="确定删除该流程?"
@@ -218,6 +218,23 @@ export default {
         })
       }
       return false
+    },
+    // 校验权限
+    async checkPermission (processId) {
+      let res = await fetch.post('/checkProcessPermission', {
+        processId
+      })
+      return Boolean(res.data.message)
+    },
+    // 编辑
+    async edit (id) {
+      let hasPermission = await this.checkPermission(id)
+      console.log(hasPermission)
+      if (hasPermission) {
+        this.$router.push({ name: 'processEditer', params: { id } })
+      } else {
+        this.$message.error('只有创建者才能编辑自己的流程，你没有相关权限')
+      }
     }
   }
 }
