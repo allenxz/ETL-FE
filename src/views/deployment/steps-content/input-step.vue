@@ -36,19 +36,9 @@ export default {
   methods: {
     // 获取所有配置文件并筛选出输入文件
     async getAllConfigures () {
-      // 第一次查询获得总长度
-      let firstSearch = await fetch.post('/getAllConfigures', {
-        pageSize: 10,
-        pageNumber: 1
-      })
-      let total = firstSearch.data.pageSize * firstSearch.data.totalPages
-      // 第二次查询获取所有数据
-      let secondSearch = await fetch.post('/getAllConfigures', {
-        pageSize: total,
-        pageNumber: 1
-      })
+      let search = await fetch.post('/getAllPrivateConfigures')
       // 过滤出输入配置文件
-      this.options = secondSearch.data.confDesc.filter(item => item.configureType.slice(-6) === 'reader')
+      this.options = search.data.confDesc.filter(item => item.configureType.slice(-6) === 'reader')
       this.getConfigDesc(this.readerID)
     },
     // 获取配置文件详情并格式化
@@ -60,7 +50,11 @@ export default {
       let res = await fetch.post('/getOneConfigure', {
         configureId: value
       })
-      this.desc = formatJson(JSON.parse(res.data.configureContent))
+      let configureContent = JSON.parse(res.data.configureContent)
+      if (configureContent.parameter.hasOwnProperty('password')) {
+        configureContent.parameter.password = '********'
+      }
+      this.desc = formatJson(configureContent)
     }
   }
 }

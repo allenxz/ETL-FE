@@ -59,7 +59,11 @@ export default {
       let res = await fetch.post('/getOneConfigure', {
         configureId: id
       })
-      this.readerDesc = formatJson(JSON.parse(res.data.configureContent))
+      let configureContent = JSON.parse(res.data.configureContent)
+      if (configureContent.parameter.hasOwnProperty('password')) {
+        configureContent.parameter.password = '********'
+      }
+      this.readerDesc = formatJson(configureContent)
     },
     // 获取输出配置详情并格式化
     async getWriterDesc (id) {
@@ -69,7 +73,11 @@ export default {
       let res = await fetch.post('/getOneConfigure', {
         configureId: id
       })
-      this.writerDesc = formatJson(JSON.parse(res.data.configureContent))
+      let configureContent = JSON.parse(res.data.configureContent)
+      if (configureContent.parameter.hasOwnProperty('password')) {
+        configureContent.parameter.password = '********'
+      }
+      this.writerDesc = formatJson(configureContent)
     }
   }
 }
