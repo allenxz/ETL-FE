@@ -13,6 +13,7 @@ import MongodbWriter from '@/views/config/form/mongodb-writer'
 import HDFSWriter from '@/views/config/form/hdfs-writer'
 import DeploymentManage from '@/views/deployment/manage'
 import DeploymentEditer from '@/views/deployment/editer'
+import Preview from '@/views/preview'
 
 Vue.use(VueRouter)
 
@@ -126,6 +127,15 @@ const routes = [
         meta: {
           addTitle: '创建部署',
           editTitle: '编辑部署',
+          isSubPage: true
+        }
+      },
+      {
+        path: '/preview',
+        name: 'preview',
+        component: Preview,
+        meta: {
+          addTitle: '预览',
           isSubPage: true
         }
       }

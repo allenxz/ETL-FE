@@ -6,28 +6,34 @@ let config = {
   PROCESS_COLUMNS: [
     {
       title: '流程名称',
-      dataIndex: 'processName',
-      key: 'processName'
+      key: 'processName',
+      ellipsis: true,
+      scopedSlots: { customRender: 'processName' }
     },
     {
       title: '创建者',
       dataIndex: 'userName',
-      key: 'userName'
+      key: 'userName',
+      ellipsis: true
     },
     {
       title: '输入类型',
       key: 'input',
-      dataIndex: 'input'
+      dataIndex: 'input',
+      ellipsis: true
     },
     {
       title: '输出类型',
       dataIndex: 'output',
-      key: 'output'
+      key: 'output',
+      ellipsis: true
     },
     {
       title: '状态',
       dataIndex: 'state',
       key: 'state',
+      width: 80,
+      ellipsis: true,
       scopedSlots: { customRender: 'state' },
       sorter: (a, b) => {
         return a.state > b.state
@@ -37,6 +43,7 @@ let config = {
       title: '最近编辑时间',
       key: 'updateTime',
       dataIndex: 'updateTime',
+      ellipsis: true,
       scopedSlots: { customRender: 'updateTime' },
       sorter: (a, b) => {
         return dateUtil.getTime(a.updateTime) - dateUtil.getTime(b.updateTime)
@@ -47,6 +54,7 @@ let config = {
       key: 'action',
       fixed: 'right',
       width: 250,
+      ellipsis: true,
       scopedSlots: { customRender: 'action' }
     }
   ],
@@ -59,27 +67,32 @@ let config = {
     {
       title: '配置文件ID',
       dataIndex: 'configureId',
-      key: 'configureId'
+      key: 'configureId',
+      ellipsis: true
     },
     {
       title: '配置文件类型',
       dataIndex: 'configureType',
-      key: 'configureType'
+      key: 'configureType',
+      ellipsis: true
     },
     {
       title: '配置文件名',
       dataIndex: 'configureName',
-      key: 'configureName'
+      key: 'configureName',
+      ellipsis: true
     },
     {
       title: '创建者',
       dataIndex: 'userName',
-      key: 'userName'
+      key: 'userName',
+      ellipsis: true
     },
     {
       title: '状态',
       dataIndex: 'state',
       key: 'state',
+      width: 80,
       scopedSlots: { customRender: 'state' },
       sorter: (a, b) => {
         return a.state > b.state
@@ -89,6 +102,7 @@ let config = {
       title: '最近更新时间',
       key: 'updateTime',
       dataIndex: 'updateTime',
+      ellipsis: true,
       scopedSlots: { customRender: 'updateTime' },
       sorter: (a, b) => {
         return dateUtil.getTime(a.updateTime) - dateUtil.getTime(b.updateTime)
@@ -99,6 +113,7 @@ let config = {
       key: 'action',
       fixed: 'right',
       width: 200,
+      ellipsis: true,
       scopedSlots: { customRender: 'action' }
     }
   ],
@@ -107,40 +122,48 @@ let config = {
       title: '部署ID',
       dataIndex: 'deploymentId',
       key: 'deploymentId',
+      ellipsis: true,
       scopedSlots: { customRender: 'deploymentId' }
     },
     {
       title: '部署名',
       dataIndex: 'deploymentName',
-      key: 'deploymentName'
+      key: 'deploymentName',
+      ellipsis: true
     },
     {
       title: '创建者',
       dataIndex: 'userName',
-      key: 'userName'
+      key: 'userName',
+      ellipsis: true
     },
     {
       title: '输入配置文件ID',
       dataIndex: 'sourceConfigureId',
       key: 'sourceConfigureId',
+      ellipsis: true,
       scopedSlots: { customRender: 'sourceConfigureId' }
     },
     {
       title: '输出配置文件ID',
       dataIndex: 'targetConfigureId',
       key: 'targetConfigureId',
+      ellipsis: true,
       scopedSlots: { customRender: 'targetConfigureId' }
     },
     {
       title: '部署的流程ID',
       dataIndex: 'processId',
       key: 'processId',
+      ellipsis: true,
       scopedSlots: { customRender: 'processId' }
     },
     {
       title: '状态',
       dataIndex: 'state',
       key: 'state',
+      width: 80,
+      ellipsis: true,
       scopedSlots: { customRender: 'state' },
       sorter: (a, b) => {
         return a.state > b.state
@@ -150,6 +173,7 @@ let config = {
       title: '最近更新时间',
       key: 'updateTime',
       dataIndex: 'updateTime',
+      ellipsis: true,
       scopedSlots: { customRender: 'updateTime' },
       sorter: (a, b) => {
         return dateUtil.getTime(a.updateTime) - dateUtil.getTime(b.updateTime)
@@ -160,6 +184,7 @@ let config = {
       key: 'action',
       fixed: 'right',
       width: 300,
+      ellipsis: true,
       scopedSlots: { customRender: 'action' }
     }
   ]

@@ -54,19 +54,21 @@
           {{formatDateTime(updateTime)}}
         </span>
         <span slot="action" slot-scope="row">
-          <a href="javascript:;" @click="editConfig(row.configureId,row.configureType)">
+          <a-button type="dashed"  size="small" :disabled="row.state === '使用中'"  @click="editConfig(row.configureId,row.configureType)">
+            <a-icon type="edit" />
             编辑
-          </a>
+          </a-button>
           <a-divider type="vertical" />
           <a-popconfirm
             title="确定删除该配置?"
             @confirm="confirmDelete(row.configureId)"
+            :disabled="row.state === '使用中'"
             okText="是"
             cancelText="否">
-            <a href="javascript:;" style="color:red;">
+            <a-button type="danger"  size="small" :disabled="row.state === '使用中'">
               <a-icon type="delete" />
               删除
-            </a>
+            </a-button>
           </a-popconfirm>
         </span>
       </a-table>
@@ -136,7 +138,11 @@ export default {
       this.$router.push({ path })
     },
     // 编辑配置
-    editConfig (configureId, configureType) {
+    async editConfig (configureId, configureType) {
+      let hasPermission = await this.checkPermission(configureId)
+      if (!hasPermission) {
+        return
+      }
       let id = configureId
       if (configureType === 'mysqlreader') {
         this.$router.push({ name: 'mysqlReader', params: { id } })
@@ -154,6 +160,10 @@ export default {
     },
     // 二次确认删除
     async confirmDelete (configureId) {
+      let hasPermission = await this.checkPermission(configureId)
+      if (!hasPermission) {
+        return
+      }
       let res = await fetch.post('/deleteConfigure', {
         configureId
       })
@@ -224,6 +234,18 @@ export default {
         })
       }
       return false
+    },
+    // 校验权限
+    async checkPermission (configureId) {
+      let res = await fetch.post('/checkConfigurePermission', {
+        configureId
+      })
+      if (res.data.message === 'true') {
+        return true
+      } else {
+        this.$message.error('只有创建者才能操作自己的配置文件，你没有相关权限')
+        return false
+      }
     }
   }
 }

@@ -27,33 +27,39 @@
         :pagination="pagination"
         :rowSelection="rowSelection"
         @change="handleTableChange">
+        <span slot="processName" slot-scope="row">
+          <router-link :to="{name: 'preview', params:{id: row.processId, type: 'process'}}">
+            {{row.processName}}
+          </router-link>
+        </span>
         <span slot="state" slot-scope="state">
           <a-tag :color="getStateColor(state)">{{state}}</a-tag>
         </span>
-        <span slot="updateTime" slot-scope="updateTime">
+        <span slot="updateTime" slot-scope="updateTime" :title="formatDateTime(updateTime)">
           {{formatDateTime(updateTime)}}
         </span>
         <span slot="action" slot-scope="row">
-          <a href="javascript:;" @click="edit(row.processId)">
+          <a-button type="dashed"  size="small" :disabled="row.state === '运行中'"  @click="edit(row.processId)">
             <a-icon type="edit" />
             编辑
-          </a>
+          </a-button>
+          <a-divider type="vertical" />
+          <a-button type="dashed"  size="small" @click="showNameModal(row.processId)">
+            <a-icon type="copy" />
+            复制
+          </a-button>
           <a-divider type="vertical" />
           <a-popconfirm
             title="确定删除该流程?"
             @confirm="confirmDelete(row.processId)"
+            :disabled="row.state === '运行中'"
             okText="是"
             cancelText="否">
-            <a href="javascript:;" style="color:red;">
+            <a-button type="danger"  size="small" :disabled="row.state === '运行中'">
               <a-icon type="delete" />
               删除
-            </a>
+            </a-button>
           </a-popconfirm>
-          <a-divider type="vertical" />
-          <a href="javascript:;" @click="showNameModal(row.processId)">
-            <a-icon type="copy" />
-            复制
-          </a>
         </span>
       </a-table>
       <a-modal title="为拷贝的新流程命名" v-model="visible" @ok="copyProcess">
@@ -124,6 +130,10 @@ export default {
     },
     // 二次确认删除
     async confirmDelete (processId) {
+      let hasPermission = await this.checkPermission(processId)
+      if (!hasPermission) {
+        return
+      }
       let res = await fetch.post('/deleteProcess', {
         processId
       })
@@ -169,9 +179,13 @@ export default {
         let res = await fetch.post('/batchDeleteProcess', {
           processIds: JSON.stringify(this.rowSelection.selectedRowKeys)
         })
-        this.$message.success(res.data.message)
-        this.rowSelection.selectedRowKeys = []
-        this.getAllProcess(this.pagination.pageSize, this.pagination.current)
+        if (res.data) {
+          this.$message.success(res.data.message)
+          this.rowSelection.selectedRowKeys = []
+          this.getAllProcess(this.pagination.pageSize, this.pagination.current)
+        } else {
+          this.$message.error(res.exception)
+        }
       }
     },
     // 导出流程
@@ -224,17 +238,20 @@ export default {
       let res = await fetch.post('/checkProcessPermission', {
         processId
       })
-      return Boolean(res.data.message)
+      if (res.data.message === 'true') {
+        return true
+      } else {
+        this.$message.error('只有创建者才能操作自己的流程，你没有相关权限')
+        return false
+      }
     },
     // 编辑
     async edit (id) {
       let hasPermission = await this.checkPermission(id)
-      console.log(hasPermission)
-      if (hasPermission) {
-        this.$router.push({ name: 'processEditer', params: { id } })
-      } else {
-        this.$message.error('只有创建者才能编辑自己的流程，你没有相关权限')
+      if (!hasPermission) {
+        return
       }
+      this.$router.push({ name: 'processEditer', params: { id } })
     }
   }
 }
