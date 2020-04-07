@@ -7,7 +7,9 @@
         </template>
         <a-icon type="question-circle" />
       </a-tooltip>
-
+    </li>
+    <li class="icon">
+      <a-icon type="bell" />
     </li>
     <li>
       <avatar></avatar>
