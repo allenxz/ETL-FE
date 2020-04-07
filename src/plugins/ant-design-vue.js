@@ -33,6 +33,7 @@ import {
 
 Vue.prototype.$message = message
 Vue.prototype.$notification = notification
+Vue.prototype.$confirm = Modal.confirm
 
 Vue.use(LocaleProvider)
 Vue.use(Pagination)

@@ -23,41 +23,41 @@
           <span slot="state" slot-scope="state">
             <a-tag :color="getStateColor(state)">{{state}}</a-tag>
           </span>
-          <span slot="deploymentId" slot-scope="deploymentId">
-            {{formatID(deploymentId)}}
+          <span slot="input" slot-scope="row">
+            <router-link :to="{name: 'preview', params:{id: row.sourceConfigureId, type: 'configure'}}">
+              {{row.input}}
+            </router-link>
           </span>
-          <span slot="sourceConfigureId" slot-scope="sourceConfigureId">
-            {{formatID(sourceConfigureId)}}
+          <span slot="output" slot-scope="row">
+            <router-link :to="{name: 'preview', params:{id: row.targetConfigureId, type: 'configure'}}">
+              {{row.output}}
+            </router-link>
           </span>
-          <span slot="targetConfigureId" slot-scope="targetConfigureId">
-            {{formatID(targetConfigureId)}}
+          <span slot="processName" slot-scope="row">
+            <router-link :to="{name: 'preview', params:{id: row.processId, type: 'process'}}">
+              {{row.processName}}
+            </router-link>
           </span>
-          <span slot="processId" slot-scope="processId">
-            {{formatID(processId)}}
-          </span>
-          <span slot="updateTime" slot-scope="updateTime">
+          <span slot="updateTime" slot-scope="updateTime" :title="formatDateTime(updateTime)">
             {{formatDateTime(updateTime)}}
           </span>
           <span slot="action" slot-scope="row">
-            <router-link :to="{name: 'deploymentEditer', params:{id: row.deploymentId}}">
+            <a-button type="dashed"  size="small" :disabled="row.state === '运行中'"  @click="edit(row.deploymentId)" title="编辑部署">
               <a-icon type="edit" />
-              编辑
-            </router-link>
+            </a-button>
             <a-divider type="vertical" />
-            <a @click="startDeployment(row.deploymentId)">
+            <a-button type="dashed"  size="small" :disabled="row.state === '运行中'" @click="startDeployment(row.deploymentId)" title="启动部署">
               <a-icon type="play-circle" />
-              启动
-            </a>
+            </a-button>
             <a-divider type="vertical" />
             <a-popconfirm
               title="确定暂停该部署?"
               @confirm="stopDeployment(row.deploymentId)"
               okText="是"
               cancelText="否">
-              <a href="javascript:;" style="color:red;">
+              <a-button type="danger"  size="small" :disabled="row.state === '停止'" title="暂停部署">
                 <a-icon type="pause-circle" />
-                暂停
-              </a>
+              </a-button>
             </a-popconfirm>
             <a-divider type="vertical" />
             <a-popconfirm
@@ -65,10 +65,9 @@
               @confirm="confirmDelete(row.deploymentId)"
               okText="是"
               cancelText="否">
-              <a href="javascript:;" style="color:red;">
+              <a-button type="danger"  size="small" :disabled="row.state === '运行中'" title="删除部署">
                 <a-icon type="delete" />
-                删除
-              </a>
+              </a-button>
             </a-popconfirm>
           </span>
         </a-table>
@@ -126,7 +125,6 @@ export default {
         pageNumber
       })
       this.data = res.data.deployDesc
-      console.log(this.data)
       this.pagination.total = res.data.totalPages * res.data.pageSize
     },
     // 切换页码
@@ -141,6 +139,11 @@ export default {
     },
     // 二次确认删除
     async confirmDelete (deploymentId) {
+      let hasPermission = await this.checkPermission(deploymentId)
+      if (!hasPermission) {
+        this.$message.error('只有创建者才能操作自己的部署，你没有相关权限')
+        return
+      }
       let res = await fetch.post('/deleteDeployment', {
         deploymentId
       })
@@ -162,13 +165,40 @@ export default {
         let res = await fetch.post('/batchDeleteDeployment', {
           deploymentIds: JSON.stringify(this.rowSelection.selectedRowKeys)
         })
-        this.$message.success(res.data.message)
-        this.rowSelection.selectedRowKeys = []
-        this.getAllDeployments(this.pagination.pageSize, this.pagination.current)
+        if (res.data) {
+          this.$message.success(res.data.message)
+          this.rowSelection.selectedRowKeys = []
+          this.getAllDeployments(this.pagination.pageSize, this.pagination.current)
+        } else {
+          this.$message.error(res.exception)
+        }
       }
     },
     // 启动部署
     async startDeployment (deploymentId) {
+      const _this = this
+      let hasPermission = await this.checkPermission(deploymentId)
+      if (!hasPermission) {
+        _this.$confirm({
+          content: '你没有权限启动该部署，是否申请操作权限',
+          async onOk () {
+            let request = await fetch.post('/authorizeRequest', {
+              deploymentId
+            })
+            if (request.data) {
+              _this.$message.success(request.data.message)
+            } else {
+              _this.$message.error(request.exception)
+            }
+          },
+          okText: '是',
+          cancelText: '否'
+        })
+        return
+      } else if (hasPermission !== true) {
+        _this.$message.error(hasPermission)
+        return
+      }
       let res = await fetch.post('/startDeployment', {
         deploymentId
       })
@@ -181,6 +211,29 @@ export default {
     },
     // 暂停部署
     async stopDeployment (deploymentId) {
+      const _this = this
+      let hasPermission = await this.checkPermission(deploymentId)
+      if (!hasPermission) {
+        _this.$confirm({
+          content: '你没有权限暂停该部署，是否申请操作权限',
+          async onOk () {
+            let request = await fetch.post('/authorizeRequest', {
+              deploymentId
+            })
+            if (request.data) {
+              _this.$message.success(request.data.message)
+            } else {
+              _this.$message.error(request.exception)
+            }
+          },
+          okText: '是',
+          cancelText: '否'
+        })
+        return
+      } else if (hasPermission !== true) {
+        _this.$message.error(hasPermission)
+        return
+      }
       let res = await fetch.post('/stopDeployment', {
         deploymentId
       })
@@ -190,6 +243,28 @@ export default {
         this.$message.success(res.data.message)
         this.getAllDeployments(this.pagination.pageSize, this.pagination.current)
       }
+    },
+    // 校验权限
+    async checkPermission (deploymentId) {
+      let res = await fetch.post('/checkDeploymentPermission', {
+        deploymentId
+      })
+      if (res.data.message === 'true') {
+        return true
+      } else if (res.data.message === 'false') {
+        return false
+      } else {
+        return res.data.message
+      }
+    },
+    // 编辑
+    async edit (id) {
+      let hasPermission = await this.checkPermission(id)
+      if (!hasPermission) {
+        this.$message.error('只有创建者才能操作自己的部署，你没有相关权限')
+        return
+      }
+      this.$router.push({ name: 'deploymentEditer', params: { id } })
     }
   }
 }

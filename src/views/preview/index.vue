@@ -27,8 +27,7 @@ export default {
     getTypeChineseName () {
       const map = {
         process: '流程',
-        configure: '配置',
-        deployment: '部署'
+        configure: '配置'
       }
       return map[this.type]
     },
@@ -52,7 +51,7 @@ export default {
         [map[this.type].idName]: this.id
       })
       this.desc = JSON.parse(res.data[map[this.type].descName])
-      if (this.desc.parameter.hasOwnProperty('password')) {
+      if (this.type === 'configure' && this.desc.parameter.hasOwnProperty('password')) {
         this.desc.parameter.password = '********'
       }
       this.name = res.data[map[this.type].name]

@@ -112,14 +112,8 @@ let config = {
   ],
   DEPLOYMENT_COLUMNS: [
     {
-      title: '部署ID',
-      dataIndex: 'deploymentId',
-      key: 'deploymentId',
-      ellipsis: true,
-      scopedSlots: { customRender: 'deploymentId' }
-    },
-    {
       title: '部署名',
+      fixed: 'left',
       dataIndex: 'deploymentName',
       key: 'deploymentName',
       ellipsis: true
@@ -131,25 +125,22 @@ let config = {
       ellipsis: true
     },
     {
-      title: '输入配置文件ID',
-      dataIndex: 'sourceConfigureId',
-      key: 'sourceConfigureId',
-      ellipsis: true,
-      scopedSlots: { customRender: 'sourceConfigureId' }
+      title: '输入配置',
+      key: 'input',
+      scopedSlots: { customRender: 'input' },
+      ellipsis: true
     },
     {
-      title: '输出配置文件ID',
-      dataIndex: 'targetConfigureId',
-      key: 'targetConfigureId',
-      ellipsis: true,
-      scopedSlots: { customRender: 'targetConfigureId' }
+      title: '输出配置',
+      key: 'output',
+      scopedSlots: { customRender: 'output' },
+      ellipsis: true
     },
     {
-      title: '部署的流程ID',
-      dataIndex: 'processId',
-      key: 'processId',
-      ellipsis: true,
-      scopedSlots: { customRender: 'processId' }
+      title: '流程名',
+      scopedSlots: { customRender: 'processName' },
+      key: 'processName',
+      ellipsis: true
     },
     {
       title: '状态',
@@ -176,7 +167,7 @@ let config = {
       title: '操作',
       key: 'action',
       fixed: 'right',
-      width: 300,
+      width: 200,
       ellipsis: true,
       scopedSlots: { customRender: 'action' }
     }
