@@ -25,19 +25,13 @@
             <a-tag :color="getStateColor(state)">{{state}}</a-tag>
           </span>
           <span slot="input" slot-scope="row">
-            <router-link :to="{name: 'preview', params:{id: row.sourceConfigureId, type: 'configure'}}">
-              {{row.input}}
-            </router-link>
+            <a @click="preview(row.sourceConfigureId, 'configure')">{{row.sourceConfigureId}}</a>
           </span>
           <span slot="output" slot-scope="row">
-            <router-link :to="{name: 'preview', params:{id: row.targetConfigureId, type: 'configure'}}">
-              {{row.output}}
-            </router-link>
+            <a @click="preview(row.targetConfigureId, 'configure')">{{row.targetConfigureId}}</a>
           </span>
           <span slot="processName" slot-scope="row">
-            <router-link :to="{name: 'preview', params:{id: row.processId, type: 'process'}}">
-              {{row.processName}}
-            </router-link>
+            <a @click="preview(row.processId, 'process')">{{row.processId}}</a>
           </span>
           <span slot="updateTime" slot-scope="updateTime" :title="formatDateTime(updateTime)">
             {{formatDateTime(updateTime)}}
@@ -103,6 +97,11 @@ export default {
     }
   },
   mounted () {
+    let pagination = localStorage.getItem('pagination')
+    if (pagination) {
+      this.pagination = JSON.parse(pagination)
+      localStorage.removeItem('pagination')
+    }
     this.getAllDeployments(this.pagination.pageSize, this.pagination.current)
   },
   watch: {
@@ -273,7 +272,7 @@ export default {
     // 编辑
     async edit (id) {
       let hasPermission = await this.checkPermission(id)
-      if (!hasPermission) {
+      if (hasPermission !== true) {
         this.$message.error('只有创建者才能操作自己的部署，你没有相关权限')
         return
       }
@@ -282,6 +281,11 @@ export default {
     // 切换查看的对象
     changeViewTarget (e) {
       this.isViewSelf = e.target.checked
+    },
+    // 预览
+    preview (id, type) {
+      localStorage.setItem('pagination', JSON.stringify(this.pagination))
+      this.$router.push({ name: 'preview', params: { id, type } })
     }
   }
 }

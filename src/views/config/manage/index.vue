@@ -49,9 +49,7 @@
         :rowSelection="rowSelection"
         @change="handleTableChange">
         <span slot="configureName" slot-scope="row">
-          <router-link :to="{name: 'preview', params:{id: row.configureId, type: 'configure'}}">
-            {{row.configureName}}
-          </router-link>
+          <a @click="preview(row)">{{row.configureName}}</a>
         </span>
         <span slot="state" slot-scope="state">
           <a-tag :color="getStateColor(state)">{{state}}</a-tag>
@@ -110,6 +108,11 @@ export default {
     }
   },
   mounted () {
+    let pagination = localStorage.getItem('pagination')
+    if (pagination) {
+      this.pagination = JSON.parse(pagination)
+      localStorage.removeItem('pagination')
+    }
     this.getAllConfigures(this.pagination.pageSize, this.pagination.current)
   },
   watch: {
@@ -272,6 +275,11 @@ export default {
     // 切换查看的对象
     changeViewTarget (e) {
       this.isViewSelf = e.target.checked
+    },
+    // 预览
+    preview (row) {
+      localStorage.setItem('pagination', JSON.stringify(this.pagination))
+      this.$router.push({ name: 'preview', params: { id: row.configureId, type: 'configure' } })
     }
   }
 }
