@@ -38,6 +38,7 @@
         >
         <a-button>配置导入</a-button>
       </a-upload>
+      <a-checkbox @change="changeViewTarget">只看自己</a-checkbox>
     </div>
     <div class="config-table">
       <a-table
@@ -103,11 +104,23 @@ export default {
         showQuickJumper: true,
         pageSizeOptions: ['5', '10', '20', '50']
       },
-      configType
+      configType,
+      isViewSelf: false,
+      getAllConfiguresPath: '/getAllConfigures'
     }
   },
   mounted () {
     this.getAllConfigures(this.pagination.pageSize, this.pagination.current)
+  },
+  watch: {
+    isViewSelf (newVal) {
+      if (newVal) {
+        this.getAllConfiguresPath = '/getAllPrivateConfigures'
+      } else {
+        this.getAllConfiguresPath = '/getAllConfigures'
+      }
+      this.getAllConfigures(this.pagination.pageSize, this.pagination.current)
+    }
   },
   methods: {
     // 获取状态标签的颜色
@@ -120,7 +133,7 @@ export default {
     },
     // 获取指定页数，页码的流程
     async getAllConfigures (pageSize, pageNumber) {
-      let res = await fetch.post('/getAllConfigures', {
+      let res = await fetch.post(this.getAllConfiguresPath, {
         pageSize,
         pageNumber
       })
@@ -255,6 +268,10 @@ export default {
         this.$message.error('只有创建者才能操作自己的配置文件，你没有相关权限')
         return false
       }
+    },
+    // 切换查看的对象
+    changeViewTarget (e) {
+      this.isViewSelf = e.target.checked
     }
   }
 }

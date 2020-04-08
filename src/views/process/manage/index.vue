@@ -18,6 +18,7 @@
         >
         <a-button>流程导入</a-button>
       </a-upload>
+      <a-checkbox @change="changeViewTarget">只看自己</a-checkbox>
     </div>
     <div class="process-table">
       <a-table
@@ -94,11 +95,23 @@ export default {
       },
       visible: false,
       newProcessName: '',
-      copyedProcessId: ''
+      copyedProcessId: '',
+      isViewSelf: false,
+      getAllProcessPath: '/getAllProcess'
     }
   },
   mounted () {
     this.getAllProcess(this.pagination.pageSize, this.pagination.current)
+  },
+  watch: {
+    isViewSelf (newVal) {
+      if (newVal) {
+        this.getAllProcessPath = '/getAllPrivateProcess'
+      } else {
+        this.getAllProcessPath = '/getAllProcess'
+      }
+      this.getAllProcess(this.pagination.pageSize, this.pagination.current)
+    }
   },
   methods: {
     // 获取状态标签的颜色
@@ -111,7 +124,7 @@ export default {
     },
     // 获取指定页数，页码的流程
     async getAllProcess (pageSize, pageNumber) {
-      let res = await fetch.post('/getAllProcess', {
+      let res = await fetch.post(this.getAllProcessPath, {
         pageSize,
         pageNumber
       })
@@ -252,6 +265,10 @@ export default {
         return
       }
       this.$router.push({ name: 'processEditer', params: { id } })
+    },
+    // 切换查看的对象
+    changeViewTarget (e) {
+      this.isViewSelf = e.target.checked
     }
   }
 }

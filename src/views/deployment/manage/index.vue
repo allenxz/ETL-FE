@@ -11,6 +11,7 @@
           cancelText="否">
           <a-button type="danger">部署删除</a-button>
         </a-popconfirm>
+        <a-checkbox @change="changeViewTarget">只看自己</a-checkbox>
       </div>
       <div class="deployment-table">
         <a-table
@@ -96,11 +97,23 @@ export default {
         showSizeChanger: true,
         showQuickJumper: true,
         pageSizeOptions: ['5', '10', '20', '50']
-      }
+      },
+      isViewSelf: false,
+      getAllDeploymentsPath: '/getAllDeployments'
     }
   },
   mounted () {
     this.getAllDeployments(this.pagination.pageSize, this.pagination.current)
+  },
+  watch: {
+    isViewSelf (newVal) {
+      if (newVal) {
+        this.getAllDeploymentsPath = '/getAllPrivateDeployments'
+      } else {
+        this.getAllDeploymentsPath = '/getAllDeployments'
+      }
+      this.getAllDeployments(this.pagination.pageSize, this.pagination.current)
+    }
   },
   methods: {
     // 获取状态标签的颜色
@@ -120,7 +133,7 @@ export default {
     },
     // 获取指定页数，页码的部署
     async getAllDeployments (pageSize, pageNumber) {
-      let res = await fetch.post('/getAllDeployments', {
+      let res = await fetch.post(this.getAllDeploymentsPath, {
         pageSize,
         pageNumber
       })
@@ -265,6 +278,10 @@ export default {
         return
       }
       this.$router.push({ name: 'deploymentEditer', params: { id } })
+    },
+    // 切换查看的对象
+    changeViewTarget (e) {
+      this.isViewSelf = e.target.checked
     }
   }
 }
