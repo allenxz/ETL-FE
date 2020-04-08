@@ -171,6 +171,39 @@ let config = {
       ellipsis: true,
       scopedSlots: { customRender: 'action' }
     }
+  ],
+  PERMISSION_COLUMNS: [
+    {
+      title: '请求部署名',
+      fixed: 'left',
+      dataIndex: 'deploymentName',
+      key: 'deploymentName',
+      ellipsis: true
+    },
+    {
+      title: '发送者',
+      dataIndex: 'senderName',
+      key: 'senderName',
+      ellipsis: true
+    },
+    {
+      title: '发送时间',
+      key: 'sendTime',
+      dataIndex: 'sendTime',
+      ellipsis: true,
+      scopedSlots: { customRender: 'sendTime' },
+      sorter: (a, b) => {
+        return dateUtil.getTime(a.sendTime) - dateUtil.getTime(b.sendTime)
+      }
+    },
+    {
+      title: '操作',
+      key: 'action',
+      fixed: 'right',
+      width: 200,
+      ellipsis: true,
+      scopedSlots: { customRender: 'action' }
+    }
   ]
 }
 

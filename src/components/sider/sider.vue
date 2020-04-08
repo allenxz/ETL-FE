@@ -34,7 +34,7 @@
       <a-sub-menu key="sub4">
         <span slot="title"><a-icon type="alert" /><span>权限管理</span></span>
         <a-menu-item key="6">
-          权限审批
+          <router-link to="/permission-approval">权限审批</router-link>
         </a-menu-item>
         <a-menu-item key="7">
           权限查看

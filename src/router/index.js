@@ -14,6 +14,7 @@ import HDFSWriter from '@/views/config/form/hdfs-writer'
 import DeploymentManage from '@/views/deployment/manage'
 import DeploymentEditer from '@/views/deployment/editer'
 import Preview from '@/views/preview'
+import PermissionApproval from '@/views/permission/approval'
 
 Vue.use(VueRouter)
 
@@ -137,6 +138,14 @@ const routes = [
         meta: {
           addTitle: '预览',
           isSubPage: true
+        }
+      },
+      {
+        path: '/permission-approval',
+        name: 'permissionApproval',
+        component: PermissionApproval,
+        meta: {
+          title: '权限审批'
         }
       }
     ]

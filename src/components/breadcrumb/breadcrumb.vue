@@ -75,6 +75,8 @@ export default {
         this.categoryName = '参数配置'
       } else if (name === '/deployment') {
         this.categoryName = '部署配置'
+      } else if (name === '/permission') {
+        this.categoryName = '权限管理'
       } else {
         this.categoryName = ''
       }
