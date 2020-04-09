@@ -176,7 +176,7 @@ let config = {
     {
       title: '请求部署名',
       fixed: 'left',
-      dataIndex: 'deploymentName',
+      scopedSlots: { customRender: 'deploymentName' },
       key: 'deploymentName',
       ellipsis: true
     },

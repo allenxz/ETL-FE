@@ -4,34 +4,41 @@
       <a-table
         :columns="columns"
         :dataSource="data"
-        rowKey="processId"
+        rowKey="noticeId"
         :pagination="pagination">
+        <span slot="deploymentName" slot-scope="row">
+            <a @click="preview(row.deploymentId, 'deployment')">{{row.deploymentName}}</a>
+          </span>
         <span slot="sendTime" slot-scope="sendTime" :title="formatDateTime(sendTime)">
           {{formatDateTime(sendTime)}}
         </span>
         <span slot="action" slot-scope="row">
-          <a-button type="dashed"  size="small" :disabled="row.state === '运行中'"  @click="edit(row.processId)">
-            <a-icon type="edit" />
-            编辑
-          </a-button>
-          <a-divider type="vertical" />
-          <a-button type="dashed"  size="small" @click="showNameModal(row.processId)">
-            <a-icon type="copy" />
-            复制
-          </a-button>
-          <a-divider type="vertical" />
           <a-popconfirm
-            title="确定删除该流程?"
-            @confirm="confirmDelete(row.processId)"
-            :disabled="row.state === '运行中'"
+            title="确定同意该审批?"
+            @confirm="confirmAllow(row.noticeId)"
             okText="是"
             cancelText="否">
-            <a-button type="danger"  size="small" :disabled="row.state === '运行中'">
-              <a-icon type="delete" />
-              删除
+            <a-button type="primary"  size="small">
+              <a-icon type="check" />
+              同意
+            </a-button>
+          </a-popconfirm>
+          <a-divider type="vertical" />
+          <a-popconfirm
+            title="确定拒绝该审批?"
+            @confirm="confirmReject(row.noticeId)"
+            okText="是"
+            cancelText="否">
+            <a-button type="danger"  size="small">
+              <a-icon type="close" />
+              拒绝
             </a-button>
           </a-popconfirm>
         </span>
+        <p slot="expandedRowRender" slot-scope="record">
+          <font-awesome-icon :icon="['fas', 'info-circle']" style="margin-right:5px;"/>
+          {{record.content}}
+        </p>
       </a-table>
     </div>
   </div>
@@ -58,6 +65,11 @@ export default {
     }
   },
   mounted () {
+    let pagination = localStorage.getItem('pagination')
+    if (pagination) {
+      this.pagination = JSON.parse(pagination)
+      localStorage.removeItem('pagination')
+    }
     this.getAllAuthorizeNotices(this.pagination.pageSize, this.pagination.current)
   },
   methods: {
@@ -72,7 +84,38 @@ export default {
         pageNumber
       })
       this.data = res.data.noticesDesc
+      console.log(this.data)
+      this.data = this.data.filter(item => item.noticeType === 'authorizeRequest')
       this.pagination.total = res.data.totalPages * res.data.pageSize
+    },
+    // 确认同意申请
+    async confirmAllow (noticeId) {
+      let res = await fetch.post('/authorizeAllow', {
+        noticeId
+      })
+      if (res.data) {
+        this.$message.success(res.data.message)
+      } else {
+        this.$message.error(res.exception)
+      }
+      this.getAllAuthorizeNotices(this.pagination.pageSize, this.pagination.current)
+    },
+    // 确认拒绝申请
+    async confirmReject (noticeId) {
+      let res = await fetch.post('/authorizeReject', {
+        noticeId
+      })
+      if (res.data) {
+        this.$message.success(res.data.message)
+      } else {
+        this.$message.error(res.exception)
+      }
+      this.getAllAuthorizeNotices(this.pagination.pageSize, this.pagination.current)
+    },
+    // 预览
+    preview (id, type) {
+      localStorage.setItem('pagination', JSON.stringify(this.pagination))
+      this.$router.push({ name: 'preview', params: { id, type } })
     }
   }
 }
