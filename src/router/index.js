@@ -15,6 +15,7 @@ import DeploymentManage from '@/views/deployment/manage'
 import DeploymentEditer from '@/views/deployment/editer'
 import Preview from '@/views/preview'
 import PermissionApproval from '@/views/permission/approval'
+import PermissionRecord from '@/views/permission/record'
 
 Vue.use(VueRouter)
 
@@ -146,6 +147,14 @@ const routes = [
         component: PermissionApproval,
         meta: {
           title: '权限审批'
+        }
+      },
+      {
+        path: '/permission-record',
+        name: 'permissionRecord',
+        component: PermissionRecord,
+        meta: {
+          title: '权限查看'
         }
       }
     ]

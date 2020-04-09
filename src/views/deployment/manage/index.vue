@@ -123,13 +123,6 @@ export default {
     formatDateTime (timeStamp) {
       return dateUtils.formatDateTime(timeStamp)
     },
-    // 格式化ID
-    formatID (id) {
-      if (!id) {
-        return
-      }
-      return id.slice(0, 6)
-    },
     // 获取指定页数，页码的部署
     async getAllDeployments (pageSize, pageNumber) {
       let res = await fetch.post(this.getAllDeploymentsPath, {

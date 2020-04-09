@@ -204,6 +204,60 @@ let config = {
       ellipsis: true,
       scopedSlots: { customRender: 'action' }
     }
+  ],
+  AUTHORIZED_DEPLOYMENT_COLUMNS: [
+    {
+      title: '部署名',
+      fixed: 'left',
+      dataIndex: 'deploymentName',
+      key: 'deploymentName',
+      ellipsis: true
+    },
+    {
+      title: '创建者',
+      dataIndex: 'userName',
+      key: 'userName',
+      ellipsis: true
+    },
+    {
+      title: '输入配置',
+      key: 'input',
+      scopedSlots: { customRender: 'input' },
+      ellipsis: true
+    },
+    {
+      title: '输出配置',
+      key: 'output',
+      scopedSlots: { customRender: 'output' },
+      ellipsis: true
+    },
+    {
+      title: '流程名',
+      scopedSlots: { customRender: 'processName' },
+      key: 'processName',
+      ellipsis: true
+    },
+    {
+      title: '状态',
+      dataIndex: 'state',
+      key: 'state',
+      width: 80,
+      ellipsis: true,
+      scopedSlots: { customRender: 'state' },
+      sorter: (a, b) => {
+        return a.state > b.state
+      }
+    },
+    {
+      title: '最近更新时间',
+      key: 'updateTime',
+      dataIndex: 'updateTime',
+      ellipsis: true,
+      scopedSlots: { customRender: 'updateTime' },
+      sorter: (a, b) => {
+        return dateUtil.getTime(a.updateTime) - dateUtil.getTime(b.updateTime)
+      }
+    }
   ]
 }
 

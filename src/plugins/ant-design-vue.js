@@ -29,7 +29,11 @@ import {
   Tabs,
   Steps,
   ConfigProvider,
-  Radio
+  Radio,
+  Badge,
+  List,
+  Collapse,
+  Card
 } from 'ant-design-vue'
 
 Vue.prototype.$message = message
@@ -64,3 +68,7 @@ Vue.use(Tabs)
 Vue.use(Steps)
 Vue.use(ConfigProvider)
 Vue.use(Radio)
+Vue.use(Badge)
+Vue.use(List)
+Vue.use(Collapse)
+Vue.use(Card)

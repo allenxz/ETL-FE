@@ -95,10 +95,13 @@ export default {
       })
       if (res.data) {
         this.$message.success(res.data.message)
+        await fetch.post('/deleteNotice', {
+          noticeId
+        })
+        history.go(0)
       } else {
         this.$message.error(res.exception)
       }
-      this.getAllAuthorizeNotices(this.pagination.pageSize, this.pagination.current)
     },
     // 确认拒绝申请
     async confirmReject (noticeId) {
@@ -107,10 +110,13 @@ export default {
       })
       if (res.data) {
         this.$message.success(res.data.message)
+        await fetch.post('/deleteNotice', {
+          noticeId
+        })
+        history.go(0)
       } else {
         this.$message.error(res.exception)
       }
-      this.getAllAuthorizeNotices(this.pagination.pageSize, this.pagination.current)
     },
     // 预览
     preview (id, type) {

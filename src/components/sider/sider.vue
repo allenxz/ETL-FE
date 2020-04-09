@@ -37,7 +37,7 @@
           <router-link to="/permission-approval">权限审批</router-link>
         </a-menu-item>
         <a-menu-item key="7">
-          权限查看
+          <router-link to="/permission-record">权限查看</router-link>
         </a-menu-item>
       </a-sub-menu>
     </a-menu>

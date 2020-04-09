@@ -1,15 +1,15 @@
 <template>
   <ul class="header-menu">
-    <li class="icon">
+    <li>
       <a-tooltip>
         <template slot="title">
           关于我们
         </template>
-        <a-icon type="question-circle" />
+        <a-icon class="icon" type="question-circle" />
       </a-tooltip>
     </li>
-    <li class="icon">
-      <a-icon type="bell" />
+    <li >
+      <bell></bell>
     </li>
     <li>
       <avatar></avatar>
@@ -19,9 +19,11 @@
 
 <script>
 import Avatar from '@/components/avatar'
+import Bell from '@/components/bell'
 export default {
   components: {
-    Avatar
+    Avatar,
+    Bell
   }
 }
 
