@@ -17,7 +17,7 @@
             </a-list-item-meta>
           </a-list-item>
         </a-list>
-        <a-button v-if="count !== 0" block>清空通知</a-button>
+        <a-menu-item @click="askIfClear" v-if="count !== 0" block style="text-align:center;">清空通知</a-menu-item>
       </a-menu>
     </a-dropdown>
   </div>
@@ -30,7 +30,7 @@ export default {
   data () {
     return {
       count: 0,
-      data: {},
+      data: [],
       visible: false
     }
   },
@@ -76,8 +76,35 @@ export default {
       }
       this.visible = false
     },
+    // 询问是否删除
+    askIfClear () {
+      const _this = this
+      this.visible = false
+      this.$confirm({
+        content: '确认清空通知？',
+        onOk () {
+          _this.clearAllNotices()
+        },
+        okText: '是',
+        cancelText: '否'
+      })
+    },
     // 清空所有通知
-    clearAllNotices () {}
+    async clearAllNotices () {
+      let noticeIds = []
+      this.data.forEach(i => {
+        noticeIds.push(i.noticeId)
+      })
+      let res = await fetch.post('/batchDeleteNotice', {
+        noticeIds: JSON.stringify(noticeIds)
+      })
+      if (res.data) {
+        this.$message.success(res.data.message)
+        this.getNotices()
+      } else {
+        this.$message.error(res.exception)
+      }
+    }
   }
 }
 </script>
