@@ -69,12 +69,10 @@ export default {
     // 设置二级分类名称
     setCategoryName () {
       let name = this.$route.path.split('-').reverse()[1]
-      if (name === '/process') {
+      if (name === '/process' || name === '/deployment' || name === '/report') {
         this.categoryName = '数据处理'
       } else if (name === '/config') {
         this.categoryName = '参数配置'
-      } else if (name === '/deployment') {
-        this.categoryName = '部署配置'
       } else if (name === '/permission') {
         this.categoryName = '权限管理'
       } else {

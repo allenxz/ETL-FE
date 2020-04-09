@@ -23,7 +23,9 @@
         <a-menu-item key="3">
           <router-link to="/deployment-manage">部署管理</router-link>
         </a-menu-item>
-        <a-menu-item key="4">任务报告</a-menu-item>
+        <a-menu-item key="4">
+          <router-link to="/report-show">任务报告</router-link>
+        </a-menu-item>
       </a-sub-menu>
       <a-sub-menu key="sub3">
         <span slot="title"><a-icon type="cluster" /><span>参数配置</span></span>
