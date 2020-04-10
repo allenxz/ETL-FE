@@ -33,7 +33,8 @@ import {
   Badge,
   List,
   Collapse,
-  Card
+  Card,
+  Descriptions
 } from 'ant-design-vue'
 
 Vue.prototype.$message = message
@@ -72,3 +73,4 @@ Vue.use(Badge)
 Vue.use(List)
 Vue.use(Collapse)
 Vue.use(Card)
+Vue.use(Descriptions)

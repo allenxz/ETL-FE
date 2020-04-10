@@ -258,6 +258,55 @@ let config = {
         return dateUtil.getTime(a.updateTime) - dateUtil.getTime(b.updateTime)
       }
     }
+  ],
+  REPORT_STATE_MAP: {
+    'SUCCEED': 'green',
+    'FAILED': 'red',
+    'KILLED': 'brown'
+  },
+  REPORT_COLUMNS: [
+    {
+      title: '部署名',
+      fixed: 'left',
+      dataIndex: 'deploymentName',
+      key: 'deploymentName',
+      ellipsis: true
+    },
+    {
+      title: '部署拥有者用户名',
+      dataIndex: 'deploymentContainerName',
+      key: 'deploymentContainerName',
+      ellipsis: true
+    },
+    {
+      title: '状态',
+      dataIndex: 'state',
+      key: 'state',
+      width: 80,
+      ellipsis: true,
+      scopedSlots: { customRender: 'state' },
+      sorter: (a, b) => {
+        return a.state > b.state
+      }
+    },
+    {
+      title: '任务报告生成时间',
+      key: 'recordTime',
+      dataIndex: 'recordTime',
+      ellipsis: true,
+      scopedSlots: { customRender: 'recordTime' },
+      sorter: (a, b) => {
+        return dateUtil.getTime(a.recordTime) - dateUtil.getTime(b.recordTime)
+      }
+    },
+    {
+      title: '操作',
+      key: 'action',
+      fixed: 'right',
+      width: 200,
+      ellipsis: true,
+      scopedSlots: { customRender: 'action' }
+    }
   ]
 }
 

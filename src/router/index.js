@@ -17,6 +17,7 @@ import Preview from '@/views/preview'
 import PermissionApproval from '@/views/permission/approval'
 import PermissionRecord from '@/views/permission/record'
 import ReportShow from '@/views/report/show'
+import ReportDetail from '@/views/report/detail'
 
 Vue.use(VueRouter)
 
@@ -164,6 +165,15 @@ const routes = [
         component: ReportShow,
         meta: {
           title: '任务报告'
+        }
+      },
+      {
+        path: '/report-detail',
+        name: 'reportDetail',
+        component: ReportDetail,
+        meta: {
+          addTitle: '任务报告详情',
+          isSubPage: true
         }
       }
     ]
