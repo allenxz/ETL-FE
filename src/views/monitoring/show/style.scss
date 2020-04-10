@@ -1,0 +1,14 @@
+.monitoring-show{
+  h2{
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .empty{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%);
+  }
+}

@@ -27,6 +27,7 @@ const routes = [
     path: '/',
     name: 'home',
     component: Home,
+    redirect: '/monitoring-show',
     meta: {
       title: '首页'
     },

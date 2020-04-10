@@ -20,7 +20,7 @@
       <a-descriptions-item label="任务最终状态">
         <a-tag :color="getStateColor(desc.state)">{{desc.state}}</a-tag>
       </a-descriptions-item>
-      <a-descriptions-item label="异常信息">{{desc.throwable || '无'}}</a-descriptions-item>
+      <a-descriptions-item label="异常信息" style="color:red;">{{desc.throwable || '无'}}</a-descriptions-item>
       <a-descriptions-item label="统计数据" :span="3">
         <a-row :gutter="16" style="margin-bottom:15px;">
           <a-col :span="24">
@@ -40,9 +40,9 @@
             </a-statistic>
           </a-col>
           <a-col :span="6">
-            <a-statistic title="成功读取字节数" :value="desc.readSucceedRecords">
+            <a-statistic title="成功读取数据量" :value="desc.readSucceedBytes">
               <template v-slot:suffix>
-                <span>字节</span>
+                <span>Bytes</span>
               </template>
             </a-statistic>
           </a-col>
@@ -54,39 +54,39 @@
             </a-statistic>
           </a-col>
           <a-col :span="6">
-            <a-statistic title="成功写入字节数" :value="desc.writeSucceedBytes">
+            <a-statistic title="成功写入数据量" :value="desc.writeSucceedBytes">
               <template v-slot:suffix>
-                <span>字节</span>
+                <span>Bytes</span>
               </template>
             </a-statistic>
           </a-col>
         </a-row>
         <a-row :gutter="16" style="margin-bottom:15px;">
           <a-col :span="6">
-            <a-statistic title="输入ETL模块总数据量" :value="desc.totalInputEtlRecords">
+            <a-statistic title="输入ETL模块总记录数" :value="desc.totalInputEtlRecords">
               <template v-slot:suffix>
                 <span>条</span>
               </template>
             </a-statistic>
           </a-col>
           <a-col :span="6">
-            <a-statistic title="输出ETL模块总数据量" :value="desc.totalOutputEtlRecords">
+            <a-statistic title="输出ETL模块总记录数" :value="desc.totalOutputEtlRecords">
               <template v-slot:suffix>
-                <span>字节</span>
+                <span>条</span>
               </template>
             </a-statistic>
           </a-col>
           <a-col :span="6">
-            <a-statistic title="平均字节处理速度" :value="desc.averageByteSpeed">
+            <a-statistic title="数据处理速度" :value="desc.averageByteSpeed">
               <template v-slot:suffix>
-                <span>字节/秒</span>
+                <span>Bytes/s</span>
               </template>
             </a-statistic>
           </a-col>
           <a-col :span="6">
-            <a-statistic title="平均记录处理速度" :value="desc.averageRecordSpeed">
+            <a-statistic title="记录处理速度" :value="desc.averageRecordSpeed">
               <template v-slot:suffix>
-                <span>字节/秒</span>
+                <span>条/秒</span>
               </template>
             </a-statistic>
           </a-col>
