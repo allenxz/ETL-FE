@@ -1,5 +1,5 @@
 <template>
-  <div class="breadcrumb">
+  <div class="breadcrumb" v-if="!isMonitoring()">
     <!-- 不是二级页显示面包屑 -->
     <a-breadcrumb v-if="!isSubPage">
       <a-breadcrumb-item v-if="categoryName !== ''">
@@ -42,6 +42,10 @@ export default {
     // 判断当前是否在首页
     isHome (route) {
       return route.name === 'home'
+    },
+    // 判断当前是否在监控页
+    isMonitoring () {
+      return this.$route.name === 'monitoringShow'
     },
     // 生成面包屑
     getBreadcrumb () {

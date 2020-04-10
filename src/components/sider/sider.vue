@@ -13,7 +13,9 @@
       :inlineCollapsed="collapsed">
       <a-sub-menu key="sub1">
         <span slot="title"><a-icon type="fund" /><span>监控告警</span></span>
-        <a-menu-item key="1">监控面板</a-menu-item>
+        <a-menu-item key="1">
+          <router-link to="/monitoring-show">监控面板</router-link>
+          </a-menu-item>
       </a-sub-menu>
       <a-sub-menu key="sub2">
         <span slot="title"><a-icon type="interaction" /><span>数据处理</span></span>

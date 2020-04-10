@@ -18,6 +18,7 @@ import PermissionApproval from '@/views/permission/approval'
 import PermissionRecord from '@/views/permission/record'
 import ReportShow from '@/views/report/show'
 import ReportDetail from '@/views/report/detail'
+import MonitoringShow from '@/views/monitoring/show'
 
 Vue.use(VueRouter)
 
@@ -175,6 +176,11 @@ const routes = [
           editTitle: '任务报告详情',
           isSubPage: true
         }
+      },
+      {
+        path: '/monitoring-show',
+        name: 'monitoringShow',
+        component: MonitoringShow
       }
     ]
   },
