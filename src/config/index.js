@@ -260,7 +260,7 @@ let config = {
     }
   ],
   REPORT_STATE_MAP: {
-    'SUCCEED': 'green',
+    'SUCCEEDED': 'green',
     'FAILED': 'red',
     'KILLED': 'brown'
   },
@@ -279,10 +279,22 @@ let config = {
       ellipsis: true
     },
     {
+      title: '部署启动者用户名',
+      dataIndex: 'startUserName',
+      key: 'startUserName',
+      ellipsis: true
+    },
+    {
+      title: '部署停止者用户名',
+      dataIndex: 'stopUserName',
+      key: 'stopUserName',
+      scopedSlots: { customRender: 'stopUserName' },
+      ellipsis: true
+    },
+    {
       title: '状态',
       dataIndex: 'state',
       key: 'state',
-      width: 80,
       ellipsis: true,
       scopedSlots: { customRender: 'state' },
       sorter: (a, b) => {
@@ -303,7 +315,7 @@ let config = {
       title: '操作',
       key: 'action',
       fixed: 'right',
-      width: 200,
+      width: 80,
       ellipsis: true,
       scopedSlots: { customRender: 'action' }
     }

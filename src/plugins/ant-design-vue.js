@@ -34,7 +34,8 @@ import {
   List,
   Collapse,
   Card,
-  Descriptions
+  Descriptions,
+  Statistic
 } from 'ant-design-vue'
 
 Vue.prototype.$message = message
@@ -74,3 +75,4 @@ Vue.use(List)
 Vue.use(Collapse)
 Vue.use(Card)
 Vue.use(Descriptions)
+Vue.use(Statistic)

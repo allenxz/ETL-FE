@@ -68,6 +68,7 @@ export default {
       if (noticeType === 'authorizeRequest') {
         this.$router.push({ path: '/permission-approval' })
       } else {
+        localStorage.setItem('activeKey', JSON.stringify('2'))
         this.$router.push({ path: '/permission-record' })
         await fetch.post('/deleteNotice', {
           noticeId

@@ -139,7 +139,7 @@ const routes = [
         name: 'preview',
         component: Preview,
         meta: {
-          addTitle: '预览',
+          editTitle: '预览',
           isSubPage: true
         }
       },
@@ -172,7 +172,7 @@ const routes = [
         name: 'reportDetail',
         component: ReportDetail,
         meta: {
-          addTitle: '任务报告详情',
+          editTitle: '任务报告详情',
           isSubPage: true
         }
       }

@@ -1,13 +1,13 @@
 <template>
   <ul class="header-menu">
-    <li>
+    <!-- <li>
       <a-tooltip>
         <template slot="title">
           关于我们
         </template>
         <a-icon class="icon" type="question-circle" />
       </a-tooltip>
-    </li>
+    </li> -->
     <li >
       <bell></bell>
     </li>
