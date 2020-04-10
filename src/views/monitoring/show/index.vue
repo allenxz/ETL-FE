@@ -1,9 +1,11 @@
 <template>
   <div class="monitoring-show">
     <a-empty class="empty" v-if="deploymentDesc.length === 0"/>
-    <a-card title="Default size card" style="width: 100%" v-for="(item, index) of deploymentDesc" :key="index">
+    <a-card :id="deploymentIds[index]" title="Default size card" style="width: 100%" v-for="(item, index) of deploymentDesc" :key="index">
       <a href="#" slot="extra">
-        <a-icon @click="updateDesc" type="reload" />
+        <a-icon @click="updateDesc" type="reload" style="margin-right:20px;font-size:18px;"/>
+        <a-icon type="fullscreen" v-if="!isFullscreen" @click="launchIntoFullscreen(deploymentIds[index])" style="font-size:18px;"/>
+        <a-icon type="fullscreen-exit" v-else @click="exitFullscreen" style="font-size:18px;"/>
       </a>
       <h2>数据处理进度</h2>
       <ProgressBar :valuenow="countValue(item)"></ProgressBar>
@@ -36,7 +38,7 @@ export default {
     return {
       deploymentIds: [],
       deploymentDesc: [],
-      valuenow: 80
+      isFullscreen: false
     }
   },
   mounted () {
@@ -45,6 +47,7 @@ export default {
   methods: {
     // 刷新数据
     updateDesc () {
+      this.isFullscreen = false
       this.getRunningDeploymentIds()
       setTimeout(() => {
         this.drawBarChart()
@@ -192,6 +195,31 @@ export default {
           ]
         })
       })
+    },
+    // 进入全屏
+    launchIntoFullscreen (id) {
+      this.isFullscreen = true
+      let element = document.getElementById(id)
+      if (element.requestFullscreen) {
+        element.requestFullscreen()
+      } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen()
+      } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen()
+      } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen()
+      }
+    },
+    // 退出全屏
+    exitFullscreen () {
+      this.isFullscreen = false
+      if (document.exitFullscreen) {
+        document.exitFullscreen()
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen()
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen()
+      }
     }
   }
 }
