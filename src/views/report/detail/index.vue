@@ -40,7 +40,7 @@
             </a-statistic>
           </a-col>
           <a-col :span="6">
-            <a-statistic title="成功读取数据量" :value="desc.readSucceedBytes">
+            <a-statistic title="成功读取数据量" :value="formatBytes(desc.readSucceedBytes)">
               <template v-slot:suffix>
                 <span>Bytes</span>
               </template>
@@ -54,7 +54,7 @@
             </a-statistic>
           </a-col>
           <a-col :span="6">
-            <a-statistic title="成功写入数据量" :value="desc.writeSucceedBytes">
+            <a-statistic title="成功写入数据量" :value="formatBytes(desc.writeSucceedBytes)">
               <template v-slot:suffix>
                 <span>Bytes</span>
               </template>
@@ -77,7 +77,7 @@
             </a-statistic>
           </a-col>
           <a-col :span="6">
-            <a-statistic title="数据处理速度" :value="desc.averageByteSpeed">
+            <a-statistic title="数据处理速度" :value="formatBytes(desc.averageByteSpeed)">
               <template v-slot:suffix>
                 <span>Bytes/s</span>
               </template>
@@ -117,6 +117,7 @@ import fetch from '@/services/fetch'
 import config from '@/config/index'
 import dateUtils from '@/utils/date'
 import formatJson from '@/utils/json'
+import formatBytes from '@/utils/bytes'
 export default {
   data () {
     return {
@@ -137,9 +138,13 @@ export default {
     formatDateTime (timeStamp) {
       return dateUtils.formatDateTime(timeStamp)
     },
-    // 加密密码部分
+    // 格式化字符
     formatJson (content) {
       return formatJson(content)
+    },
+    // 格式化字节
+    formatBytes (B) {
+      return formatBytes(B)
     },
     // 获取任务报告详情
     async getDesc () {
