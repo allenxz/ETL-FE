@@ -1,7 +1,19 @@
 <template>
   <div class="preview">
     <h2>{{getTypeChineseName()}} : "{{name}}"的详情</h2>
-    <pre v-if="type !== 'deployment'">{{desc}}</pre>
+    <pre v-if="type === 'configure'">{{desc}}</pre>
+    <div class="editer" v-else-if="type === 'process'">
+      <div class="node-container">
+        <div class="node-wrapper" v-for="(item, index) of desc" :key="index" @click="selectNode(index)">
+          <div :class="item.appearance.class" :title="item.pluginName">
+            <img :src="item.appearance.img" :alt="item.pluginName">
+          </div>
+        </div>
+        <pre class="desc">
+          {{nodeDesc}}
+        </pre>
+      </div>
+    </div>
     <div v-else>
       <h3>输入配置文件详情：</h3>
       <pre>{{inputDesc}}</pre>
@@ -25,7 +37,8 @@ export default {
       desc: '',
       inputDesc: '',
       outputDesc: '',
-      processDesc: ''
+      processDesc: '',
+      nodeDesc: ''
     }
   },
   mounted () {
@@ -59,7 +72,7 @@ export default {
         configure: {
           path: '/getOneConfigure',
           idName: 'configureId',
-          descName: 'configureContent',
+          descName: 'configureStruct',
           name: 'configureName'
         }
       }
@@ -67,8 +80,11 @@ export default {
         [map[this.type].idName]: this.id
       })
       this.desc = JSON.parse(res.data[map[this.type].descName])
-      if (this.type === 'configure' && this.desc.parameter.hasOwnProperty('password')) {
-        this.desc.parameter.password = '********'
+      // 删除多余键
+      delete this.desc.keys
+      delete this.desc.columnFirst
+      if (this.type === 'configure' && this.desc.hasOwnProperty('password')) {
+        this.desc.password = '********'
       }
       this.name = res.data[map[this.type].name]
     },
@@ -103,6 +119,10 @@ export default {
         processId
       })
       this.processDesc = JSON.parse(process.data.processContent)
+    },
+    // 选择流程结点
+    selectNode (index) {
+      this.nodeDesc = this.desc[index]
     }
   }
 }
