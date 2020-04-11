@@ -10,7 +10,7 @@
         </span>
       </div>
       <a-menu slot="overlay" @click="onClick">
-        <a-menu-item key="1"><a-icon type="user" />个人中心</a-menu-item>
+        <a-menu-item key="1"><a-icon type="user" />个人主页</a-menu-item>
         <a-menu-item key="2"><a-icon type="setting" />个人设置</a-menu-item>
         <a-menu-divider />
         <a-menu-item key="3"><a-icon type="logout" />退出登录</a-menu-item>
@@ -36,8 +36,10 @@ export default {
     onClick ({ key }) {
       switch (key) {
         case '1':
+          this.$router.push({ path: '/personal-homepage' })
           break
         case '2':
+          this.$router.push({ path: '/personal-setting' })
           break
         case '3':
           this.logout()

@@ -35,7 +35,8 @@ import {
   Collapse,
   Card,
   Descriptions,
-  Statistic
+  Statistic,
+  Cascader
 } from 'ant-design-vue'
 
 Vue.prototype.$message = message
@@ -76,3 +77,4 @@ Vue.use(Collapse)
 Vue.use(Card)
 Vue.use(Descriptions)
 Vue.use(Statistic)
+Vue.use(Cascader)

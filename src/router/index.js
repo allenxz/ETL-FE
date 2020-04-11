@@ -19,6 +19,8 @@ import PermissionRecord from '@/views/permission/record'
 import ReportShow from '@/views/report/show'
 import ReportDetail from '@/views/report/detail'
 import MonitoringShow from '@/views/monitoring/show'
+import PersonalHomepage from '@/views/personal/homepage'
+import PersonalSetting from '@/views/personal/setting'
 
 Vue.use(VueRouter)
 
@@ -182,6 +184,16 @@ const routes = [
         path: '/monitoring-show',
         name: 'monitoringShow',
         component: MonitoringShow
+      },
+      {
+        path: '/personal-homepage',
+        name: 'personalHomepage',
+        component: PersonalHomepage
+      },
+      {
+        path: '/personal-setting',
+        name: 'personalSetting',
+        component: PersonalSetting
       }
     ]
   },
