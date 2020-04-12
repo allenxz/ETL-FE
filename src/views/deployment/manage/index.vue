@@ -25,13 +25,13 @@
             <a-tag :color="getStateColor(state)">{{state}}</a-tag>
           </span>
           <span slot="input" slot-scope="row">
-            <a @click="preview(row.sourceConfigureId, 'configure')">{{row.sourceConfigureId}}</a>
+            <a @click="preview(row.sourceConfigureId, 'configure')">{{row.sourceConfigureName}}</a>
           </span>
           <span slot="output" slot-scope="row">
-            <a @click="preview(row.targetConfigureId, 'configure')">{{row.targetConfigureId}}</a>
+            <a @click="preview(row.targetConfigureId, 'configure')">{{row.targetConfigureName}}</a>
           </span>
           <span slot="processName" slot-scope="row">
-            <a @click="preview(row.processId, 'process')">{{row.processId}}</a>
+            <a @click="preview(row.processId, 'process')">{{row.processName}}</a>
           </span>
           <span slot="updateTime" slot-scope="updateTime" :title="formatDateTime(updateTime)">
             {{formatDateTime(updateTime)}}

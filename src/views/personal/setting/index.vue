@@ -108,7 +108,20 @@ export default {
       countryOptions: countryInfo,
       provinceData,
       cityData: [],
-      questions: []
+      questions: [
+        {
+          question: '',
+          answer: ''
+        },
+        {
+          question: '',
+          answer: ''
+        },
+        {
+          question: '',
+          answer: ''
+        }
+      ]
     }
   },
   mounted () {
@@ -174,7 +187,7 @@ export default {
           return
         }
       }
-      let res = await fetch.post('/setUserQuestions', {
+      let res = await fetch.post('/updateUserQuestions', {
         data: JSON.stringify(this.questions)
       })
       if (res.data) {
@@ -186,22 +199,7 @@ export default {
     // 加载用户密保问题
     async loadQuestions () {
       let res = await fetch.post('/getUserQuestions')
-      if (res.data.questionAndAnswers.length === 0) {
-        this.questions = [
-          {
-            question: '',
-            answer: ''
-          },
-          {
-            question: '',
-            answer: ''
-          },
-          {
-            question: '',
-            answer: ''
-          }
-        ]
-      } else {
+      if (res.data.questionAndAnswers.length !== 0) {
         this.questions = res.data.questionAndAnswers
       }
     }
