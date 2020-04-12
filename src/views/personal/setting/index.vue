@@ -186,7 +186,24 @@ export default {
     // 加载用户密保问题
     async loadQuestions () {
       let res = await fetch.post('/getUserQuestions')
-      this.questions = res.data.questionAndAnswers
+      if (res.data.questionAndAnswers.length === 0) {
+        this.questions = [
+          {
+            question: '',
+            answer: ''
+          },
+          {
+            question: '',
+            answer: ''
+          },
+          {
+            question: '',
+            answer: ''
+          }
+        ]
+      } else {
+        this.questions = res.data.questionAndAnswers
+      }
     }
   }
 }
