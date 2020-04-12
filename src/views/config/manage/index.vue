@@ -63,6 +63,11 @@
             编辑
           </a-button>
           <a-divider type="vertical" />
+          <a-button type="dashed"  size="small" @click="showNameModal(row.configureId)">
+            <a-icon type="copy" />
+            复制
+          </a-button>
+          <a-divider type="vertical" />
           <a-popconfirm
             title="确定删除该配置?"
             @confirm="confirmDelete(row.configureId)"
@@ -76,6 +81,9 @@
           </a-popconfirm>
         </span>
       </a-table>
+      <a-modal title="为拷贝的新配置命名" v-model="visible" @ok="copyConfig">
+        <a-input id="nameInput" v-model="newConfigName" placeholder="请输入..." allowClear></a-input>
+      </a-modal>
     </div>
   </div>
 </template>
@@ -104,7 +112,10 @@ export default {
       },
       configType,
       isViewSelf: false,
-      getAllConfiguresPath: '/getAllConfigures'
+      getAllConfiguresPath: '/getAllConfigures',
+      visible: false,
+      newConfigName: '',
+      copyedConfigId: ''
     }
   },
   mounted () {
@@ -280,6 +291,30 @@ export default {
     preview (row) {
       localStorage.setItem('pagination', JSON.stringify(this.pagination))
       this.$router.push({ name: 'preview', params: { id: row.configureId, type: 'configure' } })
+    },
+    // 展示复制配置命名对话框
+    showNameModal (configureId) {
+      this.visible = true
+      this.copyedConfigId = configureId
+      setTimeout(() => {
+        let target = document.getElementById('nameInput')
+        target.focus()
+      }, 400)
+    },
+    // 复制流程
+    async copyConfig () {
+      let res = await fetch.post('/copyConfigure', {
+        newConfigureName: this.newConfigName,
+        configureId: this.copyedConfigId
+      })
+      if (!res.exception) {
+        this.$message.success(res.data.message)
+        this.visible = false
+        this.getAllConfigures(this.pagination.pageSize, this.pagination.current)
+      } else {
+        this.$message.error(res.exception)
+      }
+      this.newConfigName = ''
     }
   }
 }
