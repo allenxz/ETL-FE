@@ -42,6 +42,7 @@ export default {
     }
   },
   mounted () {
+    this.checkQuestions()
     this.updateDesc()
   },
   methods: {
@@ -219,6 +220,14 @@ export default {
         document.mozCancelFullScreen()
       } else if (document.webkitExitFullscreen) {
         document.webkitExitFullscreen()
+      }
+    },
+    // 校验是否设置了密保问题
+    async checkQuestions () {
+      let res = await fetch.post('/getUserQuestions')
+      if (res.data.questionAndAnswers.length === 0) {
+        this.$message.warning('系统检测到您未设置密保问题，请设置！')
+        this.$router.push({ path: '/personal-setting' })
       }
     }
   }

@@ -31,7 +31,7 @@ export default {
   methods: {
     // 获取用户信息
     async getUserInfo () {
-      let res = await fetch.post('/userInformation')
+      let res = await fetch.post('/getUserInformation')
       if (res.data) {
         this.info = res.data.userInformation
         console.log(this.info)

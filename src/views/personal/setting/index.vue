@@ -1,6 +1,6 @@
 <template>
   <div class="personal-setting">
-    <a-tabs tabPosition="left">
+    <a-tabs tabPosition="left" :activeKey="activeKey">
       <a-tab-pane key="1">
         <span slot="tab">
           <font-awesome-icon :icon="['fas', 'user-cog']"/>
@@ -102,6 +102,7 @@ import cityData from './city'
 export default {
   data () {
     return {
+      activeKey: '1',
       userInfo: '',
       formLayout: 'horizontal',
       form: this.$form.createForm(this),
@@ -125,6 +126,7 @@ export default {
     }
   },
   mounted () {
+    this.checkQuestions()
     this.getUserInfo()
     this.loadQuestions()
   },
@@ -201,6 +203,13 @@ export default {
       let res = await fetch.post('/getUserQuestions')
       if (res.data.questionAndAnswers.length !== 0) {
         this.questions = res.data.questionAndAnswers
+      }
+    },
+    // 校验是否设置了密保问题
+    async checkQuestions () {
+      let res = await fetch.post('/getUserQuestions')
+      if (res.data.questionAndAnswers.length === 0) {
+        this.activeKey = '2'
       }
     }
   }

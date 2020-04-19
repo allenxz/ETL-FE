@@ -103,7 +103,7 @@
         </div>
       </div>
     </div>
-    <ForgotPwd :visible="visible"></ForgotPwd>
+    <ForgotPwd :visible="visible" @close="()=>{this.visible = false}"></ForgotPwd>
   </section>
 </template>
 
