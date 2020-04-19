@@ -36,7 +36,8 @@ import {
   Card,
   Descriptions,
   Statistic,
-  Cascader
+  Cascader,
+  DatePicker
 } from 'ant-design-vue'
 
 Vue.prototype.$message = message
@@ -78,3 +79,4 @@ Vue.use(Card)
 Vue.use(Descriptions)
 Vue.use(Statistic)
 Vue.use(Cascader)
+Vue.use(DatePicker)

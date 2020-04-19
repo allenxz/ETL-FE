@@ -210,9 +210,13 @@ export default {
         let res = await fetch.post('/exportProcess', {
           processIds: JSON.stringify(this.rowSelection.selectedRowKeys)
         })
-        this.saveJSON(res.data.contents)
-        this.rowSelection.selectedRowKeys = []
-        this.$message.success(res.data.message)
+        if (res.data) {
+          this.saveJSON(res.data.contents)
+          this.rowSelection.selectedRowKeys = []
+          this.$message.success(res.data.message)
+        } else {
+          this.$message.error(res.exception)
+        }
       }
     },
     // 保存数据到JSON
