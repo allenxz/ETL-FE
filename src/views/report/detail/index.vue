@@ -20,7 +20,13 @@
       <a-descriptions-item label="任务最终状态">
         <a-tag :color="getStateColor(desc.state)">{{desc.state}}</a-tag>
       </a-descriptions-item>
-      <a-descriptions-item label="异常信息" style="color:red;">{{desc.throwable || '无'}}</a-descriptions-item>
+      <a-descriptions-item label="异常信息" style="color:red;">
+        <span v-if="desc.throwable && desc.throwable.length > 10">
+          {{desc.throwable.slice(0, 10) + '...'}}
+          <a @click="showDetail(desc.throwable)">详情</a>
+        </span>
+        <span v-else>{{desc.throwable || '无'}}</span>
+      </a-descriptions-item>
       <a-descriptions-item label="统计数据" :span="3">
         <a-row :gutter="16" style="margin-bottom:15px;">
           <a-col :span="24">
@@ -161,6 +167,15 @@ export default {
       if (this.desc.targetConfigureContent.parameter.password) {
         this.desc.targetConfigureContent.parameter.password = '********'
       }
+    },
+    // 展示异常信息
+    showDetail (info) {
+      this.$confirm({
+        title: '异常信息详情',
+        content: info,
+        okText: '确认',
+        cancelText: '取消'
+      })
     }
   }
 }
