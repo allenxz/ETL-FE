@@ -12,21 +12,35 @@
     </a-select>
     <a-divider />
     <h2>内容预览：</h2>
-    <pre class="desc">
+    <a-empty v-if="desc === ''" description="未选择数据处理流程"/>
+    <!-- <pre class="desc">
       {{desc}}
-    </pre>
+    </pre> -->
+    <div class="editer">
+      <div class="node-container">
+        <div class="node-wrapper" v-for="(item, index) of desc" :key="index" @click="selectNode(index)">
+          <div :class="item.appearance.class" :title="item.pluginName">
+            <img :src="item.appearance.img" :alt="item.pluginName">
+          </div>
+        </div>
+        <pre class="desc">
+          {{nodeDesc}}
+        </pre>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import './style.scss'
 import fetch from '@/services/fetch'
-import formatJson from '@/utils/json'
+// import formatJson from '@/utils/json'
 export default {
   data () {
     return {
       options: [],
-      desc: ''
+      desc: '',
+      nodeDesc: ''
     }
   },
   props: ['processID'],
@@ -37,19 +51,8 @@ export default {
   methods: {
     // 获取所有流程并筛选出输入文件
     async getAllProcess () {
-      // 第一次查询获得总长度
-      let firstSearch = await fetch.post('/getAllProcess', {
-        pageSize: 10,
-        pageNumber: 1
-      })
-      let total = firstSearch.data.pageSize * firstSearch.data.totalPages
-      // 第二次查询获取所有数据
-      let secondSearch = await fetch.post('/getAllProcess', {
-        pageSize: total,
-        pageNumber: 1
-      })
-      this.options = secondSearch.data.processDesc
-      console.log(this.options)
+      let search = await fetch.post('/getAllPrivateProcess')
+      this.options = search.data.processDesc
     },
     // 获取配置文件详情并格式化
     async getProcessDesc (value) {
@@ -60,7 +63,13 @@ export default {
       let res = await fetch.post('/getOneProcess', {
         processId: value
       })
-      this.desc = formatJson(JSON.parse(res.data.processContent))
+      this.desc = JSON.parse(res.data.processContent)
+    },
+    // 选择流程结点
+    selectNode (index) {
+      let copy = JSON.parse(JSON.stringify(this.desc[index]))
+      delete copy.appearance
+      this.nodeDesc = copy
     }
   }
 }

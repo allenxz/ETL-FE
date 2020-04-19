@@ -16,4 +16,117 @@
     min-height: 200px;
     text-align: left;
   }
+  .editer{
+    display: flex;
+    flex-direction: column;
+    .node-container{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      min-height: 129px;
+      padding: 36px 50px 0 0;
+      border-bottom: 1px solid #e6e9ed;
+      overflow-x: hidden;
+      overflow-y: scroll;
+  
+      &::-webkit-scrollbar {
+          display: none;
+      }
+
+      .node-wrapper{
+        position: relative;
+
+        .node{
+          margin-left: 50px;
+          margin-bottom: 36px;
+          border: 2px solid #e5e5e5;
+          background-color: #f5f6f7;
+          cursor: pointer;
+
+          img{
+            width: auto;  
+            height: auto;  
+            max-width: 100%;  
+            max-height: 100%;    
+          }
+
+          &:after{
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            height: 5px;
+            content: '';
+            width: 50px;
+            background: url(http://demo.themenio.com/ico/assets/images/line.png) repeat 0 0;
+            animation: slide 1s linear infinite;
+          }
+        }
+
+        .selected {
+          animation: shadow-pulse 1s infinite;
+        }
+
+        // 形状
+        .round{
+          width: 70px;
+          height: 70px;
+          border-radius: 50%;
+          padding: 15px;
+          &:after{
+            display: none;
+          }
+        }
+
+        .capsule{
+          width: 88px;
+          height: 56px;
+          border-radius: 3px;
+          padding: 8px;
+          text-align: center;
+          &:after{
+            top: 28px;
+            left: 100%;
+          }
+        }
+
+        .rhombus{
+          width: 50px;
+          height: 50px;
+          padding: 10px;
+          margin-right: 10px;
+          transform: rotate(45deg) translateY(2px);
+
+          img{
+            transform: rotate(-45deg);
+          }
+
+          &:after{
+            transform: rotate(-45deg);
+            top: -23px;
+            left: 90%;
+          }
+        }
+
+        // 颜色
+        .orange{
+          border-color: #ffc16c;
+        }
+
+        .blue {
+          border-color: #84c4fe;
+        }
+        
+        .purple {
+          border-color: #b37feb;
+        }
+
+      }
+    }
+
+    .desc {
+      display: block;
+      width: 100%;
+    }
+  }
 }

@@ -212,6 +212,7 @@ export default {
         })
         this.saveJSON(res.data.contents)
         this.rowSelection.selectedRowKeys = []
+        this.$message.success(res.data.message)
       }
     },
     // 保存数据到JSON
@@ -243,7 +244,7 @@ export default {
         fetch.post('/importProcess', {
           processes: JSON.stringify(data)
         }).then(res => {
-          this.$message.success(res)
+          this.$message.success(res.data.message)
           this.getAllProcess(this.pagination.pageSize, this.pagination.current)
         })
       }

@@ -42,7 +42,7 @@
       </a-button>
     </div>
     <a-modal
-      title="配置命名"
+      title="部署命名"
       v-model="visible"
       @ok="confirmName"
       @cancel="cancelName">
@@ -125,12 +125,7 @@ export default {
       let process = await fetch.post('/getOneProcess', {
         processId: this.processID
       })
-      let readerType = JSON.parse(reader.data.configureContent).name.slice(0, 2)
-      let writerType = JSON.parse(writer.data.configureContent).name.slice(0, 2)
-      let processContent = JSON.parse(process.data.processContent)
-      let processReaderType = processContent[0].pluginName.slice(0, 2)
-      let processWriterType = processContent[processContent.length - 1].pluginName.slice(0, 2)
-      // 校验
+      // 填写校验
       if (this.readerID === '') {
         this.$message.error('输入配置文件未选择')
         this.current = 0
@@ -143,7 +138,14 @@ export default {
         this.$message.error('中间流程未选择')
         this.current = 2
         return
-      } else if (readerType !== processReaderType) {
+      }
+      let readerType = JSON.parse(reader.data.configureContent).name.slice(0, 2)
+      let writerType = JSON.parse(writer.data.configureContent).name.slice(0, 2)
+      let processContent = JSON.parse(process.data.processContent)
+      let processReaderType = processContent[0].pluginName.slice(0, 2)
+      let processWriterType = processContent[processContent.length - 1].pluginName.slice(0, 2)
+      // 类型匹配校验
+      if (readerType !== processReaderType) {
         this.$message.error('输入配置文件和中间流程不匹配')
         this.current = 2
         return

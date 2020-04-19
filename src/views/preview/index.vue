@@ -122,7 +122,9 @@ export default {
     },
     // 选择流程结点
     selectNode (index) {
-      this.nodeDesc = this.desc[index]
+      let copy = JSON.parse(JSON.stringify(this.desc[index]))
+      delete copy.appearance
+      this.nodeDesc = copy
     }
   }
 }

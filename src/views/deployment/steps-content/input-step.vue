@@ -12,6 +12,7 @@
     </a-select>
     <a-divider />
     <h2>内容预览：</h2>
+    <a-empty v-if="desc === ''" description="未选择输入配置文件"/>
     <pre class="desc">
       {{desc}}
     </pre>
@@ -21,7 +22,7 @@
 <script>
 import './style.scss'
 import fetch from '@/services/fetch'
-import formatJson from '@/utils/json'
+// import formatJson from '@/utils/json'
 export default {
   data () {
     return {
@@ -50,11 +51,16 @@ export default {
       let res = await fetch.post('/getOneConfigure', {
         configureId: value
       })
-      let configureContent = JSON.parse(res.data.configureContent)
-      if (configureContent.parameter.hasOwnProperty('password')) {
-        configureContent.parameter.password = '********'
+      // let configureContent = JSON.parse(res.data.configureContent)
+      // if (configureContent.parameter.hasOwnProperty('password')) {
+      //   configureContent.parameter.password = '********'
+      // }
+      this.desc = JSON.parse(res.data.configureStruct)
+      delete this.desc.keys
+      delete this.desc.columnFirst
+      if (this.desc.hasOwnProperty('password')) {
+        this.desc.password = '********'
       }
-      this.desc = formatJson(configureContent)
     }
   }
 }

@@ -232,8 +232,13 @@ export default {
         let res = await fetch.post('/exportConfigure', {
           configureIds: JSON.stringify(this.rowSelection.selectedRowKeys)
         })
-        this.saveJSON(res.data.contents)
-        this.rowSelection.selectedRowKeys = []
+        if (res.data) {
+          this.saveJSON(res.data.contents)
+          this.rowSelection.selectedRowKeys = []
+          this.$message.success(res.data.message)
+        } else {
+          this.$message.error(res.exception)
+        }
       }
     },
     // 保存数据到JSON
@@ -265,7 +270,7 @@ export default {
         fetch.post('/importConfigure', {
           configures: JSON.stringify(data)
         }).then(res => {
-          this.$message.success(res)
+          this.$message.success(res.data.message)
           this.getAllConfigures(this.pagination.pageSize, this.pagination.current)
         })
       }
@@ -293,7 +298,11 @@ export default {
       this.$router.push({ name: 'preview', params: { id: row.configureId, type: 'configure' } })
     },
     // 展示复制配置命名对话框
-    showNameModal (configureId) {
+    async showNameModal (configureId) {
+      let hasPermission = await this.checkPermission(configureId)
+      if (!hasPermission) {
+        return
+      }
       this.visible = true
       this.copyedConfigId = configureId
       setTimeout(() => {
@@ -301,7 +310,7 @@ export default {
         target.focus()
       }, 400)
     },
-    // 复制流程
+    // 复制配置
     async copyConfig () {
       let res = await fetch.post('/copyConfigure', {
         newConfigureName: this.newConfigName,

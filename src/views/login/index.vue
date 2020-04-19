@@ -47,7 +47,7 @@
               </div>
             </fieldset>
             <div class="forms_buttons">
-              <button type="button" class="forms_buttons-forgot">
+              <button type="button" class="forms_buttons-forgot" @click="showForgotPwd">
                 忘记密码?
               </button>
               <input
@@ -103,18 +103,24 @@
         </div>
       </div>
     </div>
+    <ForgotPwd :visible="visible"></ForgotPwd>
   </section>
 </template>
 
 <script>
 import './style.scss'
 import fetch from '@/services/fetch'
+import ForgotPwd from '@/components/forgot-pwd'
 export default {
+  components: {
+    ForgotPwd
+  },
   data () {
     return {
       username: '',
       password: '',
-      rPassword: ''
+      rPassword: '',
+      visible: false
     }
   },
   mounted () {
@@ -197,6 +203,10 @@ export default {
         this.$message.error(res.exception)
         this.reset()
       }
+    },
+    // 显示忘记密码框
+    showForgotPwd () {
+      this.visible = true
     }
   }
 }
