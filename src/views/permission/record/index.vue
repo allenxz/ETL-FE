@@ -23,7 +23,6 @@
                     />
                   </a-card-meta>
                   <template class="ant-card-actions" slot="actions">
-                    <a-icon type="eye" key="eye" title="查看用户详情"/>
                     <a-popconfirm
                       title="确定取消对该用户的授权?"
                       @confirm="cancelAuthorize(listItem.userId, item.deploymentId)"
@@ -52,13 +51,13 @@
             <a-tag :color="getStateColor(state)">{{state}}</a-tag>
           </span>
           <span slot="input" slot-scope="row">
-            <a @click="preview(row.sourceConfigureId, 'configure')">{{row.sourceConfigureId}}</a>
+            <a @click="preview(row.sourceConfigureId, 'configure')">{{row.sourceConfigureName}}</a>
           </span>
           <span slot="output" slot-scope="row">
-            <a @click="preview(row.targetConfigureId, 'configure')">{{row.targetConfigureId}}</a>
+            <a @click="preview(row.targetConfigureId, 'configure')">{{row.targetConfigureName}}</a>
           </span>
           <span slot="processName" slot-scope="row">
-            <a @click="preview(row.processId, 'process')">{{row.processId}}</a>
+            <a @click="preview(row.processId, 'process')">{{row.processName}}</a>
           </span>
           <span slot="updateTime" slot-scope="updateTime" :title="formatDateTime(updateTime)">
             {{formatDateTime(updateTime)}}
@@ -139,11 +138,6 @@ export default {
     async getDeploymentPermissionUserSituation () {
       let res = await fetch.post('/getDeploymentPermissionUserSituation')
       this.list = res.data.situation
-    },
-    // 预览
-    preview (id, type) {
-      localStorage.setItem('activeKey', JSON.stringify(this.activeKey))
-      this.$router.push({ name: 'preview', params: { id, type } })
     },
     // 取消授权
     async cancelAuthorize (userId, deploymentId) {

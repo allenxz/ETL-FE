@@ -234,7 +234,7 @@ export default {
     },
     // 确定命名
     confirmName () {
-      if (this.processName === '') {
+      if (this.pendingName === '') {
         this.$message.error('流程名不能为空')
         return
       }

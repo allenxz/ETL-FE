@@ -187,6 +187,10 @@ export default {
         this.$message.error('两次输入的密码不一致')
         this.reset()
         return
+      } else if (this.password.length < 6) {
+        this.$message.error('密码长度至少为6位')
+        this.reset()
+        return
       }
 
       let res = await fetch.post('/register', {
