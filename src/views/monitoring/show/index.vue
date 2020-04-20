@@ -121,18 +121,18 @@ export default {
               name: '读取',
               type: 'bar',
               data: [
-                this.deploymentDesc[index].readSucceedRecords || 0,
+                this.deploymentDesc[index].totalInputETLRecords || 0,
                 this.deploymentDesc[index].readSucceedBytes || 0,
-                this.deploymentDesc[index].totalInputETLRecords || 0
+                this.deploymentDesc[index].readSucceedRecords || 0
               ]
             },
             {
               name: '写入',
               type: 'bar',
               data: [
-                this.deploymentDesc[index].writeSucceedRecords || 0,
+                this.deploymentDesc[index].totalOutPutETLRecords || 0,
                 this.deploymentDesc[index].writeSucceedBytes || 0,
-                this.deploymentDesc[index].totalOutPutETLRecords || 0
+                this.deploymentDesc[index].writeSucceedRecords || 0
               ]
             }
           ]
