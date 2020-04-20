@@ -73,6 +73,10 @@ export default {
           this.$message.error('前后输入的密码不一致')
           this.newPwd = ''
           this.confirmPwd = ''
+        } else if (this.newPwd.length < 6) {
+          this.$message.error('密码长度至少6位')
+          this.newPwd = ''
+          this.confirmPwd = ''
         } else {
           let res = await fetch.post('/changePassword', {
             username: this.username,
