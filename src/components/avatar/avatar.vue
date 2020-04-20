@@ -30,7 +30,7 @@ export default {
     }
   },
   mounted () {
-    this.text = JSON.parse(localStorage.getItem('userInfo')).nickname
+    this.setText()
   },
   methods: {
     onClick ({ key }) {
@@ -53,6 +53,11 @@ export default {
         this.$message.success('注销成功')
         this.$router.push({ path: '/login' })
       }
+    },
+    // 设置用户名
+    async setText () {
+      let res = await fetch.post('/getUserInformation')
+      this.text = res.data.userInformation.userName
     }
   }
 }
