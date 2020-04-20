@@ -4,8 +4,10 @@
     <a-table
       class="report-table"
       :columns="columns"
+      :pagination="pagination"
       :dataSource="data"
-      rowKey="jobReportId">
+      rowKey="jobReportId"
+      @change="handleTableChange">
       <span slot="state" slot-scope="state">
         <a-tag :color="getStateColor(state)">{{state}}</a-tag>
       </span>
@@ -52,7 +54,7 @@ export default {
         pageSizeOptions: ['5', '10', '20', '50']
       },
       isViewSelf: false,
-      getAllProcessPath: '/getAllJobReports',
+      getAllReportPath: '/getAllJobReports',
       curUserName: '',
       visible: false,
       inputName: '',
@@ -64,9 +66,9 @@ export default {
   watch: {
     isViewSelf (newVal) {
       if (newVal) {
-        this.getAllProcessPath = '/getAllPrivateJobReports'
+        this.getAllReportPath = '/getAllPrivateJobReports'
       } else {
-        this.getAllProcessPath = '/getAllJobReports'
+        this.getAllReportPath = '/getAllJobReports'
       }
       this.getAllJobReports(this.pagination.pageSize, this.pagination.current)
     }
@@ -96,12 +98,19 @@ export default {
     },
     // 分页获取任务报告
     async getAllJobReports (pageSize, pageNumber) {
-      let res = await fetch.post(this.getAllProcessPath, {
+      let res = await fetch.post(this.getAllReportPath, {
         pageSize,
         pageNumber
       })
       this.data = res.data.jobReportDesc
       this.pagination.total = res.data.totalPages * res.data.pageSize
+      console.log(this.pagination)
+    },
+    // 切换页码
+    handleTableChange (pagination) {
+      this.pagination.current = pagination.current
+      this.pagination.pageSize = pagination.pageSize
+      this.getAllJobReports(this.pagination.pageSize, this.pagination.current)
     },
     // 查看任务报告详情
     seeReport (id) {

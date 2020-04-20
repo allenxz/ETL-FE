@@ -97,7 +97,8 @@ export default {
             trigger: 'axis',
             axisPointer: {
               type: 'shadow'
-            }
+            },
+            formatter: '{b} : {c} Bytes'
           },
           legend: {
             data: ['读取', '写入']
