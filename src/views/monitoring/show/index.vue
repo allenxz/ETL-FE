@@ -101,7 +101,7 @@ export default {
             },
             // formatter: '{b} : {c} Bytes',
             formatter: function (params) {
-              let str = formatBytes(params.value)
+              let str = params[0].name + ' : ' + formatBytes(params[0].value) + 'B'
               return str
             }
           },

@@ -54,6 +54,7 @@
 <script>
 import './style.scss'
 import moment from 'moment'
+import formatBytes from '@/utils/bytes'
 import fetch from '@/services/fetch'
 export default {
   data () {
@@ -164,7 +165,7 @@ export default {
           '#91c7ae',
           '#749f83'
         ]
-        unit = 'Bytes'
+        unit = 'B'
       }
       myChart.setOption({
         title: {
@@ -175,7 +176,17 @@ export default {
           axisPointer: {
             type: 'shadow'
           },
-          formatter: '{b} : {c} ' + unit
+          formatter: function (params) {
+            let str
+            let name = params[0].name
+            let length = name.length
+            if (name[length - 1] === '数') {
+              str = name + ' : ' + params[0].value + unit
+            } else {
+              str = name + ' : ' + formatBytes(params[0].value) + unit
+            }
+            return str
+          }
         },
         xAxis: {
           type: 'category',
