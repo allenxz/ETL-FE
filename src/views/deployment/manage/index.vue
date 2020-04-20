@@ -46,6 +46,7 @@
             </a-button>
             <a-divider type="vertical" />
             <a-popconfirm
+              :disabled="row.state === '停止'"
               title="确定暂停该部署?"
               @confirm="stopDeployment(row.deploymentId)"
               okText="是"
@@ -57,6 +58,7 @@
             <a-divider type="vertical" />
             <a-popconfirm
               title="确定删除该部署?"
+              :disabled="row.state === '运行中'"
               @confirm="confirmDelete(row.deploymentId)"
               okText="是"
               cancelText="否">
