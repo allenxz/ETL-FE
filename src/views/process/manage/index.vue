@@ -187,7 +187,7 @@ export default {
     // 判断是否选择表格项
     isSelectItem () {
       if (this.rowSelection.selectedRowKeys.length === 0) {
-        this.$message.error('请先选择表格项，在进行此操作')
+        this.$message.error('请先选择表格项，再进行此操作')
         return false
       } else {
         return true
