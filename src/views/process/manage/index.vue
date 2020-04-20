@@ -153,8 +153,12 @@ export default {
       let res = await fetch.post('/deleteProcess', {
         processId
       })
-      this.$message.success(res.data.message)
-      this.getAllProcess(this.pagination.pageSize, this.pagination.current)
+      if (res.data) {
+        this.$message.success(res.data.message)
+        this.getAllProcess(this.pagination.pageSize, this.pagination.current)
+      } else {
+        this.$message.error(res.exception)
+      }
     },
     // 展示复制流程命名对话框
     showNameModal (processId) {

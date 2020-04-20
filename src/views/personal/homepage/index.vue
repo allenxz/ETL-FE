@@ -39,8 +39,10 @@
         <div class="right">
           <h1>选择查看时间的范围</h1>
           <a-range-picker
+            :defaultValue="defaultValue"
             :ranges="{ '今天': today, '本周': week, '本月': month, '今年': year }"
-            @change="onChange" />
+            @change="onChange"
+            style="margin-bottom:20px;"/>
           <div id="report" :style="{width: '100%', height: '300px'}"></div>
           <div id="byte" :style="{width: '100%', height: '300px'}"></div>
         </div>
@@ -58,9 +60,10 @@ export default {
     return {
       info: {},
       resources: {},
-      startTime: '',
-      endTime: '',
+      startTime: moment().startOf('month').format('YYYY-MM-DD'),
+      endTime: moment().endOf('month').format('YYYY-MM-DD'),
       rangeData: {},
+      defaultValue: [moment().startOf('month'), moment().endOf('month')],
       today: [moment(), moment()],
       month: [moment().startOf('month'), moment().endOf('month')],
       week: [moment().startOf('week'), moment().endOf('week')],
@@ -74,6 +77,7 @@ export default {
   mounted () {
     this.getUserInfo()
     this.getUserResource()
+    this.getDataInRange()
   },
   methods: {
     // 获取用户信息
@@ -112,8 +116,8 @@ export default {
         // 准备图表数据
         this.loadData()
         // 绘制任务相关柱状图
-        this.drawBarChart('report', this.reportXAxis, this.reportSeries)
-        this.drawBarChart('byte', this.byteXAxis, this.byteSeries)
+        this.drawBarChart('report', this.reportXAxis, this.reportSeries, '任务报告数统计')
+        this.drawBarChart('byte', this.byteXAxis, this.byteSeries, '处理数据量统计')
       } else {
         console.error('区间数据获取失败')
       }
@@ -122,24 +126,57 @@ export default {
     loadData () {
       this.reportXAxis = ['成功任务报告数', '终止任务报告数', '失败任务报告数']
       this.reportSeries = [this.rangeData.successCount, this.rangeData.killedCount, this.rangeData.failedCount]
+      // 重置数组
+      this.byteXAxis = []
+      this.byteSeries = []
       this.rangeData.readerType.forEach(i => {
-        this.byteXAxis.push(i + '读取数据数')
+        this.byteXAxis.push(i + '读取数据量')
       })
       this.rangeData.readBytes.forEach(i => {
         this.byteSeries.push(i)
       })
       this.rangeData.writerType.forEach(i => {
-        this.byteXAxis.push(i + '读取数据数')
+        this.byteXAxis.push(i + '写入数据量')
       })
       this.rangeData.writerBytes.forEach(i => {
         this.byteSeries.push(i)
       })
     },
     // 绘制柱状图
-    drawBarChart (id, xAxis, series) {
+    drawBarChart (id, xAxis, series, title) {
       let chart = document.getElementById(id)
       let myChart = this.$echarts.init(chart)
+      let colorList
+      let unit
+      if (id === 'report') {
+        colorList = [
+          '#d0e6a5',
+          '#ffdd96',
+          '#fc887b'
+        ]
+        unit = '份'
+      } else {
+        colorList = [
+          '#c23531',
+          '#2f4554',
+          '#61a0a8',
+          '#d48265',
+          '#91c7ae',
+          '#749f83'
+        ]
+        unit = 'Bytes'
+      }
       myChart.setOption({
+        title: {
+          text: title
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          },
+          formatter: '{b} : {c} ' + unit
+        },
         xAxis: {
           type: 'category',
           data: xAxis
@@ -149,11 +186,18 @@ export default {
         },
         series: [{
           data: series,
-          type: 'bar'
+          type: 'bar',
+          itemStyle: {
+            normal: {
+              // 每根柱子颜色设置
+              color: function (params) {
+                return colorList[params.dataIndex]
+              }
+            }
+          }
         }]
       })
     }
   }
 }
-
 </script>

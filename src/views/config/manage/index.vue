@@ -199,8 +199,12 @@ export default {
       let res = await fetch.post('/deleteConfigure', {
         configureId
       })
-      this.$message.success(res.data.message)
-      this.getAllConfigures(this.pagination.pageSize, this.pagination.current)
+      if (res.data) {
+        this.$message.success(res.data.message)
+        this.getAllConfigures(this.pagination.pageSize, this.pagination.current)
+      } else {
+        this.$message.error(res.exception)
+      }
     },
     // 判断是否选择表格项
     isSelectItem () {
