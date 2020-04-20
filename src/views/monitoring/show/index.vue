@@ -29,6 +29,7 @@
 <script>
 import './style.scss'
 import fetch from '@/services/fetch'
+import formatBytes from '@/utils/bytes'
 import ProgressBar from '@/components/progress-bar'
 export default {
   components: {
@@ -98,7 +99,11 @@ export default {
             axisPointer: {
               type: 'shadow'
             },
-            formatter: '{b} : {c} Bytes'
+            // formatter: '{b} : {c} Bytes',
+            formatter: function (params) {
+              let str = formatBytes(params.value)
+              return str
+            }
           },
           legend: {
             data: ['读取', '写入']
