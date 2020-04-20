@@ -101,7 +101,17 @@ export default {
             },
             // formatter: '{b} : {c} Bytes',
             formatter: function (params) {
-              let str = params[0].name + ' : ' + formatBytes(params[0].value) + 'B'
+              let flag = params[0].name.length === 3
+              let str
+              if (flag) {
+                str = params[0].seriesName + params[0].name + ' : ' + formatBytes(params[0].value) + 'B' +
+                '<br/>' +
+                params[1].seriesName + params[1].name + ' : ' + formatBytes(params[1].value) + 'B'
+              } else {
+                str = params[0].seriesName + params[0].name + ' : ' + params[0].value + '条' +
+                '<br/>' +
+                params[1].seriesName + params[1].name + ' : ' + params[1].value + '条'
+              }
               return str
             }
           },
@@ -120,7 +130,7 @@ export default {
           },
           yAxis: {
             type: 'category',
-            data: ['ETL的数据条数', '数据字节数', '数据条数']
+            data: ['ETL的数据条数', '数据量', '数据条数']
           },
           series: [
             {
