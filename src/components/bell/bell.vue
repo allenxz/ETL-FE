@@ -37,12 +37,18 @@ export default {
   mounted () {
     const _this = this
     _this.getNotices()
+    _this.updateReport()
     // 轮询获取消息
     setInterval(function () {
+      _this.updateReport()
       _this.getNotices()
     }, 10000)
   },
   methods: {
+    // 更新报告
+    async updateReport () {
+      await fetch.post('/getRunningDeployments')
+    },
     // 获得icon在图床上的映射
     getIconUrl (noticeType) {
       const map = {

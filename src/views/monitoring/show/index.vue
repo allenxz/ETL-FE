@@ -1,11 +1,11 @@
 <template>
   <div class="monitoring-show">
-    <a-empty class="empty" v-if="deploymentDesc.length === 0"/>
-    <a-card :id="deploymentIds[index]" title="Default size card" style="width: 100%" v-for="(item, index) of deploymentDesc" :key="index">
+    <a-empty description="暂无正在运行的部署" class="empty" v-if="deploymentDesc.length === 0"/>
+    <a-card :id="deploymentIds[index]" :title="deploymentNames[index]" style="width: 100%" v-for="(item, index) of deploymentDesc" :key="index">
       <a href="#" slot="extra">
         <a-icon @click="updateDesc" type="reload" style="margin-right:20px;font-size:18px;"/>
-        <a-icon type="fullscreen" v-if="!isFullscreen" @click="launchIntoFullscreen(deploymentIds[index])" style="font-size:18px;"/>
-        <a-icon type="fullscreen-exit" v-else @click="exitFullscreen" style="font-size:18px;"/>
+        <!-- <a-icon type="fullscreen" v-if="!isFullscreen" @click="launchIntoFullscreen(deploymentIds[index])" style="font-size:18px;"/>
+        <a-icon type="fullscreen-exit" v-else @click="exitFullscreen" style="font-size:18px;"/> -->
       </a>
       <h2>数据处理进度</h2>
       <ProgressBar :valuenow="countValue(item)"></ProgressBar>
@@ -38,6 +38,7 @@ export default {
     return {
       deploymentIds: [],
       deploymentDesc: [],
+      deploymentNames: [],
       isFullscreen: false
     }
   },
@@ -56,10 +57,11 @@ export default {
         this.drawRightGauge()
       }, 400)
     },
-    // 获取正在运行的部署Id
+    // 获取正在运行的部署信息
     async getRunningDeploymentIds () {
-      let res = await fetch.post('/getRunningDeploymentIds')
-      this.deploymentIds = res.data.DeploymentIds
+      let res = await fetch.post('/getRunningDeployments')
+      this.deploymentIds = res.data.deploymentIds
+      this.deploymentNames = res.data.deploymentNames
       this.getDesc()
     },
     // 获取详情
