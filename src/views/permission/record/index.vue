@@ -139,6 +139,11 @@ export default {
       let res = await fetch.post('/getDeploymentPermissionUserSituation')
       this.list = res.data.situation
     },
+    // 预览
+    preview (id, type) {
+      localStorage.setItem('activeKey', JSON.stringify(this.activeKey))
+      this.$router.push({ name: 'preview', params: { id, type } })
+    },
     // 取消授权
     async cancelAuthorize (userId, deploymentId) {
       let res = await fetch.post('/cancelAuthorize', {
