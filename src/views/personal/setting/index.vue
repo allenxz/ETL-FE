@@ -1,6 +1,6 @@
 <template>
   <div class="personal-setting">
-    <a-tabs tabPosition="left" :activeKey="activeKey">
+    <a-tabs tabPosition="left" v-model="activeKey">
       <a-tab-pane key="1">
         <span slot="tab">
           <font-awesome-icon :icon="['fas', 'user-cog']"/>
