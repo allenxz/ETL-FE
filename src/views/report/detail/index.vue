@@ -163,7 +163,6 @@ export default {
         jobReportId: this.id
       })
       this.desc = res.data
-      console.log(this.desc)
       this.desc.sourceConfigureContent = JSON.parse(this.desc.sourceConfigureContent)
       if (this.desc.sourceConfigureContent.parameter.password) {
         this.desc.sourceConfigureContent.parameter.password = '********'
@@ -172,6 +171,7 @@ export default {
       if (this.desc.targetConfigureContent.parameter.password) {
         this.desc.targetConfigureContent.parameter.password = '********'
       }
+      console.log(this.desc)
     },
     // 展示异常信息
     showDetail (info) {
