@@ -132,7 +132,12 @@ export default {
     }
   },
   mounted () {
-    this.id = this.$route.params.id
+    if (this.$route.params.id) {
+      this.id = this.$route.params.id
+      localStorage.setItem('reportId', this.id)
+    } else {
+      this.id = localStorage.getItem('reportId')
+    }
     this.getDesc()
   },
   methods: {
@@ -158,8 +163,8 @@ export default {
         jobReportId: this.id
       })
       this.desc = res.data
+      console.log(this.desc)
       this.desc.sourceConfigureContent = JSON.parse(this.desc.sourceConfigureContent)
-      console.log(this.desc.sourceConfigureContent.parameter.password)
       if (this.desc.sourceConfigureContent.parameter.password) {
         this.desc.sourceConfigureContent.parameter.password = '********'
       }
