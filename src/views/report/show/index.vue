@@ -22,7 +22,7 @@
           <a-icon type="eye" />
         </a-button>
         <a-divider type="vertical" />
-        <a-button :disabled="curUserName !==row.startUserName" type="primary"  size="small" @click="showMadal(row)" title="一键生成">
+        <a-button :disabled="curUserName !== row.deploymentContainerName" type="primary"  size="small" @click="showMadal(row)" title="一键生成">
           <a-icon type="thunderbolt" />
         </a-button>
       </span>
