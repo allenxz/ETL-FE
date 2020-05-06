@@ -171,7 +171,6 @@ export default {
       if (this.desc.targetConfigureContent.parameter.password) {
         this.desc.targetConfigureContent.parameter.password = '********'
       }
-      console.log(this.desc)
     },
     // 展示异常信息
     showDetail (info) {

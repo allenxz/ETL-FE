@@ -8,8 +8,6 @@ function transitionJsonToString(jsonObj, callback) {
       _jsonObj = JSON.stringify(jsonObj)
     } catch (error) {
       // 转换失败错误信息
-      console.error("您传递的json数据格式有误，请核对...")
-      console.error(error)
       callback(error)
     }
   } else {
@@ -18,8 +16,6 @@ function transitionJsonToString(jsonObj, callback) {
       _jsonObj = JSON.stringify(JSON.parse(jsonObj))
     } catch (error) {
       // 转换失败错误信息
-      console.error("您传递的json数据格式有误，请核对...")
-      console.error(error)
       callback(error)
     }
   }

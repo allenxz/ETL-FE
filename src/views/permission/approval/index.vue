@@ -84,7 +84,6 @@ export default {
         pageNumber
       })
       this.data = res.data.noticesDesc
-      console.log(this.data)
       this.data = this.data.filter(item => item.noticeType === 'authorizeRequest')
       this.pagination.total = res.data.totalPages * res.data.pageSize
     },

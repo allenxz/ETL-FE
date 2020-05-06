@@ -366,7 +366,6 @@ export default {
     },
     // 设置压缩类型
     setCompressType (value) {
-      console.log(value)
       this.compressType = map[value]
     }
   }

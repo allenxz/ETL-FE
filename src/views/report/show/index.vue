@@ -104,7 +104,6 @@ export default {
       })
       this.data = res.data.jobReportDesc
       this.pagination.total = res.data.totalPages * res.data.pageSize
-      console.log(this.pagination)
     },
     // 切换页码
     handleTableChange (pagination) {

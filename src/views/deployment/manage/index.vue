@@ -147,7 +147,6 @@ export default {
     // 二次确认删除
     async confirmDelete (deploymentId) {
       let hasPermission = await this.checkPermission(deploymentId)
-      console.log(hasPermission)
       if (hasPermission !== true) {
         this.$message.error('只有创建者才能操作自己的部署，你没有相关权限')
         return

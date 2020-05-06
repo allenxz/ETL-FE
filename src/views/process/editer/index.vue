@@ -481,7 +481,6 @@ export default {
       })
       this.processName = res.data.processName
       this.nodes = JSON.parse(res.data.processContent)
-      console.log(this.nodes)
       this.hasWriterNode = true
       this.hasReaderNode = true
     }

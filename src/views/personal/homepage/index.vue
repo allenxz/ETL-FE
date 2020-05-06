@@ -87,7 +87,7 @@ export default {
       if (res.data) {
         this.info = res.data.userInformation
       } else {
-        console.error('用户信息获取失败')
+        alert('用户信息获取失败')
       }
     },
     // 获取用户所有资源信息
@@ -96,7 +96,7 @@ export default {
       if (res.data) {
         this.resources = res.data
       } else {
-        console.error('用户资源列表获取失败')
+        alert('用户资源列表获取失败')
       }
     },
     // 更改时间范围
@@ -113,14 +113,13 @@ export default {
       })
       if (res.data) {
         this.rangeData = res.data.result
-        console.log(this.rangeData)
         // 准备图表数据
         this.loadData()
         // 绘制任务相关柱状图
         this.drawBarChart('report', this.reportXAxis, this.reportSeries, '任务报告数统计')
         this.drawBarChart('byte', this.byteXAxis, this.byteSeries, '处理数据量统计')
       } else {
-        console.error('区间数据获取失败')
+        alert('区间数据获取失败')
       }
     },
     // 装载图表数据
