@@ -174,7 +174,7 @@ export default {
                 offsetCenter: ['0', '-30'],
                 textStyle: {
                   color: '#444A56',
-                  fontSize: 14,
+                  fontSize: 12,
                   fontFamily: 'Microsoft YaHei'
                 }
               },
@@ -204,7 +204,7 @@ export default {
                 offsetCenter: ['0', '-30'],
                 textStyle: {
                   color: '#444A56',
-                  fontSize: 14,
+                  fontSize: 12,
                   fontFamily: 'Microsoft YaHei'
                 }
               },

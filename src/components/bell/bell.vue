@@ -47,6 +47,9 @@ export default {
   methods: {
     // 更新报告
     async updateReport () {
+      if (this.$route.name === 'login') {
+        return
+      }
       await fetch.post('/getRunningDeployments')
     },
     // 获得icon在图床上的映射
@@ -65,6 +68,9 @@ export default {
     },
     // 获取所有权限通知信息
     async getNotices () {
+      if (this.$route.name === 'login') {
+        return
+      }
       let res = await fetch.post('/getAllPrivateAuthorizeNotices')
       this.data = res.data.noticesDesc
       this.count = this.data.length

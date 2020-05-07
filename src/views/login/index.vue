@@ -3,7 +3,7 @@
     <div class="user_options-container">
       <div class="user_options-text">
         <div class="user_options-unregistered">
-          <h2 class="user_unregistered-title">ETL数据平台</h2>
+          <h2 class="user_unregistered-title">数据ETL平台</h2>
           <p class="user_unregistered-text">
             ETL，Extraction-Trasformation-Loading，即数据读取，转换，装载的过程，是构建数据仓库的重要环节。信息是现代企业的重要资源，是企业运用科学管理、决策分析的基础。
           </p>

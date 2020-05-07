@@ -15,7 +15,7 @@
         <router-view></router-view>
       </a-layout-content>
       <a-layout-footer style="textAlign: center">
-        ETL数据平台 ©2020 Created by Allen & KM
+        数据ETL平台 ©2020 Created by Allen & KM
       </a-layout-footer>
     </a-layout>
   </a-layout>
