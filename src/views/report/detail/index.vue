@@ -5,7 +5,7 @@
       <a-descriptions-item label="输入配置名">{{desc.sourceConfigureName}}</a-descriptions-item>
       <a-descriptions-item label="输出配置名">{{desc.targetConfigureName}}</a-descriptions-item>
       <a-descriptions-item label="数据处理流程名">{{desc.processName}}</a-descriptions-item>
-      <a-descriptions-item label="部署拥有者用户名">{{desc.startUserName}}</a-descriptions-item>
+      <a-descriptions-item label="部署拥有者用户名">{{desc.deploymentContainerName}}</a-descriptions-item>
       <a-descriptions-item label="部署启动者用户名">{{desc.startUserName}}</a-descriptions-item>
       <a-descriptions-item label="部署停止者用户名">{{desc.stopUserName || '无'}}</a-descriptions-item>
       <a-descriptions-item label="部署启动时间">
